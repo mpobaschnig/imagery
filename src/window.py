@@ -19,12 +19,27 @@
 
 from gi.repository import Adw
 from gi.repository import Gtk
+from gi.repository import GLib
+
 
 @Gtk.Template(resource_path='/io/github/mpobaschnig/Imagery/window.ui')
 class ImageryWindow(Adw.ApplicationWindow):
     __gtype_name__ = 'ImageryWindow'
 
-    label = Gtk.Template.Child()
+    textview = Gtk.Template.Child()
+    scrolled_window = Gtk.Template.Child()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+
+    @Gtk.Template.Callback()
+    def _on_run_button_clicked(self, _button):
+        pass
+
+    @Gtk.Template.Callback()
+    def _on_save_button_clicked(self, _button):
+        pass
+
+    @Gtk.Template.Callback()
+    def _on_download_model_button_clicked(self, _button):
+        pass

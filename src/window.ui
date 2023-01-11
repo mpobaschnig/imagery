@@ -3,28 +3,107 @@
   <requires lib="gtk" version="4.0"/>
   <requires lib="Adw" version="1.0"/>
   <template class="ImageryWindow" parent="AdwApplicationWindow">
-    <property name="default-width">600</property>
-    <property name="default-height">300</property>
+    <property name="default-width">800</property>
+    <property name="default-height">680</property>
     <child>
       <object class="GtkBox">
         <property name="orientation">vertical</property>
         <child>
           <object class="GtkHeaderBar" id="header_bar">
+            <property name="title-widget">
+              <object class="GtkMenuButton">
+                <property name="label" translatable="yes">Text to Image</property>
+                <property name="menu-model">pipeline_type</property>
+                <property name="sensitive">False</property>
+              </object> 
+            </property>
+            <child>
+              <object class="GtkButton">
+                <property name="icon-name">media-playback-start-symbolic</property>
+                <property name="sensitive">False</property>
+                <signal name="clicked" handler="_on_run_button_clicked" swapped="no"/>
+              </object>
+            </child>
             <child type="end">
               <object class="GtkMenuButton">
                 <property name="icon-name">open-menu-symbolic</property>
                 <property name="menu-model">primary_menu</property>
               </object>
             </child>
+            <child type="end">
+              <object class="GtkButton">
+                <property name="icon-name">document-save-symbolic</property>
+                <property name="sensitive">False</property>
+                <signal name="clicked" handler="_on_save_button_clicked" swapped="no"/>
+              </object>
+            </child>
           </object>
         </child>
         <child>
-          <object class="GtkLabel" id="label">
-            <property name="label">Hello, World!</property>
-            <property name="vexpand">true</property>
-            <style>
-              <class name="title-1"/>
-            </style>
+          <object class="GtkStack" id="stack">
+            <property name="transition-type">crossfade</property>
+            <child>
+              <object class="GtkStackPage">
+                <property name="name">start</property>
+                <property name="child">
+                  <object class="AdwStatusPage" id="status_page_start">
+                    <property name="vexpand">1</property>
+                    <property name="title" translatable="yes">Imagery</property>
+                    <property name="description" translatable="yes">Create images at will</property>
+                    <child>
+                      <object class="GtkButton" id="welcomeBtn">
+                        <property name="halign">center</property>
+                        <property name="label" translatable="yes">_Download Model</property>
+                        <property name="use-underline">1</property>
+                        <signal name="clicked" handler="_on_download_model_button_clicked" swapped="no"/>
+                        <style>
+                          <class name="suggested-action"/>
+                          <class name="pill"/>
+                        </style>
+                      </object>
+                    </child>
+                  </object>
+                </property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkStackPage">
+                <property name="name">input</property>
+                <property name="child">
+                  <object class="AdwClamp">
+                    <property name="margin-top">12</property>
+                    <property name="margin-bottom">12</property>
+                    <property name="margin-start">12</property>
+                    <property name="margin-end">12</property>
+                    <child>
+                      <object class="GtkScrolledWindow" id="scrolled_window">
+                        <child>
+                          <object class="GtkTextView" id="textview">
+                            <property name="top-margin">6</property>
+                            <property name="bottom-margin">6</property>
+                            <property name="left-margin">6</property>
+                            <property name="right-margin">6</property>
+                            <property name="hexpand">True</property>
+                            <property name="wrap_mode">word</property>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkStackPage">
+                <property name="name">image</property>
+                <property name="child">
+                  <object class="GtkImage">
+                    <property name="vexpand">True</property>
+                    <property name="file">/home/mpobaschnig/Pictures/image.png</property>
+                  </object>
+                </property>
+              </object> 
+            </child>
           </object>
         </child>
       </object>
@@ -46,4 +125,17 @@
       </item>
     </section>
   </menu>
+  <menu id="pipeline_type">
+    <section>
+      <item>
+        <attribute name="label" translatable="yes">_Text to Image</attribute>
+        <attribute name="action">win.text_to_image</attribute>
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">_Image to Image</attribute>
+        <attribute name="action">win.image_to_image</attribute>
+      </item>
+    </section>
+  </menu>
+
 </interface>
