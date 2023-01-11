@@ -1,0 +1,6 @@
+data/io.github.mpobaschnig.Imagery.desktop.in
+data/io.github.mpobaschnig.Imagery.appdata.xml.in
+data/io.github.mpobaschnig.Imagery.gschema.xml
+src/main.py
+src/window.py
+src/window.ui

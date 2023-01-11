@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=imagery
+Exec=imagery
+Icon=io.github.mpobaschnig.Imagery
+Terminal=false
+Type=Application
+Categories=GTK;
+StartupNotify=true
