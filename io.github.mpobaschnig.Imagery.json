@@ -23,6 +23,8 @@
         "*.a"
     ],
     "modules" : [
+        "build-aux/python3-diffusers.json",
+    	"build-aux/python3-torch.json",
         {
             "name" : "imagery",
             "builddir" : true,
