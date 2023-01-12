@@ -51,7 +51,27 @@
                     <property name="adjustment">
                       <object class="GtkAdjustment">
                         <property name="lower">1</property>
-                        <property name="upper">1024</property>
+                        <property name="upper">4096</property>
+                        <property name="value">512</property>
+                        <property name="page-increment">1</property>
+                        <property name="step-increment">1</property>
+                      </object>
+                    </property>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="AdwActionRow">
+                <property name="title" translatable="yes">Image Width</property>
+                <child>
+                  <object class="GtkSpinButton" id="">
+                    <property name="valign">center</property>
+                    <property name="numeric">True</property>
+                    <property name="adjustment">
+                      <object class="GtkAdjustment">
+                        <property name="lower">1</property>
+                        <property name="upper">4096</property>
                         <property name="value">512</property>
                         <property name="page-increment">1</property>
                         <property name="step-increment">1</property>
