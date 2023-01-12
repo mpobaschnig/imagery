@@ -68,7 +68,7 @@
             </child>
             <child>
               <object class="GtkStackPage">
-                <property name="name">input</property>
+                <property name="name">text_to_image</property>
                 <property name="child">
                   <object class="AdwClamp">
                     <property name="margin-top">12</property>
@@ -95,11 +95,18 @@
             </child>
             <child>
               <object class="GtkStackPage">
-                <property name="name">image</property>
+                <property name="name">image_to_image</property>
                 <property name="child">
-                  <object class="GtkImage">
-                    <property name="vexpand">True</property>
-                    <property name="file">/home/mpobaschnig/Pictures/image.png</property>
+                  <object class="AdwClamp">
+                  </object>
+                </property>
+              </object> 
+            </child>
+            <child>
+              <object class="GtkStackPage">
+                <property name="name">generation</property>
+                <property name="child">
+                  <object class="AdwClamp">
                   </object>
                 </property>
               </object> 
