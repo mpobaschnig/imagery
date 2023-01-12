@@ -29,6 +29,9 @@ imagery_sources = [
   '__init__.py',
   'main.py',
   'window.py',
+  'mod.py',
+  'start_page.py',
+  'text_to_image_page.py',
 ]
 
 install_data(imagery_sources, install_dir: moduledir)

@@ -25,7 +25,7 @@ gi.require_version('Adw', '1')
 
 from gi.repository import Gtk, Gio, Adw
 from .window import ImageryWindow
-
+from .mod import load_widgets
 
 class ImageryApplication(Adw.Application):
     """The main application singleton class."""
@@ -47,6 +47,10 @@ class ImageryApplication(Adw.Application):
         if not win:
             win = ImageryWindow(application=self)
         win.present()
+
+    def do_startup(self):
+        Adw.Application.do_startup(self)
+        load_widgets()
 
     def on_about_action(self, widget, _):
         """Callback for the app.about action."""
