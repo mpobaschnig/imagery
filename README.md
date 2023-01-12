@@ -16,3 +16,7 @@ https://huggingface.co/stabilityai/stable-diffusion-2-1
 ```
 
 In the end, we can just open GNOME Builder (or vscode with Flatpak extension), and run it from there.
+
+# License
+
+When downloading the model, you accept the [CreativeML Open RAIL-M license](https://github.com/CompVis/stable-diffusion/blob/21f890f9da3cfbeaba8e2ac3c425ee9e998d5229/LICENSE).
