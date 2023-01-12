@@ -9,7 +9,7 @@ Clone the repository:
 git clone https://github.com/mpobaschnig/imagery
 ```
 
-Then, download the stable diffusion model `v2-1_768-ema-pruned.ckpt` the following link and put it into `models/stable-diffusion-2-1`:
+Then, download the stable diffusion model `v2-1_768-ema-pruned.ckpt` the following link and put it into `~/.var/app/io.github.mpobaschnig.Imagery/data/`:
 
 ```sh
 https://huggingface.co/stabilityai/stable-diffusion-2-1
