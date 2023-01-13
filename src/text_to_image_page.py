@@ -29,12 +29,6 @@ from enum import Enum
 class TextToImagePage(Gtk.Box):
     __gtype_name__ = "TextToImagePage"
 
-    entry_row_prompt = Gtk.Template.Child()
-
     def __init__(self):
         """Text to Image Page widget"""
         super().__init__()
-
-    @Gtk.Template.Callback()
-    def on_entry_row_prompt_changed(self, _entry_row):
-        pass
