@@ -9,19 +9,17 @@
       <object class="GtkBox">
         <property name="orientation">vertical</property>
         <child>
-          <object class="GtkHeaderBar" id="header_bar">
+          <object class="GtkHeaderBar" id="_header_bar">
             <property name="title-widget">
-              <object class="GtkMenuButton">
-                <property name="label" translatable="yes">Text to Image</property>
-                <property name="menu-model">pipeline_type</property>
-                <property name="sensitive">False</property>
+              <object class="GtkMenuButton" id="_menu_button_page">
+                <property name="menu-model">pages</property>
               </object> 
             </property>
             <child>
-              <object class="GtkButton" id="run_button">
+              <object class="GtkButton" id="_button_run">
                 <property name="icon-name">media-playback-start-symbolic</property>
                 <property name="sensitive">False</property>
-                <signal name="clicked" handler="_on_run_button_clicked" swapped="no"/>
+                <signal name="clicked" handler="_on_button_run_clicked" swapped="no"/>
               </object>
             </child>
             <child type="end">
@@ -40,7 +38,7 @@
           </object>
         </child>
         <child>
-          <object class="GtkStack" id="stack">
+          <object class="GtkStack" id="_stack">
             <property name="transition-type">crossfade</property>
             <child>
               <object class="GtkStackPage">
@@ -62,17 +60,31 @@
               <object class="GtkStackPage">
                 <property name="name">image_to_image</property>
                 <property name="child">
-                  <object class="AdwClamp">
-                  </object>
+                  <object class="ImageToImagePage"/>
                 </property>
               </object> 
             </child>
             <child>
               <object class="GtkStackPage">
-                <property name="name">generation</property>
+                <property name="name">upscaling</property>
                 <property name="child">
-                  <object class="AdwClamp">
-                  </object>
+                  <object class="UpscalingPage"/>
+                </property>
+              </object> 
+            </child>
+            <child>
+              <object class="GtkStackPage">
+                <property name="name">inpainting</property>
+                <property name="child">
+                  <object class="InpaintingPage"/>
+                </property>
+              </object> 
+            </child>
+            <child>
+              <object class="GtkStackPage">
+                <property name="name">outpainting</property>
+                <property name="child">
+                  <object class="OutpaintingPage"/>
                 </property>
               </object> 
             </child>
@@ -97,7 +109,7 @@
       </item>
     </section>
   </menu>
-  <menu id="pipeline_type">
+  <menu id="pages">
     <section>
       <item>
         <attribute name="label" translatable="yes">_Text to Image</attribute>
@@ -106,6 +118,18 @@
       <item>
         <attribute name="label" translatable="yes">_Image to Image</attribute>
         <attribute name="action">win.image_to_image</attribute>
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">_Upscaling</attribute>
+        <attribute name="action">win.upscaling</attribute>
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">_Inpainting</attribute>
+        <attribute name="action">win.inpainting</attribute>
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">_Outpainting</attribute>
+        <attribute name="action">win.outpainting</attribute>
       </item>
     </section>
   </menu>

@@ -32,6 +32,10 @@ imagery_sources = [
   'mod.py',
   'start_page.py',
   'text_to_image_page.py',
+  'image_to_image_page.py',
+  'upscaling_page.py',
+  'inpainting_page.py',
+  'outpainting_page.py',
 ]
 
 install_data(imagery_sources, install_dir: moduledir)

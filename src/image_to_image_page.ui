@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <template class="ImageToImagePage" parent="GtkBox">
+    <property name="orientation">vertical</property>
+    <child>
+      <object class="AdwClamp">
+        <property name="margin-top">12</property>
+        <property name="margin-bottom">12</property>
+        <property name="margin-start">12</property>
+        <property name="margin-end">12</property>
+        <child>
+          <object class="GtkLabel">
+            <property name="label">Image to Image Page</property>
+            <property name="vexpand">true</property>
+            <property name="hexpand">true</property>
+          </object>
+        </child>
+      </object>
+    </child>
+  </template>
+</interface>

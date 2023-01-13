@@ -1,4 +1,4 @@
-# mod.py
+# inpainting.py
 #
 # Copyright 2023 Martin Pobaschnig
 #
@@ -17,16 +17,18 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from gi.repository import GObject
+from gi.repository import Gtk, GLib, Adw, Gio
+from gettext import gettext as i18n
 
-from .start_page import StartPage
-from .text_to_image_page import TextToImagePage
-from .image_to_image_page import ImageToImagePage
-from .upscaling_page import UpscalingPage
-from .inpainting_page import InpaintingPage
-from .outpainting_page import OutpaintingPage
+import os
+import logging
+from enum import Enum
 
 
-def load_widgets():
-    GObject.type_ensure(StartPage)
-    GObject.type_ensure(TextToImagePage)
+@Gtk.Template(resource_path='/io/github/mpobaschnig/Imagery/inpainting_page.ui')
+class InpaintingPage(Gtk.Box):
+    __gtype_name__ = "InpaintingPage"
+
+    def __init__(self):
+        """Inpainting Page widget"""
+        super().__init__()

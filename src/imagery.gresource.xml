@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
   <gresource prefix="/io/github/mpobaschnig/Imagery">
+    <file preprocess="xml-stripblanks">gtk/help-overlay.ui</file>
     <file preprocess="xml-stripblanks">window.ui</file>
     <file preprocess="xml-stripblanks">start_page.ui</file>
     <file preprocess="xml-stripblanks">text_to_image_page.ui</file>
-    <file preprocess="xml-stripblanks">gtk/help-overlay.ui</file>
+    <file preprocess="xml-stripblanks">image_to_image_page.ui</file>
+    <file preprocess="xml-stripblanks">upscaling_page.ui</file>
+    <file preprocess="xml-stripblanks">inpainting_page.ui</file>
+    <file preprocess="xml-stripblanks">outpainting_page.ui</file>
   </gresource>
 </gresources>
