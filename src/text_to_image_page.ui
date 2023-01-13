@@ -9,78 +9,10 @@
         <property name="margin-start">12</property>
         <property name="margin-end">12</property>
         <child>
-          <object class="GtkListBox">
-            <property name="selection-mode">none</property>
-            <property name="valign">start</property>
-            <style>
-              <class name="boxed-list"/>
-            </style>
-            <child>
-              <object class="AdwEntryRow" id="entry_row_prompt">
-                <property name="title" translatable="yes">Prompt</property>
-                <signal name="changed" handler="on_entry_row_prompt_changed"/>
-              </object>
-            </child>
-            <child>
-              <object class="AdwActionRow">
-                <property name="title" translatable="yes">Images Per Prompt</property>
-                <child>
-                  <object class="GtkSpinButton" id="images_per_prompt">
-                    <property name="valign">center</property>
-                    <property name="numeric">True</property>
-                    <property name="adjustment">
-                      <object class="GtkAdjustment">
-                        <property name="lower">1</property>
-                        <property name="upper">12</property>
-                        <property name="value">1</property>
-                        <property name="page-increment">1</property>
-                        <property name="step-increment">1</property>
-                      </object>
-                    </property>
-                  </object>
-                </child>
-              </object>
-            </child>
-            <child>
-              <object class="AdwActionRow">
-                <property name="title" translatable="yes">Image Height</property>
-                <child>
-                  <object class="GtkSpinButton" id="image_height">
-                    <property name="valign">center</property>
-                    <property name="numeric">True</property>
-                    <property name="adjustment">
-                      <object class="GtkAdjustment">
-                        <property name="lower">1</property>
-                        <property name="upper">4096</property>
-                        <property name="value">512</property>
-                        <property name="page-increment">1</property>
-                        <property name="step-increment">1</property>
-                      </object>
-                    </property>
-                  </object>
-                </child>
-              </object>
-            </child>
-            <child>
-              <object class="AdwActionRow">
-                <property name="title" translatable="yes">Image Width</property>
-                <child>
-                  <object class="GtkSpinButton" id="">
-                    <property name="valign">center</property>
-                    <property name="numeric">True</property>
-                    <property name="adjustment">
-                      <object class="GtkAdjustment">
-                        <property name="lower">1</property>
-                        <property name="upper">4096</property>
-                        <property name="value">512</property>
-                        <property name="page-increment">1</property>
-                        <property name="step-increment">1</property>
-                      </object>
-                    </property>
-                  </object>
-                </child>
-              </object>
-            </child>
+          <object class="GtkLabel">
+            <property name="label">Text to Image Page</property>
+            <property name="vexpand">true</property>
+            <property name="hexpand">true</property>
           </object>
         </child>
       </object>
