@@ -36,6 +36,7 @@ imagery_sources = [
   'upscaling_page.py',
   'inpainting_page.py',
   'outpainting_page.py',
+  'downloader.py',
 ]
 
 install_data(imagery_sources, install_dir: moduledir)
