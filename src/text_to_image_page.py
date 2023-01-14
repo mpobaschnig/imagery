@@ -56,9 +56,11 @@ class TextToImagePage(Gtk.Box):
             return
         
         url = "https://huggingface.co/stabilityai/stable-diffusion-2-1/resolve/main/v2-1_768-ema-pruned.ckpt"
+        sha256 = "ad2a33c361c1f593c4a1fb32ea81afce2b5bb7d1983c6b94793a26a3b54b08a0"
 
         self._downloader: Downloader = Downloader(path=path,
                                                   url=url,
+                                                  sha256=sha256,
                                                   download_model_button=self._download_model_button,
                                                   model_license_hint_label=self._model_license_hint_label,
                                                   progress_bar=self._progress_bar)

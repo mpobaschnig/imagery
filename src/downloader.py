@@ -21,8 +21,7 @@ from gi.repository import Gtk, GLib, Adw, Gio
 from gettext import gettext as i18n
 from typing import Optional
 
-
-import os
+import hashlib
 import logging
 from enum import Enum
 
@@ -32,9 +31,11 @@ class Downloader:
         Start = 0,
         Download = 1,
         Continue = 2,
+        SHA_MISMATCH = 3,
 
-    _url: Optional[str] = ""
-    _path: Optional[str] = ""
+    _url: Optional[str] = None
+    _path: Optional[str] = None
+    _sha256: Optional[str] = None
 
     _progress_bar: Optional[Gtk.ProgressBar] = None
     _download_model_button: Optional[Gtk.Button] = None
@@ -46,18 +47,21 @@ class Downloader:
     def __init__(self,
                  path: str,
                  url: str,
+                 sha256: str,
                  download_model_button: Gtk.Button,
                  model_license_hint_label: Gtk.Label,
                  progress_bar: Gtk.ProgressBar):
 
         self._path = path
         self._url = url
+        self._sha256 = sha256
         self._progress_bar = progress_bar
         self._download_model_button = download_model_button
         self._model_license_hint_label = model_license_hint_label
 
     def download(self) -> None:
-        if self.download_state == self.DownloadState.Start:
+        if self.download_state == self.DownloadState.Start or \
+                self.download_state == self.DownloadState.SHA_MISMATCH:
             self._download_cancellable = Gio.Cancellable.new()
             model_uri_file: Gio.File = Gio.File.new_for_uri(self._url)
             model_file = Gio.File.new_for_path(self._path)
@@ -95,7 +99,10 @@ class Downloader:
     def _finished_cb(self, file, result, on_user):
         try:
             file.copy_finish(result)
-            self.download_state = self.DownloadState.Continue
+            if not self._is_sha_matching():
+                self.download_state = self.download_state.SHA_MISMATCH
+            else:
+                self.download_state = self.DownloadState.Continue
         except GLib.Error as e:
             logging.error(e)
 
@@ -139,3 +146,31 @@ class Downloader:
             self._progress_bar.set_text(i18n("Download finished"))
 
             self._model_license_hint_label.set_visible(False)
+        elif new_download_state == self.download_state.SHA_MISMATCH:
+            self._download_model_button.remove_css_class("destructive-action")
+            self._download_model_button.add_css_class("suggested-action")
+            self._download_model_button.set_label(i18n("Download Again"))
+
+            self._progress_bar.set_text(i18n("SHA256 Mismatch"))
+            self._progress_bar.add_css_class("error")
+
+            self._model_license_hint_label.set_visible(True)
+
+    def _is_sha_matching(self) -> bool:
+        buffer_size = 65536
+
+        sha256 = hashlib.sha256()
+
+        self._progress_bar.set_text(i18n("Verifying hashes..."))
+
+        with open(self._path, "rb") as f:
+            while (data := f.read(buffer_size)):
+                sha256.update(data)
+
+        sha256_hexvalue = sha256.hexdigest()
+
+        logging.info(
+            f"Downloaded files has sha256: {sha256_hexvalue}, should be: {self._sha256}"
+        )
+
+        return sha256_hexvalue == self._sha256
