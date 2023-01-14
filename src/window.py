@@ -82,7 +82,6 @@ class ImageryWindow(Adw.ApplicationWindow):
     @page_state.setter
     def page_state(self, new_page_state: PageState) -> None:
         stack = self._stack
-        menu_button_page = self._menu_button_page
 
         self._page_state = new_page_state
 
