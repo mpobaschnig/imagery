@@ -15,24 +15,10 @@
                 <property name="menu-model">pages</property>
               </object> 
             </property>
-            <child>
-              <object class="GtkButton" id="_button_run">
-                <property name="icon-name">media-playback-start-symbolic</property>
-                <property name="sensitive">False</property>
-                <signal name="clicked" handler="_on_button_run_clicked" swapped="no"/>
-              </object>
-            </child>
             <child type="end">
               <object class="GtkMenuButton">
                 <property name="icon-name">open-menu-symbolic</property>
                 <property name="menu-model">primary_menu</property>
-              </object>
-            </child>
-            <child type="end">
-              <object class="GtkButton">
-                <property name="icon-name">document-save-symbolic</property>
-                <property name="sensitive">False</property>
-                <signal name="clicked" handler="_on_save_button_clicked" swapped="no"/>
               </object>
             </child>
           </object>

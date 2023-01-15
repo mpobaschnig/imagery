@@ -38,7 +38,6 @@ class ImageryWindow(Adw.ApplicationWindow):
     __gtype_name__ = 'ImageryWindow'
 
     _stack: Gtk.Stack = Gtk.Template.Child()
-    _button_run: Gtk.Button = Gtk.Template.Child()
     _menu_button_page: Gtk.MenuButton = Gtk.Template.Child()
     _page_state: PageState = PageState.TEXT_TO_IMAGE
 
