@@ -29,6 +29,8 @@
         "build-aux/python3-transformers.json",
         "build-aux/python3-diffusers.json",
     	"build-aux/python3-torch.json",
+        "build-aux/python3-accelerate.json",
+        "build-aux/python3-scipy.json",
         {
             "name" : "imagery",
             "builddir" : true,
