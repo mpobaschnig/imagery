@@ -26,6 +26,7 @@
         "*.a"
     ],
     "modules" : [
+        "build-aux/python3-transformers.json",
         "build-aux/python3-diffusers.json",
     	"build-aux/python3-torch.json",
         {
