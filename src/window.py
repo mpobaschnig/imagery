@@ -109,7 +109,7 @@ class ImageryWindow(Adw.ApplicationWindow):
         if new_page_state == self.PageState.TEXT_TO_IMAGE:
             menu_button_page.set_label(i18n("Text to Image"))
         elif new_page_state == self.PageState.IMAGE_TO_IMAGE:
-            menu_button_page.set_label(i18n("Text to Image"))
+            menu_button_page.set_label(i18n("Image to Image"))
         elif new_page_state == self.PageState.UPSCALING:
             menu_button_page.set_label(i18n("Upscaling"))
         elif new_page_state == self.PageState.INPAINTING:
