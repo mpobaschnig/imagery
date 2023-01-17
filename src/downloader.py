@@ -232,6 +232,7 @@ class Downloader(GObject.Object):
         self._progress_bar.set_text(i18n(
             f"Checking if file {p.name} exists... ({current_i + 1} of {len(self._files)})"
         ))
+        self._progress_bar.set_fraction((current_i + 1) / len(self._files))
 
         sha256 = hashlib.sha256()
 
@@ -293,5 +294,7 @@ class Downloader(GObject.Object):
                 )
                 self.download_state = self.DownloadState.SHA_MISMATCH
                 break
+
+            self._progress_bar.set_fraction((i + 1) / (len(self._files)))
 
         self.download_state = self.DownloadState.Continue
