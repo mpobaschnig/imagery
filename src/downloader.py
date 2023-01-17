@@ -265,6 +265,7 @@ class Downloader(GObject.Object):
         buffer_size = 65536
 
         for (i, file) in enumerate(self._files):
+            logging.info(f"Verifying hashes of {file.path}")
             self._progress_bar.set_text(i18n(
                 f"Verifying hashes... ({i + 1} of {len(self._files)})"
             ))
