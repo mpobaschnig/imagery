@@ -277,4 +277,4 @@ class Downloader(GObject.Object):
                 self.download_state = self.DownloadState.SHA_MISMATCH
                 break
 
-        self._download_state = self.DownloadState.Continue
+        self.download_state = self.DownloadState.Continue
