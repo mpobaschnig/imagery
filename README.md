@@ -13,3 +13,9 @@ All images are currently saved in the cache folder of the Flatpak, i.e.: `/home/
 Open GNOME Builder (or Visual Studio Code with Flatpak extension), and run it from there.
 
 The models are downloaded within the app.
+
+If somehow downloads are not working, you can download the models manually:
+
+## Text to Image
+
+Download the repository at `https://huggingface.co/runwayml/stable-diffusion-v1-5` and place it at `/home/USER/.var/app/io.github.mpobaschnig.Imagery/data/stable-diffusion-v1-5`
