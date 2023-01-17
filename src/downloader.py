@@ -150,13 +150,18 @@ class Downloader(GObject.Object):
         except GLib.Error as e:
             logging.error(e)
 
+        self._task = Gio.Task.new(self,
+                                  self._download_cancellable,
+                                  None,
+                                  None)
+
         if self._current_i == len(self._files):
-            self._verify_hashes()
+            self._task.run_in_thread(self._verify_hashes)
             return
 
         self._current_i += 1
         if self._current_i >= len(self._files):
-            self._verify_hashes()
+            self._task.run_in_thread(self._verify_hashes)
             return
         file = self._files[self._current_i]
 
