@@ -90,7 +90,7 @@ class TextToImagePage(Gtk.Box):
                  folder + "text_encoder/pytorch_model.bin",
                  "770a47a9ffdcfda0b05506a7888ed714d06131d60267e6cf52765d61cf59fd67"),
             File("https://huggingface.co/runwayml/stable-diffusion-v1-5/raw/main/tokenizer/merges.txt",
-                 folder + "tokenizer/merges.text",
+                 folder + "tokenizer/merges.txt",
                  "9fd691f7c8039210e0fced15865466c65820d09b63988b0174bfe25de299051a"),
             File("https://huggingface.co/runwayml/stable-diffusion-v1-5/raw/main/tokenizer/special_tokens_map.json",
                  folder + "tokenizer/special_tokens_map.json",
