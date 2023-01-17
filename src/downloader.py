@@ -90,6 +90,8 @@ class Downloader(GObject.Object):
             self.download_state = self.DownloadState.Start
 
     def _download_file(self):
+        self._progress_bar.set_fraction(0)
+
         if self._download_cancelled:
             return
 
