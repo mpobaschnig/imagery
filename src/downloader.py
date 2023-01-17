@@ -67,9 +67,6 @@ class Downloader(GObject.Object):
     def _run(self, task, source_object, task_data, cancellable):
         self._download_file()
 
-    def _finished(self, Downloader, result, task_data):
-        self.download_state = self.DownloadState.Continue
-
     def download(self) -> None:
         if self.download_state == self.DownloadState.Start or \
                 self.download_state == self.DownloadState.SHA_MISMATCH:
@@ -84,7 +81,7 @@ class Downloader(GObject.Object):
 
             self._task: Gio.Task = Gio.Task.new(self,
                                                 None,
-                                                self._finished,
+                                                None,
                                                 None)
 
             self._task.run_in_thread(self._run)
