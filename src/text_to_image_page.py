@@ -24,6 +24,10 @@ from typing import Optional
 import os
 import logging
 from enum import Enum
+import threading
+from diffusers import StableDiffusionPipeline
+import torch
+import functools
 
 from .downloader import Downloader
 
@@ -32,17 +36,24 @@ from .downloader import Downloader
 class TextToImagePage(Gtk.Box):
     __gtype_name__ = "TextToImagePage"
 
-    def __init__(self):
-        """Text to Image Page widget"""
-        super().__init__()
-
-    _progress_bar: Gtk.ProgressBar = Gtk.Template.Child()
     _download_model_button: Gtk.Button = Gtk.Template.Child()
+    _flow_box: Gtk.FlowBox = Gtk.Template.Child()
+    _generating_progress_bar: Gtk.ProgressBar = Gtk.Template.Child()
+    _height_spin_button: Gtk.SpinButton = Gtk.Template.Child()
+    _inference_steps_spin_button: Gtk.SpinButton = Gtk.Template.Child()
+    _list_box: Gtk.ListBox = Gtk.Template.Child()
     _model_license_hint_label: Gtk.Label = Gtk.Template.Child()
-
+    _number_images_spin_button: Gtk.SpinButton = Gtk.Template.Child()
+    _progress_bar: Gtk.ProgressBar = Gtk.Template.Child()
+    _prompt_entry: Adw.EntryRow = Gtk.Template.Child()
+    _run_button: Gtk.Button = Gtk.Template.Child()
+    _scheduler_drop_down: Gtk.DropDown = Gtk.Template.Child()
     _stack: Gtk.Stack = Gtk.Template.Child()
+    _width_spin_button: Gtk.SpinButton = Gtk.Template.Child()
 
     _downloader: Optional[Downloader] = None
+    _flow_box_pictures = []
+    _spinner: Gtk.Spinner = Gtk.Spinner()
 
     def __init__(self):
         """Start Page widget"""
@@ -71,3 +82,96 @@ class TextToImagePage(Gtk.Box):
             self._stack.set_visible_child_name("main")
         else:
             self._downloader.download()
+
+    def _pipeline_callback(self, step: int, timestep: int, latents: torch.FloatTensor):
+        number_steps = int(self._inference_steps_spin_button.get_value())
+        self._generating_progress_bar.set_fraction(step / number_steps)
+
+    def _get_scheduler(scheduler: str):
+        if scheduler == "LMSDiscreteScheduler":
+            from diffusers import LMSDiscreteScheduler
+            return LMSDiscreteScheduler.from_config(pipeline.scheduler.config)
+        elif scheduler == "DDIMScheduler":
+            from diffusers import DDIMScheduler
+            return DDIMScheduler.from_config(pipeline.scheduler.config)
+        elif scheduler == "DPMSolverMultistepScheduler":
+            from diffusers import DPMSolverMultistepScheduler
+            return DPMSolverMultistepScheduler.from_config(pipeline.scheduler.config)
+        elif scheduler == "EulerDiscreteScheduler":
+            from diffusers import EulerDiscreteScheduler
+            return EulerDiscreteScheduler.from_config(pipeline.scheduler.config)
+        elif scheduler == "PNDMScheduler":
+            from diffusers import PNDMScheduler
+            return PNDMScheduler.from_config(pipeline.scheduler.config)
+        elif scheduler == "DDPMScheduler":
+            from diffusers import DDPMScheduler
+            return DDPMScheduler.from_config(pipeline.scheduler.config)
+        elif scheduler == "EuelrAncestralDiscreteScheduler":
+            from diffusers import EulerAncestralDiscreteScheduler
+            return EulerAncestralDiscreteScheduler.from_config(pipeline.scheduler.config)
+
+    def _generate(self):
+        model_id = os.path.join(GLib.get_user_data_dir(),
+                                "stable-diffusion-v1-5")
+
+        pipeline: StableDiffusionPipeline = StableDiffusionPipeline.from_pretrained(
+            model_id)
+
+        scheduler = self._scheduler_drop_down.get_selected_item().get_string()
+
+        pipeline.scheduler = self._get_scheduler(scheduler)
+
+        if torch.cuda.is_available():
+            pipeline = pipeline.to("cuda")
+
+        prompt = self._prompt_entry.get_text()
+        height = int(self._width_spin_button.get_value())
+        width = int(self._height_spin_button.get_value())
+        inf_steps = int(self._inference_steps_spin_button.get_value())
+        n_images = int(self._number_images_spin_button.get_value())
+
+        result = pipeline(prompt=prompt,
+                          height=height,
+                          width=width,
+                          num_inference_steps=inf_steps,
+                          num_images_per_prompt=n_images,
+                          callback=self._pipeline_callback)
+
+        for i in range(number_images):
+            file_name = os.path.join(GLib.get_user_cache_dir(),
+                                     f"image_{i}.png")
+            result.images[i].save(file_name)
+
+            img = Gtk.Picture()
+            img.set_filename(file_name)
+
+            self._flow_box_pictures.append(img)
+            self._flow_box.insert(img, i)
+
+        self._spinner.set_spinning(False)
+        self._run_button.set_icon_name("media-playback-start-symbolic")
+        self._generating_progress_bar.set_visible(False)
+
+    @Gtk.Template.Callback()
+    def _on_run_button_clicked(self, _button):
+        if self._spinner.get_spinning():
+            return
+
+        for i in range(len(self._flow_box_pictures)):
+            self._flow_box.remove(self._flow_box_pictures[i])
+
+        self._flow_box_pictures.clear()
+
+        self._run_button.set_child(self._spinner)
+        self._spinner.set_spinning(True)
+        self._generating_progress_bar.set_visible(True)
+
+        self._thread = threading.Thread(target=self._generate)
+        self._thread.start()
+
+    @Gtk.Template.Callback()
+    def _on_prompt_entry_changed(self, _entry):
+        if self._prompt_entry.get_text():
+            self._run_button.set_sensitive(True)
+        else:
+            self._run_button.set_sensitive(False)
