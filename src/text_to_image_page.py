@@ -87,7 +87,7 @@ class TextToImagePage(Gtk.Box):
         number_steps = int(self._inference_steps_spin_button.get_value())
         self._generating_progress_bar.set_fraction(step / number_steps)
 
-    def _get_scheduler(scheduler: str):
+    def _get_scheduler(self, pipeline: StableDiffusionPipeline, scheduler: str):
         if scheduler == "LMSDiscreteScheduler":
             from diffusers import LMSDiscreteScheduler
             return LMSDiscreteScheduler.from_config(pipeline.scheduler.config)
