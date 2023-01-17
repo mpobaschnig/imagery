@@ -52,7 +52,6 @@ class TextToImagePage(Gtk.Box):
     _stack: Gtk.Stack = Gtk.Template.Child()
     _width_spin_button: Gtk.SpinButton = Gtk.Template.Child()
 
-    _downloader: Optional[Downloader] = None
     _download_task: Optional[Gio.Task] = None
     _run_task: Optional[Gio.Task] = None
     _flow_box_pictures = []
