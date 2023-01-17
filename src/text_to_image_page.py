@@ -19,7 +19,7 @@
 
 from gi.repository import Gtk, GLib, Adw, Gio
 from gettext import gettext as i18n
-from typing import Optional
+from typing import Optional, List
 
 import os
 import logging
@@ -30,6 +30,7 @@ import torch
 import functools
 
 from .downloader import Downloader
+from .file import File
 
 
 @Gtk.Template(resource_path='/io/github/mpobaschnig/Imagery/text_to_image_page.ui')
@@ -52,6 +53,8 @@ class TextToImagePage(Gtk.Box):
     _width_spin_button: Gtk.SpinButton = Gtk.Template.Child()
 
     _downloader: Optional[Downloader] = None
+    _download_task: Optional[Gio.Task] = None
+    _run_task: Optional[Gio.Task] = None
     _flow_box_pictures = []
     _spinner: Gtk.Spinner = Gtk.Spinner()
 
@@ -60,18 +63,72 @@ class TextToImagePage(Gtk.Box):
         super().__init__()
 
         path = os.path.join(GLib.get_user_data_dir(),
-                            "v2-1_768-ema-pruned.ckpt")
+                            "stable-diffusion-v1-5/")
 
-        if os.path.exists(path) and os.path.isfile(path):
+        if os.path.exists(path):
             self._stack.set_visible_child_name("main")
             return
-        
-        url = "https://huggingface.co/stabilityai/stable-diffusion-2-1/resolve/main/v2-1_768-ema-pruned.ckpt"
-        sha256 = "ad2a33c361c1f593c4a1fb32ea81afce2b5bb7d1983c6b94793a26a3b54b08a0"
 
-        self._downloader: Downloader = Downloader(path=path,
-                                                  url=url,
-                                                  sha256=sha256,
+        folder = os.path.join(GLib.get_user_data_dir(),
+                              "stable-diffusion-v1-5/")
+        files = [
+            File("https://huggingface.co/runwayml/stable-diffusion-v1-5/raw/main/feature_extractor/preprocessor_config.json",
+                 folder + "feature_extractor/preprocessor_config.json",
+                 "2a1da83b5e1032aaeef397552ddb408dca0d8cd1dc58f61bf6abf38d6f33a0a2"),
+            File("https://huggingface.co/runwayml/stable-diffusion-v1-5/raw/main/safety_checker/config.json",
+                 folder + "safety_checker/config.json",
+                 "5dd77a06cbd9b155060bd58deb81ffd1aafc1c6d7970acac674c1128bd4edfe2"),
+            File("https://huggingface.co/runwayml/stable-diffusion-v1-5/resolve/main/safety_checker/pytorch_model.bin",
+                 folder + "safety_checker/pytorch_model.bin",
+                 "193490b58ef62739077262e833bf091c66c29488058681ac25cf7df3d8190974"),
+            File("https://huggingface.co/runwayml/stable-diffusion-v1-5/raw/main/scheduler/scheduler_config.json",
+                 folder + "scheduler/scheduler_Config.json",
+                 "699cce92eb7c122e2eb7dfdea78e6187fda76a5ed4a8e42319b85610e620e091"),
+            File("https://huggingface.co/runwayml/stable-diffusion-v1-5/raw/main/text_encoder/config.json",
+                 folder + "text_encoder/config.json",
+                 "845df614cb9327ae7bbea027316246fae917827407da6df13572e41b5f93b4cc"),
+            File("https://huggingface.co/runwayml/stable-diffusion-v1-5/resolve/main/text_encoder/pytorch_model.bin",
+                 folder + "text_encoder/pytorch_model.bin",
+                 "770a47a9ffdcfda0b05506a7888ed714d06131d60267e6cf52765d61cf59fd67"),
+            File("https://huggingface.co/runwayml/stable-diffusion-v1-5/raw/main/tokenizer/merges.txt",
+                 folder + "tokenizer/merges.text",
+                 "9fd691f7c8039210e0fced15865466c65820d09b63988b0174bfe25de299051a"),
+            File("https://huggingface.co/runwayml/stable-diffusion-v1-5/raw/main/tokenizer/special_tokens_map.json",
+                 folder + "tokenizer/special_tokens_map.json",
+                 "c4864a9376a8401918425bed71fc14fc0e81f9b59ec45c1cf96cccb2df508eac"),
+            File("https://huggingface.co/runwayml/stable-diffusion-v1-5/raw/main/tokenizer/tokenizer_config.json",
+                 folder + "tokenizer/tokenizer_config.json",
+                 "00439066fcba73de57644cf41e4e3b9f2dbb09d7f3fc2005898ba52399045882"),
+            File("https://huggingface.co/runwayml/stable-diffusion-v1-5/raw/main/tokenizer/vocab.json",
+                 folder + "tokenizer/vocab.json",
+                 "e089ad92ba36837a0d31433e555c8f45fe601ab5c221d4f607ded32d9f7a4349"),
+            File("https://huggingface.co/runwayml/stable-diffusion-v1-5/raw/main/unet/config.json",
+                 folder + "unet/config.json",
+                 "78f474de6bab3d893868f37be97b636ae65c0df3073ed3256ca458ff599b5f96"),
+            File("https://huggingface.co/runwayml/stable-diffusion-v1-5/resolve/main/unet/diffusion_pytorch_model.bin",
+                 folder + "unet/diffusion_pytorch_model.bin",
+                 "c7da0e21ba7ea50637bee26e81c220844defdf01aafca02b2c42ecdadb813de4"),
+            File("https://huggingface.co/runwayml/stable-diffusion-v1-5/raw/main/vae/config.json",
+                 folder + "vae/config.json",
+                 "786a7d21647ddea6a04b9675c03d3cb45e90a2f3c6da5fbda2c54ade040036de"),
+            File("https://huggingface.co/runwayml/stable-diffusion-v1-5/resolve/main/vae/diffusion_pytorch_model.bin",
+                 folder + "vae/diffusion_pytorch_model.bin",
+                 "1b134cded8eb78b184aefb8805b6b572f36fa77b255c483665dda931fa0130c5"),
+            File("https://huggingface.co/runwayml/stable-diffusion-v1-5/raw/main/model_index.json",
+                 folder + "model_index.json",
+                 "72435d612b1363ac5f0727052e7fc74bcdc08f625603e147bb4850e0aa404fea"),
+            File("https://huggingface.co/runwayml/stable-diffusion-v1-5/resolve/main/v1-5-pruned.ckpt",
+                 folder + "v1-5-pruned.ckpt",
+                 "e1441589a6f3c5a53f5f54d0975a18a7feb7cdf0b0dee276dfc3331ae376a053"),
+            File("https://huggingface.co/runwayml/stable-diffusion-v1-5/resolve/main/v1-5-pruned-emaonly.ckpt",
+                 folder + "v1-5-pruned-emaonly.ckpt",
+                 "cc6cb27103417325ff94f52b7a5d2dde45a7515b25c255d8e396c90014281516"),
+            File("https://huggingface.co/runwayml/stable-diffusion-v1-5/raw/main/v1-inference.yaml",
+                 folder + "v1-inference.yaml",
+                 "20b7f0acae54d1f88384a6ca15b5d62c0ee4fbbca07ff72f3761fe936083210d")
+        ]
+
+        self._downloader: Downloader = Downloader(files=files,
                                                   download_model_button=self._download_model_button,
                                                   model_license_hint_label=self._model_license_hint_label,
                                                   progress_bar=self._progress_bar)
@@ -110,48 +167,6 @@ class TextToImagePage(Gtk.Box):
             from diffusers import EulerAncestralDiscreteScheduler
             return EulerAncestralDiscreteScheduler.from_config(pipeline.scheduler.config)
 
-    def _generate(self):
-        model_id = os.path.join(GLib.get_user_data_dir(),
-                                "stable-diffusion-v1-5")
-
-        pipeline: StableDiffusionPipeline = StableDiffusionPipeline.from_pretrained(
-            model_id)
-
-        scheduler = self._scheduler_drop_down.get_selected_item().get_string()
-
-        pipeline.scheduler = self._get_scheduler(scheduler)
-
-        if torch.cuda.is_available():
-            pipeline = pipeline.to("cuda")
-
-        prompt = self._prompt_entry.get_text()
-        height = int(self._width_spin_button.get_value())
-        width = int(self._height_spin_button.get_value())
-        inf_steps = int(self._inference_steps_spin_button.get_value())
-        n_images = int(self._number_images_spin_button.get_value())
-
-        result = pipeline(prompt=prompt,
-                          height=height,
-                          width=width,
-                          num_inference_steps=inf_steps,
-                          num_images_per_prompt=n_images,
-                          callback=self._pipeline_callback)
-
-        for i in range(number_images):
-            file_name = os.path.join(GLib.get_user_cache_dir(),
-                                     f"image_{i}.png")
-            result.images[i].save(file_name)
-
-            img = Gtk.Picture()
-            img.set_filename(file_name)
-
-            self._flow_box_pictures.append(img)
-            self._flow_box.insert(img, i)
-
-        self._spinner.set_spinning(False)
-        self._run_button.set_icon_name("media-playback-start-symbolic")
-        self._generating_progress_bar.set_visible(False)
-
     @Gtk.Template.Callback()
     def _on_run_button_clicked(self, _button):
         if self._spinner.get_spinning():
@@ -164,10 +179,57 @@ class TextToImagePage(Gtk.Box):
 
         self._run_button.set_child(self._spinner)
         self._spinner.set_spinning(True)
+        self._generating_progress_bar.set_fraction(0.0)
         self._generating_progress_bar.set_visible(True)
 
-        self._thread = threading.Thread(target=self._generate)
-        self._thread.start()
+        def run(task, source, task_data, cancellable):
+            model_id = os.path.join(GLib.get_user_data_dir(),
+                                    "stable-diffusion-v1-5")
+
+            pipeline: StableDiffusionPipeline = StableDiffusionPipeline.from_pretrained(
+                model_id)
+
+            scheduler = self._scheduler_drop_down.get_selected_item().get_string()
+
+            pipeline.scheduler = self._get_scheduler(pipeline, scheduler)
+
+            if torch.cuda.is_available():
+                pipeline = pipeline.to("cuda")
+
+            prompt = self._prompt_entry.get_text()
+            height = int(self._width_spin_button.get_value())
+            width = int(self._height_spin_button.get_value())
+            inf_steps = int(self._inference_steps_spin_button.get_value())
+            n_images = int(self._number_images_spin_button.get_value())
+
+            result = pipeline(prompt=prompt,
+                              height=height,
+                              width=width,
+                              num_inference_steps=inf_steps,
+                              num_images_per_prompt=n_images,
+                              callback=self._pipeline_callback)
+
+            for i in range(n_images):
+                file_name = os.path.join(GLib.get_user_cache_dir(),
+                                         f"image_{i}.png")
+                result.images[i].save(file_name)
+
+                img = Gtk.Picture()
+                img.set_filename(file_name)
+
+                self._flow_box_pictures.append(img)
+                self._flow_box.insert(img, i)
+
+        def finished(source_object, result, task_data):
+            source_object._spinner.set_spinning(False)
+            source_object._run_button.set_icon_name("media-playback-start-symbolic")
+            source_object._generating_progress_bar.set_visible(False)
+
+        self._run_task = Gio.Task.new(self,
+                                      None,
+                                      finished,
+                                      None)
+        self._run_task.run_in_thread(run)
 
     @Gtk.Template.Callback()
     def _on_prompt_entry_changed(self, _entry):
