@@ -94,6 +94,7 @@ class Downloader(GObject.Object):
             return
 
         if self._current_i >= len(self._files):
+            self._verify_hashes()
             return
 
         if self._does_file_exist(self._files[self._current_i], self._current_i):
@@ -148,6 +149,7 @@ class Downloader(GObject.Object):
 
         self._current_i += 1
         if self._current_i >= len(self._files):
+            self._verify_hashes()
             return
         file = self._files[self._current_i]
 
