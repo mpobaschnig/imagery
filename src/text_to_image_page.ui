@@ -102,11 +102,11 @@
                                     <property name="valign">center</property>
                                     <property name="adjustment">
                                       <object class="GtkAdjustment">
-                                        <property name="lower">1</property>
+                                        <property name="lower">8</property>
                                         <property name="upper">4096</property>
                                         <property name="value">512</property>
-                                        <property name="step_increment">1</property>
-                                        <property name="page_increment">1</property>
+                                        <property name="step_increment">8</property>
+                                        <property name="page_increment">8</property>
                                       </object>
                                     </property>
                                   </object>
@@ -121,11 +121,11 @@
                                     <property name="valign">center</property>
                                     <property name="adjustment">
                                       <object class="GtkAdjustment">
-                                        <property name="lower">1</property>
+                                        <property name="lower">8</property>
                                         <property name="upper">4096</property>
                                         <property name="value">512</property>
-                                        <property name="step_increment">1</property>
-                                        <property name="page_increment">1</property>
+                                        <property name="step_increment">8</property>
+                                        <property name="page_increment">8</property>
                                       </object>
                                     </property>
                                   </object>
