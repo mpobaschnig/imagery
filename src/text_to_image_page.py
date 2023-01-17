@@ -81,7 +81,7 @@ class TextToImagePage(Gtk.Box):
                  folder + "safety_checker/pytorch_model.bin",
                  "193490b58ef62739077262e833bf091c66c29488058681ac25cf7df3d8190974"),
             File("https://huggingface.co/runwayml/stable-diffusion-v1-5/raw/main/scheduler/scheduler_config.json",
-                 folder + "scheduler/scheduler_Config.json",
+                 folder + "scheduler/scheduler_config.json",
                  "699cce92eb7c122e2eb7dfdea78e6187fda76a5ed4a8e42319b85610e620e091"),
             File("https://huggingface.co/runwayml/stable-diffusion-v1-5/raw/main/text_encoder/config.json",
                  folder + "text_encoder/config.json",
