@@ -115,6 +115,7 @@ class Downloader(GObject.Object):
                                   self._finished_cb, (self._current_i,))
 
     def cancel_download(self):
+        logging.info("Cancelled download")
         self._download_cancelled = True
         if self._download_cancellable is not None:
             self._download_cancellable.cancel()
@@ -140,6 +141,8 @@ class Downloader(GObject.Object):
         ))
 
     def _finished_cb(self, file, result, user_data):
+        logging.info("Finished downloading file.")
+
         try:
             file.copy_finish(result)
         except GLib.Error as e:
@@ -250,6 +253,8 @@ class Downloader(GObject.Object):
         return True
 
     def _verify_hashes(self) -> None:
+        logging.info("Verifying hashes...")
+
         buffer_size = 65536
 
         for (i, file) in enumerate(self._files):
