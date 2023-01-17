@@ -97,7 +97,9 @@ class Downloader(GObject.Object):
             self._verify_hashes()
             return
 
-        if self._does_file_exist(self._files[self._current_i], self._current_i):
+        file: File = self._files[self._current_i]
+
+        if self._does_file_exist(file, self._current_i):
             self._current_i += 1
             self._download_file()
             return
