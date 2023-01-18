@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <template class="PreferencesDialog" parent="AdwPreferencesWindow">
+    <property name="can_navigate_back">True</property>
+    <property name="modal">True</property>
+  </template>
+</interface>

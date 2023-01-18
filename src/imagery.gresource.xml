@@ -9,5 +9,6 @@
     <file preprocess="xml-stripblanks">upscaling_page.ui</file>
     <file preprocess="xml-stripblanks">inpainting_page.ui</file>
     <file preprocess="xml-stripblanks">outpainting_page.ui</file>
+    <file preprocess="xml-stripblanks">preferences.ui</file>
   </gresource>
 </gresources>

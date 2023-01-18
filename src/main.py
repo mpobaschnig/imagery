@@ -27,6 +27,7 @@ gi.require_version('Adw', '1')
 from gi.repository import Gtk, Gio, Adw
 from .window import ImageryWindow
 from .mod import load_widgets
+from .preferences import Preferences
 
 class ImageryApplication(Adw.Application):
     """The main application singleton class."""
@@ -68,7 +69,7 @@ class ImageryApplication(Adw.Application):
 
     def on_preferences_action(self, widget, _):
         """Callback for the app.preferences action."""
-        print('app.preferences action activated')
+        Preferences(self.props.active_window).present()
 
     def create_action(self, name, callback, shortcuts=None):
         """Add an application action.

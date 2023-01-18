@@ -38,7 +38,8 @@ imagery_sources = [
   'outpainting_page.py',
   'downloader.py',
   'file.py',
-  'model_files.py'
+  'model_files.py',
+  'preferences.py',
 ]
 
 install_data(imagery_sources, install_dir: moduledir)
