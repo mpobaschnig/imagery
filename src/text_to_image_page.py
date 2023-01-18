@@ -28,6 +28,7 @@ import threading
 from diffusers import StableDiffusionPipeline
 import torch
 import functools
+import time
 
 from .settings_manager import is_nsfw_allowed
 
@@ -59,6 +60,8 @@ class TextToImagePage(Gtk.Box):
     _run_task: Optional[Gio.Task] = None
     _flow_box_pictures = []
     _spinner: Gtk.Spinner = Gtk.Spinner()
+    _t_previous: int = 0
+
 
     def __init__(self):
         """Text To Image Page widget"""
@@ -81,7 +84,23 @@ class TextToImagePage(Gtk.Box):
             self._downloader.download()
 
     def _pipeline_callback(self, step: int, timestep: int, latents: torch.FloatTensor):
+        t_now = time.time()
+        t_diff = t_now - self._t_previous
+        self._t_previous = t_now
+
         number_steps = int(self._inference_steps_spin_button.get_value())
+
+        time_left = (number_steps - step) * t_diff
+
+        minutes: int = int(time_left // 60)
+        seconds: int = int(time_left % 60)
+
+        if minutes == 0:
+            text = i18n(f"~{seconds} s left...")
+        else:
+            text = i18n(f"~{minutes} min {seconds} s left...")
+
+        self._generating_progress_bar.set_text(text)
         self._generating_progress_bar.set_fraction(step / number_steps)
 
     def _get_scheduler(self, pipeline: StableDiffusionPipeline, scheduler: str):
@@ -133,6 +152,8 @@ class TextToImagePage(Gtk.Box):
         inf_steps = int(self._inference_steps_spin_button.get_value())
         n_images = int(self._number_images_spin_button.get_value())
 
+        self._t_previous = time.time()
+
         result = pipeline(prompt=prompt,
                           height=height,
                           width=width,
@@ -170,6 +191,7 @@ class TextToImagePage(Gtk.Box):
 
         self._run_button.set_child(self._spinner)
         self._spinner.set_spinning(True)
+        self._generating_progress_bar.set_text(i18n("Estimating time left..."))
         self._generating_progress_bar.set_show_text(True)
         self._generating_progress_bar.set_fraction(0.0)
         self._generating_progress_bar.set_visible(True)
