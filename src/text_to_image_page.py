@@ -107,6 +107,57 @@ class TextToImagePage(Gtk.Box):
             from diffusers import EulerAncestralDiscreteScheduler
             return EulerAncestralDiscreteScheduler.from_config(pipeline.scheduler.config)
 
+    def run(self, task, source_object, task_data, cancellable):
+        model_id = os.path.join(GLib.get_user_data_dir(),
+                                "stable-diffusion-v1-5")
+
+        pipeline: StableDiffusionPipeline = StableDiffusionPipeline.from_pretrained(
+            model_id
+        )
+
+        scheduler = self._scheduler_drop_down.get_selected_item().get_string()
+
+        pipeline.scheduler = self._get_scheduler(pipeline, scheduler)
+
+        if torch.cuda.is_available():
+            pipeline = pipeline.to("cuda")
+
+        if is_nsfw_allowed():
+            pipeline.safety_checker = lambda images, **kwargs: (
+                images, False
+            )
+
+        prompt = self._prompt_entry.get_text()
+        height = int(self._width_spin_button.get_value())
+        width = int(self._height_spin_button.get_value())
+        inf_steps = int(self._inference_steps_spin_button.get_value())
+        n_images = int(self._number_images_spin_button.get_value())
+
+        result = pipeline(prompt=prompt,
+                          height=height,
+                          width=width,
+                          num_inference_steps=inf_steps,
+                          num_images_per_prompt=n_images,
+                          callback=self._pipeline_callback)
+
+        for i in range(n_images):
+            file_name = os.path.join(GLib.get_user_cache_dir(),
+                                     f"image_{i}.png")
+            result.images[i].save(file_name)
+
+            img = Gtk.Picture()
+            img.set_filename(file_name)
+
+            self._flow_box_pictures.append(img)
+            self._flow_box.insert(img, i)
+
+    def finished(self, source_object, result, task_data):
+        source_object._spinner.set_spinning(False)
+        source_object._run_button.set_icon_name(
+            "media-playback-start-symbolic"
+        )
+        source_object._generating_progress_bar.set_visible(False)
+
     @Gtk.Template.Callback()
     def _on_run_button_clicked(self, _button):
         if self._spinner.get_spinning():
@@ -119,65 +170,15 @@ class TextToImagePage(Gtk.Box):
 
         self._run_button.set_child(self._spinner)
         self._spinner.set_spinning(True)
+        self._generating_progress_bar.set_show_text(True)
         self._generating_progress_bar.set_fraction(0.0)
         self._generating_progress_bar.set_visible(True)
 
-        def run(task, source, task_data, cancellable):
-            model_id = os.path.join(GLib.get_user_data_dir(),
-                                    "stable-diffusion-v1-5")
-
-            pipeline: StableDiffusionPipeline = StableDiffusionPipeline.from_pretrained(
-                model_id
-            )
-
-            scheduler = self._scheduler_drop_down.get_selected_item().get_string()
-
-            pipeline.scheduler = self._get_scheduler(pipeline, scheduler)
-
-            if torch.cuda.is_available():
-                pipeline = pipeline.to("cuda")
-
-            if is_nsfw_allowed():
-                pipeline.safety_checker = lambda images, **kwargs: (
-                    images, False
-                )
-
-            prompt = self._prompt_entry.get_text()
-            height = int(self._width_spin_button.get_value())
-            width = int(self._height_spin_button.get_value())
-            inf_steps = int(self._inference_steps_spin_button.get_value())
-            n_images = int(self._number_images_spin_button.get_value())
-
-            result = pipeline(prompt=prompt,
-                              height=height,
-                              width=width,
-                              num_inference_steps=inf_steps,
-                              num_images_per_prompt=n_images,
-                              callback=self._pipeline_callback)
-
-            for i in range(n_images):
-                file_name = os.path.join(GLib.get_user_cache_dir(),
-                                         f"image_{i}.png")
-                result.images[i].save(file_name)
-
-                img = Gtk.Picture()
-                img.set_filename(file_name)
-
-                self._flow_box_pictures.append(img)
-                self._flow_box.insert(img, i)
-
-        def finished(source_object, result, task_data):
-            source_object._spinner.set_spinning(False)
-            source_object._run_button.set_icon_name(
-                "media-playback-start-symbolic"
-            )
-            source_object._generating_progress_bar.set_visible(False)
-
         self._run_task = Gio.Task.new(self,
                                       None,
-                                      finished,
+                                      self.finished,
                                       None)
-        self._run_task.run_in_thread(run)
+        self._run_task.run_in_thread(self.run)
 
     @Gtk.Template.Callback()
     def _on_prompt_entry_changed(self, _entry):
