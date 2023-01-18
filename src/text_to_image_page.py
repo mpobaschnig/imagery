@@ -171,7 +171,7 @@ class TextToImagePage(Gtk.Box):
             self._flow_box_pictures.append(img)
             self._flow_box.insert(img, i)
 
-    def _run_task_finished_cb(self, source_object, result, task_data):
+    def _run_task_finished_cb(self, _source_object, _result, _task_data):
         self._spinner.set_spinning(False)
         self._run_button.set_icon_name(
             "media-playback-start-symbolic"
