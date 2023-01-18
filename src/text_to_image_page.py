@@ -59,7 +59,7 @@ class TextToImagePage(Gtk.Box):
     _spinner: Gtk.Spinner = Gtk.Spinner()
 
     def __init__(self):
-        """Start Page widget"""
+        """Text To Image Page widget"""
         super().__init__()
 
         if os.path.exists(sd15_folder):
