@@ -1,7 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <template class="PreferencesDialog" parent="AdwPreferencesWindow">
-    <property name="can_navigate_back">True</property>
     <property name="modal">True</property>
+    <child>
+      <object class="AdwPreferencesPage">
+        <property name="icon_name">applications-system-symbolic</property>
+        <property name="title" translatable="yes">General</property>
+        <child>
+          <object class="AdwPreferencesGroup">
+            <property name="title" translatable="yes">General</property>
+            <child>
+              <object class="AdwActionRow">
+                <property name="visible">True</property>
+                <property name="title" translatable="yes">_Allow NSFW</property>
+                <property name="subtitle" translatable="yes">Allow generating Not Safe For Work images.</property>
+                <property name="activatable_widget">_allow_nsfw</property>
+                <property name="use_underline">True</property>
+                <child>
+                  <object class="GtkSwitch" id="_allow_nsfw">
+                    <property name="valign">center</property>
+                    <property name="action-name">prefs.allow-nsfw</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
   </template>
 </interface>

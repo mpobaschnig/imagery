@@ -29,6 +29,8 @@ from diffusers import StableDiffusionPipeline
 import torch
 import functools
 
+from .settings_manager import is_nsfw_allowed
+
 from .downloader import Downloader
 from .model_files import sd15_folder, sd15_files
 from .file import File
@@ -134,6 +136,11 @@ class TextToImagePage(Gtk.Box):
 
             if torch.cuda.is_available():
                 pipeline = pipeline.to("cuda")
+
+            if is_nsfw_allowed():
+                pipeline.safety_checker = lambda images, **kwargs: (
+                    images, False
+                )
 
             prompt = self._prompt_entry.get_text()
             height = int(self._width_spin_button.get_value())

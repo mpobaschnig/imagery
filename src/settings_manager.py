@@ -1,4 +1,4 @@
-# preferences.py
+# settings_manager.py
 #
 # Copyright 2023 Martin Pobaschnig
 #
@@ -17,24 +17,10 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from gi.repository import Gtk, Gio, GObject, Adw
+from gi.repository import Gio
+
+settings = Gio.Settings.new("io.github.mpobaschnig.Imagery")
 
 
-@Gtk.Template(resource_path='/io/github/mpobaschnig/Imagery/preferences.ui')
-class Preferences(Adw.PreferencesWindow):
-    __gtype_name__ = "PreferencesDialog"
-
-    def __init__(self, window):
-        super().__init__()
-
-        self.window = window
-        self.set_transient_for(window)
-
-        action_group = Gio.SimpleActionGroup.new()
-        settings = Gio.Settings.new("io.github.mpobaschnig.Imagery")
-
-        allow_nsfw_action = settings.create_action("allow-nsfw")
-
-        action_group.add_action(allow_nsfw_action)
-
-        self.insert_action_group("prefs", action_group)
+def is_nsfw_allowed() -> bool:
+    return settings.get_boolean("allow-nsfw")
