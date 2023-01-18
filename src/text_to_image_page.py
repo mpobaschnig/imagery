@@ -62,7 +62,6 @@ class TextToImagePage(Gtk.Box):
     _spinner: Gtk.Spinner = Gtk.Spinner()
     _t_previous: int = 0
 
-
     def __init__(self):
         """Text To Image Page widget"""
         super().__init__()
