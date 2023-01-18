@@ -125,7 +125,8 @@ class TextToImagePage(Gtk.Box):
                                     "stable-diffusion-v1-5")
 
             pipeline: StableDiffusionPipeline = StableDiffusionPipeline.from_pretrained(
-                model_id)
+                model_id
+            )
 
             scheduler = self._scheduler_drop_down.get_selected_item().get_string()
 
@@ -160,7 +161,9 @@ class TextToImagePage(Gtk.Box):
 
         def finished(source_object, result, task_data):
             source_object._spinner.set_spinning(False)
-            source_object._run_button.set_icon_name("media-playback-start-symbolic")
+            source_object._run_button.set_icon_name(
+                "media-playback-start-symbolic"
+            )
             source_object._generating_progress_bar.set_visible(False)
 
         self._run_task = Gio.Task.new(self,
