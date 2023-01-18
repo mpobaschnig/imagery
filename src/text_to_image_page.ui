@@ -79,122 +79,143 @@
                             <property name="title" translatable="yes">Prompt</property>
                             <signal name="changed" handler="_on_prompt_entry_changed" swapped="no"/>
                             <child>
-                              <object class="GtkButton" id="_run_button">
-                                <property name="sensitive">False</property>
-                                <property name="valign">center</property>
-                                <property name="icon_name">media-playback-start-symbolic</property>
-                                <signal name="clicked" handler="_on_run_button_clicked" swapped="no"/>
-                                <style>
-                                  <class name="flat"/>
-                                </style>
+                              <object class="GtkBox">
+                                <child>
+                                  <object class="GtkMenuButton">
+                                    <property name="icon-name">emblem-system-symbolic</property>
+                                    <property name="valign">center</property>
+                                    <property name="popover">
+                                      <object class="GtkPopover">
+                                        <child>
+                                          <object class="GtkListBox">
+                                            <property name="selection-mode">none</property>
+                                            <style>
+                                              <class name="boxed-list"/>
+                                            </style>
+                                            <child>
+                                              <object class="AdwActionRow">
+                                                <property name="title" translatable="yes">Height</property>
+                                                <child>
+                                                  <object class="GtkSpinButton" id="_height_spin_button">
+                                                    <property name="valign">center</property>
+                                                    <property name="adjustment">
+                                                      <object class="GtkAdjustment">
+                                                        <property name="lower">8</property>
+                                                        <property name="upper">4096</property>
+                                                        <property name="value">512</property>
+                                                        <property name="step_increment">8</property>
+                                                        <property name="page_increment">8</property>
+                                                      </object>
+                                                    </property>
+                                                  </object>
+                                                </child>
+                                              </object>
+                                            </child>
+                                            <child>
+                                              <object class="AdwActionRow">
+                                                <property name="title" translatable="yes">Width</property>
+                                                <child>
+                                                  <object class="GtkSpinButton" id="_width_spin_button">
+                                                    <property name="valign">center</property>
+                                                    <property name="adjustment">
+                                                      <object class="GtkAdjustment">
+                                                        <property name="lower">8</property>
+                                                        <property name="upper">4096</property>
+                                                        <property name="value">512</property>
+                                                        <property name="step_increment">8</property>
+                                                        <property name="page_increment">8</property>
+                                                      </object>
+                                                    </property>
+                                                  </object>
+                                                </child>
+                                              </object>
+                                            </child>
+                                            <child>
+                                              <object class="AdwActionRow">
+                                                <property name="title" translatable="yes">Inference Steps</property>
+                                                <child>
+                                                  <object class="GtkSpinButton" id="_inference_steps_spin_button">
+                                                    <property name="valign">center</property>
+                                                    <property name="adjustment">
+                                                      <object class="GtkAdjustment">
+                                                        <property name="lower">1</property>
+                                                        <property name="upper">200</property>
+                                                        <property name="value">50</property>
+                                                        <property name="step_increment">1</property>
+                                                        <property name="page_increment">1</property>
+                                                      </object>
+                                                    </property>
+                                                  </object>
+                                                </child>
+                                              </object>
+                                            </child>
+                                            <child>
+                                              <object class="AdwActionRow">
+                                                <property name="title" translatable="yes">Number of Images</property>
+                                                <child>
+                                                  <object class="GtkSpinButton" id="_number_images_spin_button">
+                                                    <property name="valign">center</property>
+                                                    <property name="adjustment">
+                                                      <object class="GtkAdjustment">
+                                                        <property name="lower">1</property>
+                                                        <property name="upper">12</property>
+                                                        <property name="value">1</property>
+                                                        <property name="step_increment">1</property>
+                                                        <property name="page_increment">1</property>
+                                                      </object>
+                                                    </property>
+                                                  </object>
+                                                </child>
+                                              </object>
+                                            </child>
+                                            <child>
+                                              <object class="AdwActionRow">
+                                                <property name="title">Scheduler</property>
+                                                <child>
+                                                  <object class="GtkDropDown" id="_scheduler_drop_down">
+                                                    <property name="valign">center</property>
+                                                    <property name="model">
+                                                      <object class="GtkStringList">
+                                                        <items>
+                                                          <item>PNDMScheduler</item>
+                                                          <item>LMSDiscreteScheduler</item>
+                                                          <item>EulerDiscreteScheduler</item>
+                                                          <item>EulerAncestralDiscreteScheduler</item>
+                                                          <item>DPMSolverMultistepScheduler</item>
+                                                          <item>DDPMScheduler</item>
+                                                          <item>DDIMScheduler</item>
+                                                        </items>
+                                                      </object>
+                                                    </property>
+                                                  </object>>
+                                                </child>
+                                              </object>
+                                            </child>
+                                          </object>
+                                        </child> 
+                                      </object>
+                                    </property>
+                                    <style>
+                                      <class name="flat"/>
+                                    </style>
+                                  </object> 
+                                </child>
+                                <child>
+                                  <object class="GtkButton" id="_run_button">
+                                    <property name="sensitive">False</property>
+                                    <property name="valign">center</property>
+                                    <property name="icon_name">media-playback-start-symbolic</property>
+                                    <signal name="clicked" handler="_on_run_button_clicked" swapped="no"/>
+                                    <style>
+                                      <class name="flat"/>
+                                    </style>
+                                  </object>
+                                </child>
                               </object>
                             </child>
                           </object>
                         </child>
-                        <child>
-                          <object class="AdwExpanderRow" id="options_expander_row">
-                            <property name="title" translatable="yes">Options</property>
-                              <child>
-                              <object class="AdwActionRow">
-                                <property name="title" translatable="yes">Height</property>
-                                <child>
-                                  <object class="GtkSpinButton" id="_height_spin_button">
-                                    <property name="valign">center</property>
-                                    <property name="adjustment">
-                                      <object class="GtkAdjustment">
-                                        <property name="lower">8</property>
-                                        <property name="upper">4096</property>
-                                        <property name="value">512</property>
-                                        <property name="step_increment">8</property>
-                                        <property name="page_increment">8</property>
-                                      </object>
-                                    </property>
-                                  </object>
-                                </child>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="AdwActionRow">
-                                <property name="title" translatable="yes">Width</property>
-                                <child>
-                                  <object class="GtkSpinButton" id="_width_spin_button">
-                                    <property name="valign">center</property>
-                                    <property name="adjustment">
-                                      <object class="GtkAdjustment">
-                                        <property name="lower">8</property>
-                                        <property name="upper">4096</property>
-                                        <property name="value">512</property>
-                                        <property name="step_increment">8</property>
-                                        <property name="page_increment">8</property>
-                                      </object>
-                                    </property>
-                                  </object>
-                                </child>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="AdwActionRow">
-                                <property name="title" translatable="yes">Inference Steps</property>
-                                <child>
-                                  <object class="GtkSpinButton" id="_inference_steps_spin_button">
-                                    <property name="valign">center</property>
-                                    <property name="adjustment">
-                                      <object class="GtkAdjustment">
-                                        <property name="lower">1</property>
-                                        <property name="upper">200</property>
-                                        <property name="value">50</property>
-                                        <property name="step_increment">1</property>
-                                        <property name="page_increment">1</property>
-                                      </object>
-                                    </property>
-                                  </object>
-                                </child>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="AdwActionRow">
-                                <property name="title" translatable="yes">Number of Images</property>
-                                <child>
-                                  <object class="GtkSpinButton" id="_number_images_spin_button">
-                                    <property name="valign">center</property>
-                                    <property name="adjustment">
-                                      <object class="GtkAdjustment">
-                                        <property name="lower">1</property>
-                                        <property name="upper">12</property>
-                                        <property name="value">1</property>
-                                        <property name="step_increment">1</property>
-                                        <property name="page_increment">1</property>
-                                      </object>
-                                    </property>
-                                  </object>
-                                </child>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="AdwActionRow">
-                                <property name="title">Scheduler</property>
-                                <child>
-                                  <object class="GtkDropDown" id="_scheduler_drop_down">
-                                    <property name="valign">center</property>
-                                    <property name="model">
-                                      <object class="GtkStringList">
-                                        <items>
-                                          <item>PNDMScheduler</item>
-                                          <item>LMSDiscreteScheduler</item>
-                                          <item>EulerDiscreteScheduler</item>
-                                          <item>EulerAncestralDiscreteScheduler</item>
-                                          <item>DPMSolverMultistepScheduler</item>
-                                          <item>DDPMScheduler</item>
-                                          <item>DDIMScheduler</item>
-                                        </items>
-                                      </object>
-                                    </property>
-                                  </object>>
-                                </child>
-                              </object>
-                            </child>
-                          </object>
-                        </child>
+                        
                       </object>
                     </child>
                     <child>
@@ -225,7 +246,4 @@
       <widget name="_number_images_spin_button"/>
     </widgets>
   </object>
-  <menu id="schedulers">
-    
-  </menu>
 </interface>
