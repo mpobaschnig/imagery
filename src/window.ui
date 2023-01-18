@@ -105,7 +105,7 @@
         <attribute name="label" translatable="yes">_Image to Image</attribute>
         <attribute name="action">win.image_to_image</attribute>
       </item>
-      <item>
+      <!-- <item>
         <attribute name="label" translatable="yes">_Upscaling</attribute>
         <attribute name="action">win.upscaling</attribute>
       </item>
@@ -116,7 +116,7 @@
       <item>
         <attribute name="label" translatable="yes">_Outpainting</attribute>
         <attribute name="action">win.outpainting</attribute>
-      </item>
+      </item> -->
     </section>
   </menu>
 
