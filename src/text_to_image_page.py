@@ -126,7 +126,7 @@ class TextToImagePage(Gtk.Box):
             from diffusers import EulerAncestralDiscreteScheduler
             return EulerAncestralDiscreteScheduler.from_config(pipeline.scheduler.config)
 
-    def run(self, task, source_object, task_data, cancellable):
+    def _run_task(self, task, source_object, task_data, cancellable):
         model_id = os.path.join(GLib.get_user_data_dir(),
                                 "stable-diffusion-v1-5")
 
@@ -172,7 +172,7 @@ class TextToImagePage(Gtk.Box):
             self._flow_box_pictures.append(img)
             self._flow_box.insert(img, i)
 
-    def finished(self, source_object, result, task_data):
+    def _run_task_finished_cb(self, source_object, result, task_data):
         source_object._spinner.set_spinning(False)
         source_object._run_button.set_icon_name(
             "media-playback-start-symbolic"
@@ -198,9 +198,9 @@ class TextToImagePage(Gtk.Box):
 
         self._run_task = Gio.Task.new(self,
                                       None,
-                                      self.finished,
+                                      self._run_task_finished_cb,
                                       None)
-        self._run_task.run_in_thread(self.run)
+        self._run_task.run_in_thread(self._run_task)
 
     @Gtk.Template.Callback()
     def _on_prompt_entry_changed(self, _entry):
