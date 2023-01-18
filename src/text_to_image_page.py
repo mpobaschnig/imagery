@@ -195,11 +195,11 @@ class TextToImagePage(Gtk.Box):
         self._generating_progress_bar.set_fraction(0.0)
         self._generating_progress_bar.set_visible(True)
 
-        self._run_task = Gio.Task.new(self,
-                                      None,
-                                      self._run_task_finished_cb,
-                                      None)
-        self._run_task.run_in_thread(self._run_task)
+        _run_task = Gio.Task.new(self,
+                                 None,
+                                 self._run_task_finished_cb,
+                                 None)
+        _run_task.run_in_thread(self._run_task)
 
     @Gtk.Template.Callback()
     def _on_prompt_entry_changed(self, _entry):
