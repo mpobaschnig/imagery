@@ -30,6 +30,7 @@ import torch
 import functools
 
 from .downloader import Downloader
+from .model_files import sd15_folder, sd15_files
 from .file import File
 
 
@@ -61,73 +62,11 @@ class TextToImagePage(Gtk.Box):
         """Start Page widget"""
         super().__init__()
 
-        path = os.path.join(GLib.get_user_data_dir(),
-                            "stable-diffusion-v1-5/")
-
-        if os.path.exists(path):
+        if os.path.exists(sd15_folder):
             self._stack.set_visible_child_name("main")
             return
 
-        folder = os.path.join(GLib.get_user_data_dir(),
-                              "stable-diffusion-v1-5/")
-        files = [
-            File("https://huggingface.co/runwayml/stable-diffusion-v1-5/raw/main/feature_extractor/preprocessor_config.json",
-                 folder + "feature_extractor/preprocessor_config.json",
-                 "2a1da83b5e1032aaeef397552ddb408dca0d8cd1dc58f61bf6abf38d6f33a0a2"),
-            File("https://huggingface.co/runwayml/stable-diffusion-v1-5/raw/main/safety_checker/config.json",
-                 folder + "safety_checker/config.json",
-                 "5dd77a06cbd9b155060bd58deb81ffd1aafc1c6d7970acac674c1128bd4edfe2"),
-            File("https://huggingface.co/runwayml/stable-diffusion-v1-5/resolve/main/safety_checker/pytorch_model.bin",
-                 folder + "safety_checker/pytorch_model.bin",
-                 "193490b58ef62739077262e833bf091c66c29488058681ac25cf7df3d8190974"),
-            File("https://huggingface.co/runwayml/stable-diffusion-v1-5/raw/main/scheduler/scheduler_config.json",
-                 folder + "scheduler/scheduler_config.json",
-                 "699cce92eb7c122e2eb7dfdea78e6187fda76a5ed4a8e42319b85610e620e091"),
-            File("https://huggingface.co/runwayml/stable-diffusion-v1-5/raw/main/text_encoder/config.json",
-                 folder + "text_encoder/config.json",
-                 "845df614cb9327ae7bbea027316246fae917827407da6df13572e41b5f93b4cc"),
-            File("https://huggingface.co/runwayml/stable-diffusion-v1-5/resolve/main/text_encoder/pytorch_model.bin",
-                 folder + "text_encoder/pytorch_model.bin",
-                 "770a47a9ffdcfda0b05506a7888ed714d06131d60267e6cf52765d61cf59fd67"),
-            File("https://huggingface.co/runwayml/stable-diffusion-v1-5/raw/main/tokenizer/merges.txt",
-                 folder + "tokenizer/merges.txt",
-                 "9fd691f7c8039210e0fced15865466c65820d09b63988b0174bfe25de299051a"),
-            File("https://huggingface.co/runwayml/stable-diffusion-v1-5/raw/main/tokenizer/special_tokens_map.json",
-                 folder + "tokenizer/special_tokens_map.json",
-                 "c4864a9376a8401918425bed71fc14fc0e81f9b59ec45c1cf96cccb2df508eac"),
-            File("https://huggingface.co/runwayml/stable-diffusion-v1-5/raw/main/tokenizer/tokenizer_config.json",
-                 folder + "tokenizer/tokenizer_config.json",
-                 "00439066fcba73de57644cf41e4e3b9f2dbb09d7f3fc2005898ba52399045882"),
-            File("https://huggingface.co/runwayml/stable-diffusion-v1-5/raw/main/tokenizer/vocab.json",
-                 folder + "tokenizer/vocab.json",
-                 "e089ad92ba36837a0d31433e555c8f45fe601ab5c221d4f607ded32d9f7a4349"),
-            File("https://huggingface.co/runwayml/stable-diffusion-v1-5/raw/main/unet/config.json",
-                 folder + "unet/config.json",
-                 "78f474de6bab3d893868f37be97b636ae65c0df3073ed3256ca458ff599b5f96"),
-            File("https://huggingface.co/runwayml/stable-diffusion-v1-5/resolve/main/unet/diffusion_pytorch_model.bin",
-                 folder + "unet/diffusion_pytorch_model.bin",
-                 "c7da0e21ba7ea50637bee26e81c220844defdf01aafca02b2c42ecdadb813de4"),
-            File("https://huggingface.co/runwayml/stable-diffusion-v1-5/raw/main/vae/config.json",
-                 folder + "vae/config.json",
-                 "786a7d21647ddea6a04b9675c03d3cb45e90a2f3c6da5fbda2c54ade040036de"),
-            File("https://huggingface.co/runwayml/stable-diffusion-v1-5/resolve/main/vae/diffusion_pytorch_model.bin",
-                 folder + "vae/diffusion_pytorch_model.bin",
-                 "1b134cded8eb78b184aefb8805b6b572f36fa77b255c483665dda931fa0130c5"),
-            File("https://huggingface.co/runwayml/stable-diffusion-v1-5/raw/main/model_index.json",
-                 folder + "model_index.json",
-                 "72435d612b1363ac5f0727052e7fc74bcdc08f625603e147bb4850e0aa404fea"),
-            File("https://huggingface.co/runwayml/stable-diffusion-v1-5/resolve/main/v1-5-pruned.ckpt",
-                 folder + "v1-5-pruned.ckpt",
-                 "e1441589a6f3c5a53f5f54d0975a18a7feb7cdf0b0dee276dfc3331ae376a053"),
-            File("https://huggingface.co/runwayml/stable-diffusion-v1-5/resolve/main/v1-5-pruned-emaonly.ckpt",
-                 folder + "v1-5-pruned-emaonly.ckpt",
-                 "cc6cb27103417325ff94f52b7a5d2dde45a7515b25c255d8e396c90014281516"),
-            File("https://huggingface.co/runwayml/stable-diffusion-v1-5/raw/main/v1-inference.yaml",
-                 folder + "v1-inference.yaml",
-                 "20b7f0acae54d1f88384a6ca15b5d62c0ee4fbbca07ff72f3761fe936083210d")
-        ]
-
-        self._downloader: Downloader = Downloader(files=files,
+        self._downloader: Downloader = Downloader(files=sd15_files,
                                                   download_model_button=self._download_model_button,
                                                   model_license_hint_label=self._model_license_hint_label,
                                                   progress_bar=self._progress_bar)
