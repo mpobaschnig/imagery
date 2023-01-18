@@ -80,6 +80,7 @@
                             <signal name="changed" handler="_on_prompt_entry_changed" swapped="no"/>
                             <child>
                               <object class="GtkBox">
+                                <property name="spacing">6</property>
                                 <child>
                                   <object class="GtkMenuButton">
                                     <property name="icon-name">emblem-system-symbolic</property>
