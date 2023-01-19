@@ -63,6 +63,8 @@
                 <property name="margin_bottom">12</property>
                 <property name="margin_start">12</property>
                 <property name="margin_end">12</property>
+                <property name="tightening-threshold">512</property>"
+                <property name="maximum-size">1024</property>"
                 <child>
                   <object class="GtkBox">
                     <property name="orientation">vertical</property>
