@@ -22,7 +22,7 @@ import os
 import time
 from gettext import gettext as i18n
 from multiprocessing import Pipe, Process, connection
-from typing import Optional
+from typing import List, Optional
 
 import torch
 from diffusers import (DDIMScheduler, DDPMScheduler,
@@ -59,12 +59,12 @@ class TextToImagePage(Gtk.Box):
 
     _download_task: Optional[Gio.Task] = None
     _run_task: Optional[Gio.Task] = None
-    _flow_box_pictures = []
+    _flow_box_pictures: List[Gtk.Picture] = []
     _spinner: Optional[Gtk.Spinner] = None
-    _t_previous: int = 0
+    _t_previous: float = 0
     _run_process: Optional[Process] = None
-    _parent_connection: Optional[connection.Connection] = None
-    _child_connection: Optional[connection.Connection] = None
+    _parent_connection: connection.Connection
+    _child_connection: connection.Connection
 
     def __init__(self):
         """Text To Image Page widget"""
@@ -89,7 +89,7 @@ class TextToImagePage(Gtk.Box):
     def _pipeline_callback(self,
                            step: int,
                            _timestep: int,
-                           _latents: torch.FloatTensor):
+                           _latents: torch.FloatTensor) -> None:
         # pylint: disable=no-member
         t_now = time.time()
         t_diff = t_now - self._t_previous
@@ -111,7 +111,9 @@ class TextToImagePage(Gtk.Box):
         self._generating_progress_bar.set_fraction(step / number_steps)
 
     # pylint: disable-next=too-many-return-statements
-    def _get_scheduler(self, pipeline: StableDiffusionPipeline, scheduler: str):
+    def _get_scheduler(self,  # type: ignore
+                       pipeline: StableDiffusionPipeline,
+                       scheduler: str):
         if scheduler == "LMSDiscreteScheduler":
             return LMSDiscreteScheduler.from_config(pipeline.scheduler.config)
         if scheduler == "DDIMScheduler":
@@ -129,8 +131,10 @@ class TextToImagePage(Gtk.Box):
         # This is the default one
         return PNDMScheduler.from_config(pipeline.scheduler.config)
 
-    def _run_process_func(self, child_connection):
-        def pipeline_callback(step: int, _timestep: int, _latents: torch.FloatTensor):
+    def _run_process_func(self, child_connection: connection.Connection) -> None:
+        def pipeline_callback(step: int,
+                              _timestep: int,
+                              _latents: torch.FloatTensor) -> None:
             # pylint: disable=no-member
             t_now = time.time()
             t_diff = t_now - self._t_previous
@@ -179,10 +183,12 @@ class TextToImagePage(Gtk.Box):
 
         child_connection.send('SENTINEL')
 
-    def _add_image(self, image_index) -> Gtk.Overlay:
-        def image_button_clicked(button: Gtk.Button, image: int):
-            def response(dialog, repsonse: int, user_data):
-                if repsonse != Gtk.ResponseType.ACCEPT:
+    def _add_image(self, image_index: int) -> Gtk.Overlay:
+        def image_button_clicked(button: Gtk.Button, image: int) -> None:
+            def response_cb(dialog: Gtk.FileChooserNative,
+                            response: int,
+                            user_data: tuple) -> None:
+                if response != Gtk.ResponseType.ACCEPT:
                     return
 
                 def _copy_image_finished(file, result, user_data):
@@ -219,7 +225,7 @@ class TextToImagePage(Gtk.Box):
             file_chooser_native = Gtk.FileChooserNative()
             file_chooser_native.set_accept_label(i18n("Save Image"))
             file_chooser_native.set_action(Gtk.FileChooserAction.SAVE)
-            file_chooser_native.connect("response", response,
+            file_chooser_native.connect("response", response_cb,
                                         (button, button_spinner))
             file_chooser_native.show()
 
@@ -296,7 +302,7 @@ class TextToImagePage(Gtk.Box):
             for i in range(n_images):
                 self._add_image(i)
         except EOFError as _error:
-            logging.info("EOFError - Pipe broke - Was the run cancelled?")
+            logging.info("Pipe broke - Was the run cancelled? : %s", _error)
             return
 
     @ Gtk.Template.Callback()
@@ -329,14 +335,14 @@ class TextToImagePage(Gtk.Box):
 
         self._run_process.start()
 
-    @Gtk.Template.Callback()
+    @ Gtk.Template.Callback()
     def _on_prompt_entry_changed(self, _entry):
         if self._prompt_entry.get_text():
             self._run_button.set_sensitive(True)
         else:
             self._run_button.set_sensitive(False)
 
-    @Gtk.Template.Callback()
+    @ Gtk.Template.Callback()
     def _on_cancel_run_button_clicked(self, _button):
         self._run_process.terminate()
 

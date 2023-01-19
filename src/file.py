@@ -37,7 +37,7 @@ class File(GObject.Object):
         return self._url
 
     @url.setter
-    def url(self, url: str):
+    def url(self, url: str) -> None:
         self._url = url
 
     @property
@@ -45,7 +45,7 @@ class File(GObject.Object):
         return self._path
 
     @path.setter
-    def path(self, path: str):
+    def path(self, path: str) -> None:
         self._path = path
 
     @property
@@ -53,5 +53,5 @@ class File(GObject.Object):
         return self._sha256
 
     @sha256.setter
-    def sha256(self, sha256: str):
+    def sha256(self, sha256: str) -> None:
         self._path = sha256

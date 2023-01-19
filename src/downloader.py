@@ -46,16 +46,16 @@ class Downloader(GObject.Object):
 
     _task: Optional[Gio.Task] = None
 
-    _progress_bar: Optional[Gtk.ProgressBar] = None
-    _download_model_button: Optional[Gtk.Button] = None
-    _model_license_hint_label: Optional[Gtk.Label] = None
+    _progress_bar: Gtk.ProgressBar = None
+    _download_model_button: Gtk.Button
+    _model_license_hint_label: Gtk.Label = None
 
     _download_state: DownloadState = DownloadState.START
     _download_cancellable: Optional[Gio.Cancellable] = None
     _download_cancelled: bool = False
 
     def __init__(self,
-                 files,
+                 files: List[File],
                  download_model_button: Gtk.Button,
                  model_license_hint_label: Gtk.Label,
                  progress_bar: Gtk.ProgressBar):
