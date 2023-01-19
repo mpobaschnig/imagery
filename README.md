@@ -11,6 +11,7 @@ All images are currently saved in the cache folder of the Flatpak, i.e.: `/home/
 # How to Build
 
 Open GNOME Builder (or Visual Studio Code with Flatpak extension), and run it from there.
+Manual building is not supported.
 
 The models are downloaded within the app.
 
