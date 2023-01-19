@@ -216,6 +216,9 @@ class TextToImagePage(Gtk.Box):
 
                 img = Gtk.Picture()
                 img.set_filename(file_name)
+                img.add_css_class("card")
+                img.set_content_fit(Gtk.ContentFit.SCALE_DOWN)
+                img.set_halign(Gtk.Align.CENTER)
 
                 self._flow_box_pictures.append(img)
                 self._flow_box.insert(img, i)
