@@ -240,7 +240,8 @@
                     </child>
                     <child>
                       <object class="GtkFlowBox" id="_flow_box">
-                        <property name="valign">center</property>
+                        <property name="valign">start</property>
+                        <property name="halign">center</property>
                         <property name="vexpand">True</property>
                         <property name="hexpand">True</property>
                         <property name="min-children-per-line">2</property>
