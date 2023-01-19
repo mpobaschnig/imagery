@@ -51,7 +51,7 @@ class StartPage(Gtk.Box):
         download_path = os.path.join(GLib.get_user_data_dir(),
                                      "v2-1_768-ema-pruned.ckpt")
         # pylint: disable-next=line-too-long
-        download_uri = "https://huggingface.co/stabilityai/stable-diffusion-2-1/resolve/main/v2-1_768-ema-pruned.ckpt"
+        download_uri = "https://huggingface.co/stabilityai/stable-diffusion-2-1/resolve/main/v2-1_768-ema-pruned.ckpt"  # noqa: E501
 
         model_uri_file: Gio.File = Gio.File.new_for_uri(download_uri)
         model_file = Gio.File.new_for_path(download_path)
