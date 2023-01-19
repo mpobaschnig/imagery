@@ -177,6 +177,87 @@ class TextToImagePage(Gtk.Box):
 
         child_connection.send('SENTINEL')
 
+    def _add_image(self, image_index) -> Gtk.Overlay:
+        def image_button_clicked(button: Gtk.Button, image: int):
+            def response(dialog, repsonse: int, user_data):
+                if repsonse != Gtk.ResponseType.ACCEPT:
+                    return
+
+                def _copy_image_finished(file, result, user_data):
+                    button = user_data[0]
+                    button_spinner = user_data[1]
+
+                    try:
+                        file.copy_finish(result)
+                    except GLib.Error as e:
+                        logging.error(e)
+
+                    button.set_icon_name("document-save-symbolic")
+                    button_spinner.set_spinning(False)
+
+                dest_file: Gio.File = dialog.get_file()
+                curr_file: Gio.File = Gio.File.new_for_path(
+                    os.path.join(GLib.get_user_cache_dir(),
+                                 f"image_{image}.png")
+                )
+
+                button: Gtk.Button = user_data[0]
+                button_spinner: Gtk.Spinner = user_data[1]
+
+                button.set_child(button_spinner)
+                button_spinner.set_spinning(True)
+
+                curr_file.copy_async(dest_file,
+                                     Gio.FileCopyFlags.OVERWRITE,
+                                     GLib.PRIORITY_DEFAULT,
+                                     None,
+                                     None, (),
+                                     _copy_image_finished, (button, button_spinner,))
+
+            file_chooser_native = Gtk.FileChooserNative()
+            file_chooser_native.set_accept_label(i18n("Save Image"))
+            file_chooser_native.set_action(Gtk.FileChooserAction.SAVE)
+            file_chooser_native.connect("response", response,
+                                        (button, button_spinner))
+            file_chooser_native.show()
+
+        overlay = Gtk.Overlay()
+
+        overlay.set_halign(Gtk.Align.CENTER)
+
+        button = Gtk.Button()
+        button.set_margin_top(6)
+        button.set_margin_end(6)
+        button.set_icon_name("document-save-symbolic")
+        button.set_halign(Gtk.Align.END)
+        button.set_valign(Gtk.Align.START)
+        button.add_css_class("osd")
+
+        overlay.add_overlay(button)
+
+        button_spinner: Gtk.Spinner = Gtk.Spinner()
+
+        button.connect("clicked", image_button_clicked, image_index)
+
+        curr_file_name = os.path.join(GLib.get_user_cache_dir(),
+                                      f"image_{image_index}.png")
+
+        img = Gtk.Picture()
+        img.set_filename(curr_file_name)
+        img.add_css_class("card")
+        img.set_content_fit(Gtk.ContentFit.SCALE_DOWN)
+        img.set_halign(Gtk.Align.CENTER)
+
+        overlay.set_child(img)
+        overlay.set_clip_overlay(img, True)
+
+        flow_box_child = Gtk.FlowBoxChild.new()
+        flow_box_child.set_child(overlay)
+        flow_box_child.set_halign(Gtk.Align.CENTER)
+
+        self._flow_box_pictures.append(flow_box_child)
+        self._flow_box.insert(flow_box_child, image_index)
+
     def _update_task(self, _task, _source_object, _task_data, _cancellable):
         try:
             for msg in iter(self._parent_connection.recv, 'SENTINEL'):
@@ -211,17 +292,7 @@ class TextToImagePage(Gtk.Box):
             n_images = int(self._number_images_spin_button.get_value())
 
             for i in range(n_images):
-                file_name = os.path.join(GLib.get_user_cache_dir(),
-                                         f"image_{i}.png")
-
-                img = Gtk.Picture()
-                img.set_filename(file_name)
-                img.add_css_class("card")
-                img.set_content_fit(Gtk.ContentFit.SCALE_DOWN)
-                img.set_halign(Gtk.Align.CENTER)
-
-                self._flow_box_pictures.append(img)
-                self._flow_box.insert(img, i)
+                self._add_image(i)
         except EOFError as e:
             logging.info(f"EOFError - Pipe broke - Was the run cancelled?")
             return
