@@ -29,6 +29,8 @@ from diffusers import StableDiffusionPipeline
 import torch
 import functools
 import time
+from multiprocessing import Process, Pipe
+import time
 
 from .settings_manager import is_nsfw_allowed
 
@@ -55,6 +57,7 @@ class TextToImagePage(Gtk.Box):
     _scheduler_drop_down: Gtk.DropDown = Gtk.Template.Child()
     _stack: Gtk.Stack = Gtk.Template.Child()
     _width_spin_button: Gtk.SpinButton = Gtk.Template.Child()
+    _cancel_run_button: Gtk.Button = Gtk.Template.Child()
 
     _download_task: Optional[Gio.Task] = None
     _run_task: Optional[Gio.Task] = None
@@ -125,7 +128,14 @@ class TextToImagePage(Gtk.Box):
             from diffusers import EulerAncestralDiscreteScheduler
             return EulerAncestralDiscreteScheduler.from_config(pipeline.scheduler.config)
 
-    def _run_task(self, _task, _source_object, _task_data, _cancellable):
+    def _run_process_func(self, child_connection):
+        def pipeline_callback(step: int, timestep: int, latents: torch.FloatTensor):
+            t_now = time.time()
+            t_diff = t_now - self._t_previous
+            self._t_previous = t_now
+
+            self._child_connection.send((step, t_diff,))
+
         model_id = os.path.join(GLib.get_user_data_dir(),
                                 "stable-diffusion-v1-5")
 
@@ -158,27 +168,62 @@ class TextToImagePage(Gtk.Box):
                           width=width,
                           num_inference_steps=inf_steps,
                           num_images_per_prompt=n_images,
-                          callback=self._pipeline_callback)
+                          callback=pipeline_callback)
 
         for i in range(n_images):
             file_name = os.path.join(GLib.get_user_cache_dir(),
                                      f"image_{i}.png")
             result.images[i].save(file_name)
 
-            img = Gtk.Picture()
-            img.set_filename(file_name)
+        child_connection.send('SENTINEL')
 
-            self._flow_box_pictures.append(img)
-            self._flow_box.insert(img, i)
+    def _update_task(self, _task, _source_object, _task_data, _cancellable):
+        try:
+            for msg in iter(self._parent_connection.recv, 'SENTINEL'):
+                step = msg[0]
+                t_diff = msg[1]
 
-    def _run_task_finished_cb(self, _source_object, _result, _task_data):
-        self._spinner.set_spinning(False)
-        self._run_button.set_icon_name(
-            "media-playback-start-symbolic"
-        )
-        self._generating_progress_bar.set_visible(False)
+                number_steps = int(
+                    self._inference_steps_spin_button.get_value())
 
-    @Gtk.Template.Callback()
+                time_left = (number_steps - step) * t_diff
+
+                minutes: int = int(time_left // 60)
+                seconds: int = int(time_left % 60)
+
+                if minutes == 0:
+                    text = i18n(f"~{seconds} s left...")
+                else:
+                    text = i18n(f"~{minutes} min {seconds} s left...")
+
+                self._generating_progress_bar.set_text(text)
+                self._generating_progress_bar.set_fraction(step / number_steps)
+
+            self._run_process.join()
+
+            self._spinner.set_spinning(False)
+            self._run_button.set_icon_name(
+                "media-playback-start-symbolic"
+            )
+            self._generating_progress_bar.set_visible(False)
+            self._cancel_run_button.set_visible(False)
+
+            n_images = int(self._number_images_spin_button.get_value())
+
+            for i in range(n_images):
+                file_name = os.path.join(GLib.get_user_cache_dir(),
+                                         f"image_{i}.png")
+
+                img = Gtk.Picture()
+                img.set_filename(file_name)
+
+                self._flow_box_pictures.append(img)
+                self._flow_box.insert(img, i)
+        except EOFError as e:
+            logging.info(f"EOFError - Pipe broke - Was the run cancelled?")
+            return
+
+    @ Gtk.Template.Callback()
     def _on_run_button_clicked(self, _button):
         if self._spinner.get_spinning():
             return
@@ -188,6 +233,7 @@ class TextToImagePage(Gtk.Box):
 
         self._flow_box_pictures.clear()
 
+        self._cancel_run_button.set_visible(True)
         self._run_button.set_child(self._spinner)
         self._spinner.set_spinning(True)
         self._generating_progress_bar.set_text(i18n("Estimating time left..."))
@@ -195,11 +241,17 @@ class TextToImagePage(Gtk.Box):
         self._generating_progress_bar.set_fraction(0.0)
         self._generating_progress_bar.set_visible(True)
 
-        _run_task = Gio.Task.new(self,
-                                 None,
-                                 self._run_task_finished_cb,
-                                 None)
-        _run_task.run_in_thread(self._run_task)
+        self._parent_connection, self._child_connection = Pipe()
+        self._run_task = Gio.Task.new(self,
+                                      None,
+                                      None,
+                                      None)
+        self._run_task.run_in_thread(self._update_task)
+
+        self._run_process: Process = Process(target=self._run_process_func,
+                                             args=(self._child_connection,))
+
+        self._run_process.start()
 
     @Gtk.Template.Callback()
     def _on_prompt_entry_changed(self, _entry):
@@ -207,3 +259,14 @@ class TextToImagePage(Gtk.Box):
             self._run_button.set_sensitive(True)
         else:
             self._run_button.set_sensitive(False)
+
+    @Gtk.Template.Callback()
+    def _on_cancel_run_button_clicked(self, _button):
+        self._run_process.terminate()
+
+        self._spinner.set_spinning(False)
+        self._run_button.set_icon_name(
+            "media-playback-start-symbolic"
+        )
+        self._generating_progress_bar.set_visible(False)
+        self._cancel_run_button.set_visible(False)
