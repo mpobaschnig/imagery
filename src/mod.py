@@ -22,9 +22,6 @@ from gi.repository import GObject
 from .start_page import StartPage
 from .text_to_image_page import TextToImagePage
 from .image_to_image_page import ImageToImagePage
-from .upscaling_page import UpscalingPage
-from .inpainting_page import InpaintingPage
-from .outpainting_page import OutpaintingPage
 
 
 def load_widgets():

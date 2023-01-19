@@ -50,30 +50,6 @@
                 </property>
               </object> 
             </child>
-            <child>
-              <object class="GtkStackPage">
-                <property name="name">upscaling</property>
-                <property name="child">
-                  <object class="UpscalingPage"/>
-                </property>
-              </object> 
-            </child>
-            <child>
-              <object class="GtkStackPage">
-                <property name="name">inpainting</property>
-                <property name="child">
-                  <object class="InpaintingPage"/>
-                </property>
-              </object> 
-            </child>
-            <child>
-              <object class="GtkStackPage">
-                <property name="name">outpainting</property>
-                <property name="child">
-                  <object class="OutpaintingPage"/>
-                </property>
-              </object> 
-            </child>
           </object>
         </child>
       </object>

@@ -6,9 +6,6 @@
     <file preprocess="xml-stripblanks">start_page.ui</file>
     <file preprocess="xml-stripblanks">text_to_image_page.ui</file>
     <file preprocess="xml-stripblanks">image_to_image_page.ui</file>
-    <file preprocess="xml-stripblanks">upscaling_page.ui</file>
-    <file preprocess="xml-stripblanks">inpainting_page.ui</file>
-    <file preprocess="xml-stripblanks">outpainting_page.ui</file>
     <file preprocess="xml-stripblanks">preferences.ui</file>
   </gresource>
 </gresources>
