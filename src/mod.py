@@ -27,3 +27,4 @@ from .image_to_image_page import ImageToImagePage
 def load_widgets():
     GObject.type_ensure(StartPage)
     GObject.type_ensure(TextToImagePage)
+    GObject.type_ensure(ImageToImagePage)

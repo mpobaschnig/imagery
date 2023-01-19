@@ -17,29 +17,31 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from gi.repository import Gtk, GLib, Adw, Gio, GObject
-from gettext import gettext as i18n
-from typing import List, Optional
-
-from pathlib import Path
 import hashlib
 import logging
-from enum import Enum
 import os
-from threading import Thread
-import time
+from enum import Enum
+from gettext import gettext as i18n
+from pathlib import Path
+from typing import List, Optional
+
+from gi.repository import Gio, GLib, GObject, Gtk
 
 from .file import File
+
+# pylint: disable-next=too-many-instance-attributes
 
 
 class Downloader(GObject.Object):
     class DownloadState(Enum):
-        Start = 0,
-        Download = 1,
-        Continue = 2,
-        SHA_MISMATCH = 3,
+        """The state of the downloader.
+        """
+        START = 0
+        DOWNLOAD = 1
+        CONTINUE = 2
+        SHA_MISMATCH = 3
 
-    _currnt_index: int = 0
+    _current_i: int = 0
     _files: List[File] = []
 
     _task: Optional[Gio.Task] = None
@@ -48,7 +50,7 @@ class Downloader(GObject.Object):
     _download_model_button: Optional[Gtk.Button] = None
     _model_license_hint_label: Optional[Gtk.Label] = None
 
-    _download_state: DownloadState = DownloadState.Start
+    _download_state: DownloadState = DownloadState.START
     _download_cancellable: Optional[Gio.Cancellable] = None
     _download_cancelled: bool = False
 
@@ -64,20 +66,20 @@ class Downloader(GObject.Object):
         self._download_model_button = download_model_button
         self._model_license_hint_label = model_license_hint_label
 
-    def _run(self, task, source_object, task_data, cancellable):
+    def _run(self, _task, _source_object, _task_data, _cancellable):
         self._download_file()
 
     def download(self) -> None:
-        if self.download_state == self.DownloadState.Start or \
-                self.download_state == self.DownloadState.SHA_MISMATCH:
+        if self.download_state in (self.DownloadState.START,
+                                   self.DownloadState.SHA_MISMATCH):
             self._current_i = 0
             file = self._files[self._current_i]
 
-            p: Path = Path(file.path)
-            if not Path.exists(p.parent):
-                Path.mkdir(p.parent, parents=True)
+            path: Path = Path(file.path)
+            if not Path.exists(path.parent):
+                Path.mkdir(path.parent, parents=True)
 
-            self.download_state = self.DownloadState.Download
+            self.download_state = self.DownloadState.DOWNLOAD
 
             self._task: Gio.Task = Gio.Task.new(self,
                                                 None,
@@ -85,9 +87,9 @@ class Downloader(GObject.Object):
                                                 None)
 
             self._task.run_in_thread(self._run)
-        elif self.download_state == self.DownloadState.Download:
+        elif self.download_state == self.DownloadState.DOWNLOAD:
             self.cancel_download()
-            self.download_state = self.DownloadState.Start
+            self.download_state = self.DownloadState.START
 
     def _download_file(self):
         self._progress_bar.set_fraction(0)
@@ -138,8 +140,11 @@ class Downloader(GObject.Object):
             total /= 1024
             unit = "GiB"
 
+        curr = round(curr, 1)
+        total = round(total, 1)
+
         self._progress_bar.set_text(i18n(
-            f"{round(curr,1)} {unit} / {round(total, 1)} {unit} - ({current_i + 1} of {len(self._files)})"
+            f"{curr} {unit} / {total} {unit} - ({current_i + 1} of {len(self._files)})"
         ))
 
     def _finished_cb(self, file, result, user_data):
@@ -147,8 +152,8 @@ class Downloader(GObject.Object):
 
         try:
             file.copy_finish(result)
-        except GLib.Error as e:
-            logging.error(e)
+        except GLib.Error as error:
+            logging.error(error)
 
         self._task = Gio.Task.new(self,
                                   self._download_cancellable,
@@ -165,17 +170,14 @@ class Downloader(GObject.Object):
             return
         file = self._files[self._current_i]
 
-        p: Path = Path(file.path)
-        if not Path.exists(p.parent):
-            Path.mkdir(p.parent, parents=True)
+        path: Path = Path(file.path)
+        if not Path.exists(path.parent):
+            Path.mkdir(path.parent, parents=True)
 
         self._download_file()
 
     def is_finished(self) -> bool:
-        if self.download_state == self.DownloadState.Continue:
-            return True
-        else:
-            return False
+        return self.download_state == self.DownloadState.CONTINUE
 
     @property
     def download_state(self) -> DownloadState:
@@ -185,7 +187,7 @@ class Downloader(GObject.Object):
     def download_state(self, new_download_state: DownloadState) -> None:
         self._download_state = new_download_state
 
-        if new_download_state == self.DownloadState.Start:
+        if new_download_state == self.DownloadState.START:
             self._download_model_button.remove_css_class("destructive-action")
             self._download_model_button.add_css_class("suggested-action")
             self._download_model_button.set_label(i18n("Download Model"))
@@ -193,7 +195,7 @@ class Downloader(GObject.Object):
             self._progress_bar.set_visible(False)
 
             self._model_license_hint_label.set_visible(True)
-        elif new_download_state == self.DownloadState.Download:
+        elif new_download_state == self.DownloadState.DOWNLOAD:
             self._download_model_button.remove_css_class("suggested-action")
             self._download_model_button.add_css_class("destructive-action")
             self._download_model_button.set_label(i18n("Cancel"))
@@ -206,14 +208,14 @@ class Downloader(GObject.Object):
             self._progress_bar.set_visible(True)
 
             self._model_license_hint_label.set_visible(False)
-        elif new_download_state == self.DownloadState.Continue:
+        elif new_download_state == self.DownloadState.CONTINUE:
             self._download_model_button.add_css_class("suggested-action")
             self._download_model_button.set_label(i18n("Continue"))
 
             self._progress_bar.set_text(i18n("Download finished"))
 
             self._model_license_hint_label.set_visible(False)
-        elif new_download_state == self.download_state.SHA_MISMATCH:
+        elif new_download_state == self.DownloadState.SHA_MISMATCH:
             self._download_model_button.remove_css_class("destructive-action")
             self._download_model_button.add_css_class("suggested-action")
             self._download_model_button.set_label(i18n("Download Again"))
@@ -224,28 +226,29 @@ class Downloader(GObject.Object):
             self._model_license_hint_label.set_visible(True)
 
     def _does_file_exist(self, file: File, current_i: int) -> bool:
-        p: Path = Path(file.path)
-        logging.info(
-            f"Checking if file {p.name} exists... ({current_i + 1} of {len(self._files)})"
-        )
+        path: Path = Path(file.path)
+        logging.info("Checking if file %s exists... (%s of %s)",
+                     path.name,
+                     current_i + 1,
+                     len(self._files))
 
         self._progress_bar.set_text(i18n(
-            f"Checking if file {p.name} exists... ({current_i + 1} of {len(self._files)})"
+            f"Checking if file {path.name} exists... \
+                ({current_i + 1} of {len(self._files)})",
         ))
         self._progress_bar.set_fraction((current_i + 1) / len(self._files))
 
         sha256 = hashlib.sha256()
 
         if not os.path.exists(file.path) or not os.path.isfile(file.path):
-            logging.info(
-                f"File {file.path} does not exist, starting download."
-            )
+            logging.info("File %s does not exist, starting download.",
+                         file.path)
             return False
 
         buffer_size = 65536
 
-        with open(file.path, "rb") as f:
-            while (data := f.read(buffer_size)):
+        with open(file.path, "rb") as open_file:
+            while (data := open_file.read(buffer_size)):
                 if self._download_cancelled:
                     return False
                 sha256.update(data)
@@ -253,9 +256,9 @@ class Downloader(GObject.Object):
         sha256_hexvalue = sha256.hexdigest()
 
         if sha256_hexvalue != file.sha256:
-            logging.info(
-                f"Existing file has sha256: {sha256_hexvalue}, should be: {file._sha256}"
-            )
+            logging.info("Existing file has sha256: %s, should be: %s",
+                         sha256_hexvalue,
+                         file.sha256)
             return False
 
         return True
@@ -266,7 +269,7 @@ class Downloader(GObject.Object):
         buffer_size = 65536
 
         for (i, file) in enumerate(self._files):
-            logging.info(f"Verifying hashes of {file.path}")
+            logging.info("Verifying hashes of %s", file.path)
             self._progress_bar.set_text(i18n(
                 f"Verifying hashes... ({i + 1} of {len(self._files)})"
             ))
@@ -275,13 +278,13 @@ class Downloader(GObject.Object):
 
             if not os.path.exists(file.path) or not os.path.isfile(file.path):
                 logging.error(
-                    f"Could not verify hash: File does not exist."
+                    "Could not verify hash: File does not exist."
                 )
                 self.download_state = self.DownloadState.SHA_MISMATCH
                 break
 
-            with open(file.path, "rb") as f:
-                while (data := f.read(buffer_size)):
+            with open(file.path, "rb") as open_file:
+                while (data := open_file.read(buffer_size)):
                     if self._download_cancelled:
                         return
                     sha256.update(data)
@@ -289,12 +292,12 @@ class Downloader(GObject.Object):
             sha256_hexvalue = sha256.hexdigest()
 
             if sha256_hexvalue != file.sha256:
-                logging.info(
-                    f"Downloaded files has sha256: {sha256_hexvalue}, should be: {self._sha256}"
-                )
+                logging.info("Downloaded files has sha256: %s, should be: %s",
+                             sha256_hexvalue,
+                             file.sha256)
                 self.download_state = self.DownloadState.SHA_MISMATCH
                 break
 
             self._progress_bar.set_fraction((i + 1) / (len(self._files)))
 
-        self.download_state = self.DownloadState.Continue
+        self.download_state = self.DownloadState.CONTINUE

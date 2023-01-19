@@ -17,7 +17,7 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from gi.repository import Gtk, Gio, GObject, Adw
+from gi.repository import Gtk, Gio, Adw
 
 
 @Gtk.Template(resource_path='/io/github/mpobaschnig/Imagery/preferences.ui')

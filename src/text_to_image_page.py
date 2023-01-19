@@ -17,26 +17,24 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from gi.repository import Gtk, GLib, Adw, Gio
-from gettext import gettext as i18n
-from typing import Optional, List
-
-import os
 import logging
-from enum import Enum
-import threading
-from diffusers import StableDiffusionPipeline
-import torch
-import functools
+import os
 import time
-from multiprocessing import Process, Pipe
-import time
+from gettext import gettext as i18n
+from multiprocessing import Pipe, Process, connection
+from typing import Optional
 
-from .settings_manager import is_nsfw_allowed
+import torch
+from diffusers import (DDIMScheduler, DDPMScheduler,
+                       DPMSolverMultistepScheduler,
+                       EulerAncestralDiscreteScheduler, EulerDiscreteScheduler,
+                       LMSDiscreteScheduler, PNDMScheduler,
+                       StableDiffusionPipeline)
+from gi.repository import Adw, Gio, GLib, Gtk
 
 from .downloader import Downloader
-from .model_files import sd15_folder, sd15_files
-from .file import File
+from .model_files import sd15_files, sd15_folder
+from .settings_manager import is_nsfw_allowed
 
 
 @Gtk.Template(resource_path='/io/github/mpobaschnig/Imagery/text_to_image_page.ui')
@@ -62,8 +60,11 @@ class TextToImagePage(Gtk.Box):
     _download_task: Optional[Gio.Task] = None
     _run_task: Optional[Gio.Task] = None
     _flow_box_pictures = []
-    _spinner: Gtk.Spinner = Gtk.Spinner()
+    _spinner: Optional[Gtk.Spinner] = None
     _t_previous: int = 0
+    _run_process: Optional[Process] = None
+    _parent_connection: Optional[connection.Connection] = None
+    _child_connection: Optional[connection.Connection] = None
 
     def __init__(self):
         """Text To Image Page widget"""
@@ -73,10 +74,10 @@ class TextToImagePage(Gtk.Box):
             self._stack.set_visible_child_name("main")
             return
 
-        self._downloader: Downloader = Downloader(files=sd15_files,
-                                                  download_model_button=self._download_model_button,
-                                                  model_license_hint_label=self._model_license_hint_label,
-                                                  progress_bar=self._progress_bar)
+        self._downloader: Downloader = Downloader(sd15_files,
+                                                  self._download_model_button,
+                                                  self._model_license_hint_label,
+                                                  self._progress_bar)
 
     @Gtk.Template.Callback()
     def _on_download_model_button_clicked(self, _button):
@@ -85,7 +86,11 @@ class TextToImagePage(Gtk.Box):
         else:
             self._downloader.download()
 
-    def _pipeline_callback(self, step: int, timestep: int, latents: torch.FloatTensor):
+    def _pipeline_callback(self,
+                           step: int,
+                           _timestep: int,
+                           _latents: torch.FloatTensor):
+        # pylint: disable=no-member
         t_now = time.time()
         t_diff = t_now - self._t_previous
         self._t_previous = t_now
@@ -105,31 +110,28 @@ class TextToImagePage(Gtk.Box):
         self._generating_progress_bar.set_text(text)
         self._generating_progress_bar.set_fraction(step / number_steps)
 
+    # pylint: disable-next=too-many-return-statements
     def _get_scheduler(self, pipeline: StableDiffusionPipeline, scheduler: str):
         if scheduler == "LMSDiscreteScheduler":
-            from diffusers import LMSDiscreteScheduler
             return LMSDiscreteScheduler.from_config(pipeline.scheduler.config)
-        elif scheduler == "DDIMScheduler":
-            from diffusers import DDIMScheduler
+        if scheduler == "DDIMScheduler":
             return DDIMScheduler.from_config(pipeline.scheduler.config)
-        elif scheduler == "DPMSolverMultistepScheduler":
-            from diffusers import DPMSolverMultistepScheduler
+        if scheduler == "DPMSolverMultistepScheduler":
             return DPMSolverMultistepScheduler.from_config(pipeline.scheduler.config)
-        elif scheduler == "EulerDiscreteScheduler":
-            from diffusers import EulerDiscreteScheduler
+        if scheduler == "EulerDiscreteScheduler":
             return EulerDiscreteScheduler.from_config(pipeline.scheduler.config)
-        elif scheduler == "PNDMScheduler":
-            from diffusers import PNDMScheduler
-            return PNDMScheduler.from_config(pipeline.scheduler.config)
-        elif scheduler == "DDPMScheduler":
-            from diffusers import DDPMScheduler
+        if scheduler == "DDPMScheduler":
             return DDPMScheduler.from_config(pipeline.scheduler.config)
-        elif scheduler == "EuelrAncestralDiscreteScheduler":
-            from diffusers import EulerAncestralDiscreteScheduler
-            return EulerAncestralDiscreteScheduler.from_config(pipeline.scheduler.config)
+        if scheduler == "EuelrAncestralDiscreteScheduler":
+            return EulerAncestralDiscreteScheduler.from_config(
+                pipeline.scheduler.config
+            )
+        # This is the default one
+        return PNDMScheduler.from_config(pipeline.scheduler.config)
 
     def _run_process_func(self, child_connection):
-        def pipeline_callback(step: int, timestep: int, latents: torch.FloatTensor):
+        def pipeline_callback(step: int, _timestep: int, _latents: torch.FloatTensor):
+            # pylint: disable=no-member
             t_now = time.time()
             t_diff = t_now - self._t_previous
             self._t_previous = t_now
@@ -189,8 +191,8 @@ class TextToImagePage(Gtk.Box):
 
                     try:
                         file.copy_finish(result)
-                    except GLib.Error as e:
-                        logging.error(e)
+                    except GLib.Error as error:
+                        logging.error(error)
 
                     button.set_icon_name("document-save-symbolic")
                     button_spinner.set_spinning(False)
@@ -293,8 +295,8 @@ class TextToImagePage(Gtk.Box):
 
             for i in range(n_images):
                 self._add_image(i)
-        except EOFError as e:
-            logging.info(f"EOFError - Pipe broke - Was the run cancelled?")
+        except EOFError as _error:
+            logging.info("EOFError - Pipe broke - Was the run cancelled?")
             return
 
     @ Gtk.Template.Callback()
@@ -302,7 +304,7 @@ class TextToImagePage(Gtk.Box):
         if self._spinner.get_spinning():
             return
 
-        for i in range(len(self._flow_box_pictures)):
+        for i, _v in enumerate(self._flow_box_pictures):
             self._flow_box.remove(self._flow_box_pictures[i])
 
         self._flow_box_pictures.clear()
@@ -322,8 +324,8 @@ class TextToImagePage(Gtk.Box):
                                       None)
         self._run_task.run_in_thread(self._update_task)
 
-        self._run_process: Process = Process(target=self._run_process_func,
-                                             args=(self._child_connection,))
+        self._run_process = Process(target=self._run_process_func,
+                                    args=(self._child_connection,))
 
         self._run_process.start()
 

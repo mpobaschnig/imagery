@@ -17,17 +17,19 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-import sys
-import gi
 import logging
+import sys
+
+import gi
+from gi.repository import Adw, Gio
+
+from .mod import load_widgets
+from .preferences import Preferences
+from .window import ImageryWindow
 
 gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
 
-from gi.repository import Gtk, Gio, Adw
-from .window import ImageryWindow
-from .mod import load_widgets
-from .preferences import Preferences
 
 class ImageryApplication(Adw.Application):
     """The main application singleton class."""
@@ -41,7 +43,7 @@ class ImageryApplication(Adw.Application):
 
         logging.getLogger().setLevel(logging.INFO)
 
-    def do_activate(self):
+    def do_activate(self):  # pylint: disable=arguments-differ
         """Called when the application is activated.
 
         We raise the application's main window, creating it if
@@ -52,11 +54,11 @@ class ImageryApplication(Adw.Application):
             win = ImageryWindow(application=self)
         win.present()
 
-    def do_startup(self):
+    def do_startup(self):  # pylint: disable=arguments-differ
         Adw.Application.do_startup(self)
         load_widgets()
 
-    def on_about_action(self, widget, _):
+    def on_about_action(self, _widget, _):
         """Callback for the app.about action."""
         about = Adw.AboutWindow(transient_for=self.props.active_window,
                                 application_name='imagery',
@@ -67,7 +69,7 @@ class ImageryApplication(Adw.Application):
                                 copyright='© 2023 Martin Pobaschnig')
         about.present()
 
-    def on_preferences_action(self, widget, _):
+    def on_preferences_action(self, _widget, _):
         """Callback for the app.preferences action."""
         Preferences(self.props.active_window).present()
 
@@ -87,7 +89,7 @@ class ImageryApplication(Adw.Application):
             self.set_accels_for_action(f"app.{name}", shortcuts)
 
 
-def main(version):
+def main(_version):
     """The application's entry point."""
     app = ImageryApplication()
     return app.run(sys.argv)

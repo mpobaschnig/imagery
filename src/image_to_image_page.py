@@ -16,13 +16,8 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
-
-from gi.repository import Gtk, GLib, Adw, Gio
-from gettext import gettext as i18n
-
-import os
-import logging
-from enum import Enum
+# pylint: skip-file
+from gi.repository import Gtk
 
 
 @Gtk.Template(resource_path='/io/github/mpobaschnig/Imagery/image_to_image_page.ui')
@@ -32,4 +27,3 @@ class ImageToImagePage(Gtk.Box):
     def __init__(self):
         """Image to Image Page widget"""
         super().__init__()
-
