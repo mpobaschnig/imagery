@@ -29,9 +29,8 @@ from gi.repository import Gio, GLib, GObject, Gtk
 
 from .file import File
 
+
 # pylint: disable-next=too-many-instance-attributes
-
-
 class Downloader(GObject.Object):
     class DownloadState(Enum):
         """The state of the downloader.
