@@ -305,7 +305,7 @@ class TextToImagePage(Gtk.Box):
             logging.info("Pipe broke - Was the run cancelled? : %s", _error)
             return
 
-    @ Gtk.Template.Callback()
+    @Gtk.Template.Callback()
     def _on_run_button_clicked(self, _button):
         if self._spinner.get_spinning():
             return
@@ -335,7 +335,7 @@ class TextToImagePage(Gtk.Box):
 
         self._run_process.start()
 
-    @ Gtk.Template.Callback()
+    @Gtk.Template.Callback()
     def _on_prompt_entry_changed(self, _entry):
         if self._prompt_entry.get_text():
             self._run_button.set_sensitive(True)
