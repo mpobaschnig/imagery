@@ -16,19 +16,20 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
-
+# pylint: disable=wrong-import-position
 import logging
 import sys
 
 import gi
+
+gi.require_version('Gtk', '4.0')
+gi.require_version('Adw', '1')
+
 from gi.repository import Adw, Gio
 
 from .mod import load_widgets
 from .preferences import Preferences
 from .window import ImageryWindow
-
-gi.require_version('Gtk', '4.0')
-gi.require_version('Adw', '1')
 
 
 class ImageryApplication(Adw.Application):
