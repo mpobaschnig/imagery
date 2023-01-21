@@ -1,5 +1,5 @@
 [flake8]
 ignore = E402,W503
 exclude = src/model_files.py
-max-line-length=88
-show-source=True
+max-line-length = 88
+show-source = True
