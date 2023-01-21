@@ -60,7 +60,7 @@ class TextToImagePage(Gtk.Box):
     _download_task: Optional[Gio.Task] = None
     _run_task: Optional[Gio.Task] = None
     _flow_box_pictures: List[Gtk.Picture] = []
-    _spinner: Optional[Gtk.Spinner] = None
+    _spinner: Optional[Gtk.Spinner] = Gtk.Spinner()
     _t_previous: float = 0
     _run_process: Optional[Process] = None
     _parent_connection: connection.Connection
