@@ -342,7 +342,7 @@ class TextToImagePage(Gtk.Box):
         else:
             self._run_button.set_sensitive(False)
 
-    @ Gtk.Template.Callback()
+    @Gtk.Template.Callback()
     def _on_cancel_run_button_clicked(self, _button):
         self._run_process.terminate()
 
