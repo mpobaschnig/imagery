@@ -400,3 +400,8 @@ class ImageToImagePage(Gtk.Box):
         overlay.set_clip_overlay(img, True)
 
         self._image_bin.set_child(overlay)
+
+    def cleanup(self):
+        if self._run_process is not None:
+            logging.info("Terminating image-to-image subprocess...")
+            self._run_process.terminate()

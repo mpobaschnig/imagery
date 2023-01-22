@@ -352,3 +352,8 @@ class TextToImagePage(Gtk.Box):
         )
         self._generating_progress_bar.set_visible(False)
         self._cancel_run_button.set_visible(False)
+
+    def cleanup(self) -> None:
+        if self._run_process is not None:
+            logging.info("Terminating text-to-image subprocess...")
+            self._run_process.terminate()

@@ -39,6 +39,8 @@ class ImageryWindow(Adw.ApplicationWindow):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
+        self.connect("unrealize", self._on_window_close_cb, None)
+
         self.create_action('text_to_image', self._on_text_to_image_clicked)
         self.create_action('image_to_image', self._on_image_to_image_clicked)
 
@@ -82,3 +84,7 @@ class ImageryWindow(Adw.ApplicationWindow):
             menu_button_page.set_label(i18n("Text to Image"))
         elif new_page_state == self.PageState.IMAGE_TO_IMAGE:
             menu_button_page.set_label(i18n("Image to Image"))
+
+    def _on_window_close_cb(self, window, user_data):
+        self._stack.get_child_by_name("text_to_image").cleanup()
+        self._stack.get_child_by_name("image_to_image").cleanup()
