@@ -25,7 +25,7 @@ import gi
 gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
 
-from gi.repository import Adw, Gio
+from gi.repository import Adw, Gio, Gtk
 
 from .mod import load_widgets
 from .preferences import Preferences
@@ -57,6 +57,9 @@ class ImageryApplication(Adw.Application):
 
     def do_startup(self):  # pylint: disable=arguments-differ
         Adw.Application.do_startup(self)
+
+        Gtk.Window.set_default_icon_name("io.github.mpobaschnig.Imagery")
+
         load_widgets()
 
     def on_about_action(self, _widget, _):
