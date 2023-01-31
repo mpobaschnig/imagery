@@ -13,7 +13,7 @@
             <property name="title-widget">
               <object class="GtkMenuButton" id="_menu_button_page">
                 <property name="menu-model">pages</property>
-              </object> 
+              </object>
             </property>
             <child type="end">
               <object class="GtkMenuButton">
@@ -48,7 +48,7 @@
                 <property name="child">
                   <object class="ImageToImagePage"/>
                 </property>
-              </object> 
+              </object>
             </child>
           </object>
         </child>

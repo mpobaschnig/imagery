@@ -13,7 +13,8 @@
               <object class="AdwActionRow">
                 <property name="visible">True</property>
                 <property name="title" translatable="yes">_Allow NSFW</property>
-                <property name="subtitle" translatable="yes">Allow generating Not Safe For Work images.</property>
+                <property name="subtitle" translatable="yes">Allow generating Not Safe For Work
+                  images.</property>
                 <property name="activatable_widget">_allow_nsfw</property>
                 <property name="use_underline">True</property>
                 <child>

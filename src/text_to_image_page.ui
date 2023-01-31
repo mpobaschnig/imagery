@@ -63,9 +63,7 @@
                 <property name="margin_bottom">12</property>
                 <property name="margin_start">12</property>
                 <property name="margin_end">12</property>
-                <property name="tightening-threshold">512</property>"
-                <property name="maximum-size">1024</property>"
-                <child>
+                <property name="tightening-threshold">512</property>" <property name="maximum-size">1024</property>" <child>
                   <object class="GtkBox">
                     <property name="orientation">vertical</property>
                     <property name="spacing">12</property>
@@ -190,18 +188,17 @@
                                                         </items>
                                                       </object>
                                                     </property>
-                                                  </object>>
-                                                </child>
+                                                  </object>> </child>
                                               </object>
                                             </child>
                                           </object>
-                                        </child> 
+                                        </child>
                                       </object>
                                     </property>
                                     <style>
                                       <class name="flat"/>
                                     </style>
-                                  </object> 
+                                  </object>
                                 </child>
                                 <child>
                                   <object class="GtkButton" id="_run_button">
