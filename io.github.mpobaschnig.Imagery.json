@@ -1,5 +1,5 @@
 {
-    "app-id" : "io.github.mpobaschnig.Imagery",
+    "id" : "io.github.mpobaschnig.Imagery",
     "runtime" : "org.gnome.Platform",
     "runtime-version" : "43",
     "sdk" : "org.gnome.Sdk",
