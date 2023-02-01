@@ -17,7 +17,9 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from gi.repository import Gtk, Gio, Adw
+import os
+
+from gi.repository import Adw, Gio, GLib, Gtk
 
 
 @Gtk.Template(resource_path='/io/github/mpobaschnig/Imagery/preferences.ui')
@@ -38,3 +40,12 @@ class Preferences(Adw.PreferencesWindow):
         action_group.add_action(allow_nsfw_action)
 
         self.insert_action_group("prefs", action_group)
+
+    @Gtk.Template.Callback()
+    def _on_clear_image_cache_clicked(self, _button):
+        for i in range(12):
+            file_name = os.path.join(GLib.get_user_cache_dir(),
+                                     f"image_{i}.png")
+            file: Gio.File = Gio.File.new_for_path(file_name)
+            if file.query_exists(None):
+                file.trash(None)
