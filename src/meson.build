@@ -33,7 +33,6 @@ imagery_sources = [
   'start_page.py',
   'text_to_image_page.py',
   'image_to_image_page.py',
-  'downloader.py',
   'file.py',
   'model_files.py',
   'preferences.py',
