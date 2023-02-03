@@ -17,16 +17,12 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-import logging
-import os
-from enum import Enum
 from gettext import gettext as i18n
-from typing import Optional
 
-from gi.repository import GObject, Gio, GLib, Gtk
+from gi.repository import GObject, Gtk
 
 from .download_manager import DownloadManager
-from .model_files import sd15_files, sd15_folder
+from .model_files import sd15_files
 
 
 @Gtk.Template(resource_path='/io/github/mpobaschnig/Imagery/start_page.ui')
