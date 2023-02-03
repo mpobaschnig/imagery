@@ -18,12 +18,9 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import logging
-from enum import Enum
-from gettext import gettext as i18n
-from pathlib import Path
 from typing import List, Optional
 
-from gi.repository import Gio, GLib, GObject, Gtk
+from gi.repository import Gio, GLib, GObject
 
 from .file import File
 
