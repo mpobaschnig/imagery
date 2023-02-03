@@ -34,7 +34,7 @@ class ImageryWindow(Adw.ApplicationWindow):
 
     _stack: Gtk.Stack = Gtk.Template.Child()
     _menu_button_page: Gtk.MenuButton = Gtk.Template.Child()
-    _page_state: PageState = PageState.TEXT_TO_IMAGE
+    _page_state: PageState = PageState.START
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -44,7 +44,7 @@ class ImageryWindow(Adw.ApplicationWindow):
         self.create_action('text_to_image', self._on_text_to_image_clicked)
         self.create_action('image_to_image', self._on_image_to_image_clicked)
 
-        self.page_state = self.PageState.TEXT_TO_IMAGE
+        self.page_state = self.PageState.START
 
     def create_action(self, name, callback, _shortcuts=None):
         action = Gio.SimpleAction.new(name, None)
