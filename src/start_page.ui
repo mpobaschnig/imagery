@@ -5,6 +5,7 @@
     <child>
       <object class="AdwStatusPage">
         <property name="vexpand">1</property>
+        <property name="icon-name">io.github.mpobaschnig.Imagery</property>
         <property name="title" translatable="yes">Imagery</property>
         <property name="description" translatable="yes">Create images at will</property>
         <child>
