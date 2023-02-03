@@ -17,10 +17,10 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from gi.repository import GObject
-
 import os
 from pathlib import Path
+
+from gi.repository import GObject
 
 
 class File(GObject.Object):
