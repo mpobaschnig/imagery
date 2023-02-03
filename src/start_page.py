@@ -49,31 +49,31 @@ class StartPage(Gtk.Box):
         self._download_manager.connect("cancelled", self._cancelled)
         self._download_manager.connect("finished", self._finished)
 
-    def _reset(self, download_manager: DownloadManager):
+    def _reset(self, _download_manager: DownloadManager) -> None:
         self._progress_bar.set_show_text(i18n("Initializing..."))
         self._progress_bar.set_fraction(0.0)
         self._progress_bar.set_visible(True)
 
-    def _update(self,
+    def _update(self,  # pylint: disable=too-many-arguments
                 _download_manager: DownloadManager,
                 fraction: float,
                 current_downloaded: int,
                 total_size: int,
                 unit: str,
                 current_index: int,
-                total_files: int):
+                total_files: int) -> None:
         self._progress_bar.set_text(i18n(
-            f"{current_downloaded} {unit} / {total_size} {unit} - ({current_index} of {total_files})"
+            f"{current_downloaded} {unit} / {total_size} {unit} - ({current_index} of {total_files})"  # noqa: E501, pylint: disable=line-too-long
         ))
         self._progress_bar.set_fraction(fraction)
 
-    def _cancelled(self, download_manager: DownloadManager):
+    def _cancelled(self, _download_manager: DownloadManager) -> None:
         self._progress_bar.set_visible(False)
         self._download_model_button.set_visible(True)
         self._cancel_download_button.set_visible(False)
         self._model_license_hint_label.set_visible(True)
 
-    def _finished(self, download_manager: DownloadManager):
+    def _finished(self, _download_manager: DownloadManager) -> None:
         self._progress_bar.set_fraction(100)
         self._progress_bar.set_text(i18n("Download finished."))
         self._continue_button.set_visible(True)
