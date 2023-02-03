@@ -40,47 +40,35 @@ class DownloadManager(GObject.Object):
         super().__init__()
 
         self._files = files
+        self._current_file: Optional[File] = None
 
         self._running: bool = False
-        self._current_i: int = 0
         self._task: Optional[Gio.Task] = None
-        self._download_cancellable: Optional[Gio.Cancellable] = None
+        self._task_cancellable: Optional[Gio.Cancellable] = None
 
     def _start_download(self, _task, _source_object, _task_data, _cancellable):
         self._running = True
-        self._download_file()
 
-    def _download_file(self):
-        if self._running is False:
-            return
+        for (i, file) in enumerate(self._files):
+            if self._running is False:
+                return
 
-        if self._current_i >= len(self._files):
-            self.emit("finished")
-            return
+            if file.exists():
+                logging.info("File %s exists, skipping.", file.path)
+                continue
 
-        file: File = self._files[self._current_i]
+            self._current_file = file
 
-        if file.exists():
-            logging.info("File %s exists, skipping.", file.path)
-            self._current_i += 1
-            self._download_file()
-            return
+            file.create_path()
 
-        file.create_path()
+            model_uri_file: Gio.File = Gio.File.new_for_uri(file.url)
+            model_file = Gio.File.new_for_path(file.path)
+            model_uri_file.copy(model_file,
+                                Gio.FileCopyFlags.OVERWRITE,
+                                None,
+                                self._progress_cb, i)
 
-        logging.info("Downloading file %s...", file.path)
-
-        self._download_cancellable = Gio.Cancellable.new()
-        model_uri_file: Gio.File = Gio.File.new_for_uri(file.url)
-        model_file = Gio.File.new_for_path(file.path)
-        model_uri_file.copy_async(model_file,
-                                  Gio.FileCopyFlags.OVERWRITE,
-                                  GLib.PRIORITY_DEFAULT,
-                                  self._download_cancellable,
-                                  self._progress_cb, (self._current_i,),
-                                  self._finished_cb, (self._current_i,))
-
-    def _progress_cb(self, current_num_bytes, total_num_bytes, current_i):
+    def _progress_cb(self, current_num_bytes, total_num_bytes, i):
         fraction = current_num_bytes / total_num_bytes
 
         curr = current_num_bytes / 1024
@@ -103,29 +91,15 @@ class DownloadManager(GObject.Object):
                   curr,
                   total,
                   unit,
-                  current_i + 1,
+                  i + 1,
                   len(self._files))
-
-    def _finished_cb(self, file, result, _user_data):
-        self._download_cancellable = None
-
-        try:
-            file.copy_finish(result)
-        except GLib.Error as error:
-            logging.error(error)
-
-        self._current_i += 1
-
-        self._download_file()
 
     def start(self):
         self.emit("reset")
 
-        self._current_i = 0
-
-        self._download_cancellable = Gio.Cancellable.new()
+        self._task_cancellable = Gio.Cancellable.new()
         self._task = Gio.Task.new(self,  # type: ignore
-                                  self._download_cancellable,
+                                  self._task_cancellable,
                                   None,
                                   None)
 
@@ -134,10 +108,8 @@ class DownloadManager(GObject.Object):
     def cancel(self):
         self._running = False
 
-        if self._download_cancellable:
-            self._download_cancellable.cancel()
-
-            file = self._files[self._current_i]
-            file.remove()
+        if self._task_cancellable:
+            self._task_cancellable.cancel()
+            self._current_file.remove()
 
         self.emit("cancelled")
