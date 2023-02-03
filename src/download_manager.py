@@ -42,17 +42,11 @@ class DownloadManager(GObject.Object):
         self._files = files
         self._current_file: Optional[File] = None
 
-        self._running: bool = False
         self._task: Optional[Gio.Task] = None
         self._task_cancellable: Optional[Gio.Cancellable] = None
 
     def _start_download(self, _task, _source_object, _task_data, _cancellable):
-        self._running = True
-
         for (i, file) in enumerate(self._files):
-            if self._running is False:
-                return
-
             if file.exists():
                 logging.info("File %s exists, skipping.", file.path)
                 continue
@@ -106,8 +100,6 @@ class DownloadManager(GObject.Object):
         self._task.run_in_thread(self._start_download)  # type: ignore
 
     def cancel(self):
-        self._running = False
-
         if self._task_cancellable:
             self._task_cancellable.cancel()
             self._current_file.remove()
