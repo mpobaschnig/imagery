@@ -31,7 +31,7 @@
                       <object class="GtkBox">
                         <property name="spacing">6</property>
                         <child>
-                          <object class="GtkMenuButton">
+                          <object class="GtkMenuButton" id="_settings_menu_button">
                             <property name="icon-name">emblem-system-symbolic</property>
                             <property name="valign">center</property>
                             <property name="popover">
@@ -135,6 +135,20 @@
                             <property name="valign">center</property>
                             <property name="icon_name">media-playback-start-symbolic</property>
                             <signal name="clicked" handler="_on_run_button_clicked" swapped="no"/>
+                            <style>
+                              <class name="flat"/>
+                            </style>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="_spin_button">
+                            <property name="sensitive">True</property>
+                            <property name="visible">False</property>
+                            <property name="valign">center</property>
+                            <child>
+                              <object class="GtkSpinner" id="_spinner">
+                              </object>
+                            </child>
                             <style>
                               <class name="flat"/>
                             </style>

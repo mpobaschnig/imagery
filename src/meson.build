@@ -38,7 +38,8 @@ imagery_sources = [
   'preferences.py',
   'settings_manager.py',
   'download_manager.py',
-  'text_to_image_runner.py'
+  'text_to_image_runner.py',
+  'image_to_image_runner.py'
 ]
 
 install_data(imagery_sources, install_dir: moduledir)
