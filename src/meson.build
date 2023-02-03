@@ -37,7 +37,8 @@ imagery_sources = [
   'model_files.py',
   'preferences.py',
   'settings_manager.py',
-  'download_manager.py'
+  'download_manager.py',
+  'text_to_image_runner.py'
 ]
 
 install_data(imagery_sources, install_dir: moduledir)
