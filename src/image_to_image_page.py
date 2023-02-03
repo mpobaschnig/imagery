@@ -29,8 +29,6 @@ from diffusers import StableDiffusionImg2ImgPipeline as SDI2IPipeline
 from gi.repository import Adw, Gio, GLib, Gtk
 from PIL import Image
 
-from .download_manager import DownloadManager
-from .model_files import sd15_files, sd15_folder
 from .settings_manager import is_nsfw_allowed
 
 
@@ -61,10 +59,6 @@ class ImageToImagePage(Gtk.Box):
     _parent_connection: connection.Connection
     _child_connection: connection.Connection
     _image_path: Optional[str] = None
-
-    def __init__(self):
-        """Image To Image Page widget"""
-        super().__init__()
 
     def _pipeline_callback(self,
                            step: int,
