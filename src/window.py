@@ -80,7 +80,6 @@ class ImageryWindow(Adw.ApplicationWindow):
         self._page_state = new_page_state
 
         if new_page_state == self.PageState.START:
-            stack.set_visible_child_name("start")
             self._menu_button_page.set_visible(False)
         elif new_page_state == self.PageState.TEXT_TO_IMAGE:
             stack.set_visible_child_name("text_to_image")
