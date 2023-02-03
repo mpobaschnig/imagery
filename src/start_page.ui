@@ -35,6 +35,32 @@
               </object>
             </child>
             <child>
+              <object class="GtkButton" id="_cancel_download_button">
+                <property name="halign">center</property>
+                <property name="label" translatable="yes">_Cancel Download</property>
+                <property name="use-underline">1</property>
+                <property name="visible">False</property>
+                <signal name="clicked" handler="_on_cancel_download_button_clicked" swapped="no"/>
+                <style>
+                  <class name="destructive-action"/>
+                  <class name="pill"/>
+                </style>
+              </object>
+            </child>
+            <child>
+              <object class="GtkButton" id="_continue_button">
+                <property name="halign">center</property>
+                <property name="label" translatable="yes">_Continue</property>
+                <property name="use-underline">1</property>
+                <property name="visible">False</property>
+                <signal name="clicked" handler="_on_continue_button_clicked" swapped="no"/>
+                <style>
+                  <class name="suggested-action"/>
+                  <class name="pill"/>
+                </style>
+              </object>
+            </child>
+            <child>
               <object class="GtkLabel" id="_model_license_hint_label">
                 <property name="label" translatable="yes">By downloading, you accept the &lt;a href="https://github.com/CompVis/stable-diffusion/blob/21f890f9da3cfbeaba8e2ac3c425ee9e998d5229/LICENSE/">CreativeML Open RAIL-M license&lt;/a&gt;</property>
                 <property name="use-markup">True</property>
