@@ -59,10 +59,6 @@ class TextToImagePage(Gtk.Box):
     _parent_connection: connection.Connection
     _child_connection: connection.Connection
 
-    def __init__(self):
-        """Text To Image Page widget"""
-        super().__init__()
-
     def _pipeline_callback(self,
                            step: int,
                            _timestep: int,
