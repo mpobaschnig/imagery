@@ -19,6 +19,9 @@
 
 from gi.repository import GObject
 
+import os
+from pathlib import Path
+
 
 class File(GObject.Object):
     _url: str
@@ -55,3 +58,23 @@ class File(GObject.Object):
     @sha256.setter
     def sha256(self, sha256: str) -> None:
         self._path = sha256
+
+    def exists(self) -> bool:
+        path: Path = Path(self.path)
+
+        if not os.path.exists(path) or not os.path.isfile(path):
+            return False
+
+        return True
+
+    def create_path(self):
+        path: Path = Path(self.path)
+
+        if not Path.exists(path.parent):
+            Path.mkdir(path.parent, parents=True)
+
+    def remove(self):
+        path: Path = Path(self.path)
+
+        if self.exists():
+            path.unlink()
