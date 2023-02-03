@@ -29,7 +29,7 @@ from diffusers import StableDiffusionImg2ImgPipeline as SDI2IPipeline
 from gi.repository import Adw, Gio, GLib, Gtk
 from PIL import Image
 
-from .downloader import Downloader
+from .download_manager import DownloadManager
 from .model_files import sd15_files, sd15_folder
 from .settings_manager import is_nsfw_allowed
 
@@ -67,25 +67,70 @@ class ImageToImagePage(Gtk.Box):
     _child_connection: connection.Connection
     _image_path: Optional[str] = None
 
+    _cancel_download_button: Gtk.Button = Gtk.Template.Child()
+    _continue_button: Gtk.Button = Gtk.Template.Child()
+
     def __init__(self):
         """Image To Image Page widget"""
         super().__init__()
+
+        self._download_manager: DownloadManager = DownloadManager(sd15_files)
+
+        self._download_manager.connect("reset", self._reset)
+        self._download_manager.connect("update", self._update)
+        self._download_manager.connect("cancelled", self._cancelled)
+        self._download_manager.connect("finished", self._finished)
 
         if os.path.exists(sd15_folder):
             self._stack.set_visible_child_name("main")
             return
 
-        self._downloader: Downloader = Downloader(sd15_files,
-                                                  self._download_model_button,
-                                                  self._model_license_hint_label,
-                                                  self._progress_bar)
+    def _reset(self, download_manager: DownloadManager):
+        self._progress_bar.set_show_text(i18n("Initializing..."))
+        self._progress_bar.set_fraction(0.0)
+        self._progress_bar.set_visible(True)
+
+    def _update(self,
+                _download_manager: DownloadManager,
+                fraction: float,
+                current_downloaded: int,
+                total_size: int,
+                unit: str,
+                current_index: int,
+                total_files: int):
+        self._progress_bar.set_text(i18n(
+            f"{current_downloaded} {unit} / {total_size} {unit} - ({current_index} of {total_files})"
+        ))
+        self._progress_bar.set_fraction(fraction)
+
+    def _cancelled(self, download_manager: DownloadManager):
+        self._progress_bar.set_visible(False)
+        self._download_model_button.set_visible(True)
+        self._cancel_download_button.set_visible(False)
+        self._model_license_hint_label.set_visible(True)
+
+    def _finished(self, download_manager: DownloadManager):
+        self._progress_bar.set_fraction(100)
+        self._progress_bar.set_text(i18n("Download finished."))
+        self._continue_button.set_visible(True)
+        self._cancel_download_button.set_visible(False)
 
     @Gtk.Template.Callback()
     def _on_download_model_button_clicked(self, _button):
-        if self._downloader.is_finished():
-            self._stack.set_visible_child_name("main")
-        else:
-            self._downloader.download()
+        self._cancel_download_button.set_visible(True)
+        self._download_model_button.set_visible(False)
+
+        self._model_license_hint_label.set_visible(False)
+
+        self._download_manager.start()
+
+    @Gtk.Template.Callback()
+    def _on_cancel_download_button_clicked(self, _button):
+        self._download_manager.cancel()
+
+    @Gtk.Template.Callback()
+    def _on_continue_button_clicked(self, _button):
+        self._stack.set_visible
 
     def _pipeline_callback(self,
                            step: int,
