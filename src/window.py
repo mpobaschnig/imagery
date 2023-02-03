@@ -22,6 +22,8 @@ from gettext import gettext as i18n
 
 from gi.repository import Adw, Gio, Gtk
 
+from .model_files import all_files_available
+
 
 @Gtk.Template(resource_path='/io/github/mpobaschnig/Imagery/window.ui')
 class ImageryWindow(Adw.ApplicationWindow):
@@ -44,7 +46,7 @@ class ImageryWindow(Adw.ApplicationWindow):
         self.create_action('text_to_image', self._on_text_to_image_clicked)
         self.create_action('image_to_image', self._on_image_to_image_clicked)
 
-        if self._stack.get_child_by_name("start").all_files_available():
+        if all_files_available():
             self.page_state = self.PageState.TEXT_TO_IMAGE
             return
 

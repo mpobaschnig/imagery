@@ -80,3 +80,11 @@ sd15_files = [
          sd15_folder + "v1-inference.yaml",
          "20b7f0acae54d1f88384a6ca15b5d62c0ee4fbbca07ff72f3761fe936083210d")
 ]
+
+
+def all_files_available() -> bool:
+    for file in sd15_files:
+        if file.exists() is False:
+            return False
+
+    return True
