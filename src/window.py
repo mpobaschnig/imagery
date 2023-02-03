@@ -48,15 +48,11 @@ class ImageryWindow(Adw.ApplicationWindow):
             self.page_state = self.PageState.TEXT_TO_IMAGE
             return
 
-        self._menu_button_page.set_sensitive(False)
-
         self._stack.get_child_by_name("start").connect("finished",
                                                        self._start_finished)
         self.page_state = self.PageState.START
 
     def _start_finished(self, _object):
-        self._menu_button_page.set_sensitive(True)
-
         self.page_state = self.PageState.TEXT_TO_IMAGE
 
     def create_action(self, name, callback, _shortcuts=None):
@@ -82,7 +78,7 @@ class ImageryWindow(Adw.ApplicationWindow):
 
         if new_page_state == self.PageState.START:
             stack.set_visible_child_name("start")
-            self.set_menu_button_label(self.PageState.TEXT_TO_IMAGE)
+            self._menu_button_page.set_visible(False)
         elif new_page_state == self.PageState.TEXT_TO_IMAGE:
             stack.set_visible_child_name("text_to_image")
             self.set_menu_button_label(self.PageState.TEXT_TO_IMAGE)
