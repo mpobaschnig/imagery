@@ -20,7 +20,7 @@
 import logging
 from typing import List, Optional
 
-from gi.repository import Gio, GLib, GObject
+from gi.repository import Gio, GObject
 
 from .file import File
 
