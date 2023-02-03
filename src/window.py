@@ -55,6 +55,7 @@ class ImageryWindow(Adw.ApplicationWindow):
         self.page_state = self.PageState.START
 
     def _start_finished(self, _object):
+        self._menu_button_page.set_visible(True)
         self.page_state = self.PageState.TEXT_TO_IMAGE
 
     def create_action(self, name, callback, _shortcuts=None):
