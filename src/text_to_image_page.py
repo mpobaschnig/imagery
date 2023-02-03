@@ -32,8 +32,6 @@ from diffusers import (DDIMScheduler, DDPMScheduler,
                        StableDiffusionPipeline)
 from gi.repository import Adw, Gio, GLib, Gtk
 
-from .download_manager import DownloadManager
-from .model_files import sd15_files, sd15_folder
 from .settings_manager import is_nsfw_allowed
 
 
