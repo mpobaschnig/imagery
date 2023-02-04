@@ -97,5 +97,6 @@ class ImageryWindow(Adw.ApplicationWindow):
             menu_button_page.set_label(i18n("Image to Image"))
 
     def _on_window_close_cb(self, window, user_data):
+        self._stack.get_child_by_name("start").cleanup()
         self._stack.get_child_by_name("text_to_image").cleanup()
         self._stack.get_child_by_name("image_to_image").cleanup()
