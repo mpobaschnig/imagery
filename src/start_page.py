@@ -95,3 +95,6 @@ class StartPage(Gtk.Box):
     @Gtk.Template.Callback()
     def _on_continue_button_clicked(self, _button):
         self.emit("finished")
+
+    def cleanup(self):
+        self._download_manager.cancel()
