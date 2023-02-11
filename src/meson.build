@@ -39,7 +39,8 @@ imagery_sources = [
   'settings_manager.py',
   'download_manager.py',
   'text_to_image_runner.py',
-  'image_to_image_runner.py'
+  'image_to_image_runner.py',
+  'prompt_ideas.py'
 ]
 
 install_data(imagery_sources, install_dir: moduledir)

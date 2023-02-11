@@ -27,6 +27,7 @@ from typing import List
 from gi.repository import Adw, Gio, GLib, Gtk
 
 from .text_to_image_runner import TextToImageRunner
+from .prompt_ideas import prompt_idea_categories
 
 
 @Gtk.Template(resource_path='/io/github/mpobaschnig/Imagery/text_to_image_page.ui')
@@ -52,6 +53,9 @@ class TextToImagePage(Gtk.Box):
     _cancel_run_button: Gtk.Button = Gtk.Template.Child()
     _spin_button: Gtk.Button = Gtk.Template.Child()
     _spinner: Gtk.Spinner = Gtk.Template.Child()
+    _prompt_ideas_scrolled_window: Gtk.ScrolledWindow = Gtk.Template.Child()
+    _flow_box_scrolled_window: Gtk.ScrolledWindow = Gtk.Template.Child()
+    _prompt_ideas_box: Gtk.Box = Gtk.Template.Child()
 
     _flow_box_pictures: List[Gtk.Picture] = []
 
@@ -63,6 +67,8 @@ class TextToImagePage(Gtk.Box):
         self._text_to_image_runner.connect("update", self._update)
         self._text_to_image_runner.connect("finished", self._finished)
         self._text_to_image_runner.connect("cancelled", self._cancelled)
+
+        self._fill_prompt_box()
 
         self.page_state: self.PageState = self.PageState.START
 
@@ -99,6 +105,51 @@ class TextToImagePage(Gtk.Box):
     def _cancelled(self, _):
         self.page_state = self.PageState.START
 
+    def _fill_prompt_box(self):
+        def _append_text(button: Gtk.Button, entry: Adw.EntryRow) -> None:
+            text: str = str(entry.get_text())
+            idea: str = str(button.get_label())
+
+            text = text.strip()
+
+            if text == "":
+                text = f"{idea}, "
+            elif text.endswith(","):
+                text += f" {idea}"
+            else:
+                text += f", {idea}"
+
+            entry.set_text(text)
+
+        box: Gtk.Box = self._prompt_ideas_box
+        box.set_spacing(12)
+
+        label: Gtk.Label = Gtk.Label()
+        label.set_text(i18n("Here are some prompt ideas!"))
+        label.add_css_class("title-2")
+        box.append(label)
+
+        for category, examples in prompt_idea_categories.items():
+            label: Gtk.Label = Gtk.Label()
+            label.set_text(category)
+            label.set_halign(Gtk.Align.START)
+            label.add_css_class("title-4")
+
+            box.append(label)
+
+            flow_box: Gtk.FlowBox = Gtk.FlowBox()
+            flow_box.set_homogeneous(False)
+
+            for example in examples:
+                button: Gtk.Button = Gtk.Button()
+                button.set_label(example)
+                button.connect("clicked",
+                               _append_text,
+                               self._prompt_entry)
+                flow_box.append(button)
+
+            box.append(flow_box)
+
     @property
     def page_state(self) -> PageState:
         return self._page_state
@@ -107,11 +158,19 @@ class TextToImagePage(Gtk.Box):
     def page_state(self, new_page_state: PageState) -> None:
         self._page_state = new_page_state
 
+        if new_page_state == self.PageState.START:
+            self._prompt_ideas_box.set_visible(True)
+            self._prompt_ideas_scrolled_window.set_visible(True)
+
         if new_page_state in (self.PageState.START, self.PageState.RUNNING):
             for i, _ in enumerate(self._flow_box_pictures):
                 self._flow_box.remove(self._flow_box_pictures[i])
 
             self._flow_box_pictures.clear()
+
+        if new_page_state == self.PageState.FINISHED:
+            self._flow_box_scrolled_window.set_visible(True)
+            self._prompt_ideas_scrolled_window.set_visible(False)
 
         if new_page_state == self.PageState.RUNNING:
             self._spinner.set_spinning(True)
@@ -125,6 +184,8 @@ class TextToImagePage(Gtk.Box):
             self._generating_progress_bar.set_show_text(True)
             self._generating_progress_bar.set_fraction(0.0)
             self._generating_progress_bar.set_visible(True)
+
+            self._prompt_ideas_box.set_visible(False)
         else:
             self._spin_button.set_visible(False)
             self._spinner.set_spinning(False)
