@@ -67,19 +67,20 @@ class TextToImageRunner(GObject.Object):
         model_id = os.path.join(GLib.get_user_data_dir(),
                                 "stable-diffusion-v1-5")
 
-        pipeline: StableDiffusionPipeline = StableDiffusionPipeline.from_pretrained(
-            model_id
-        )
+        if is_nsfw_allowed():
+            pipeline: StableDiffusionPipeline = StableDiffusionPipeline.from_pretrained(
+                model_id,
+                safety_checker=None
+            )
+        else:
+            pipeline: StableDiffusionPipeline = StableDiffusionPipeline.from_pretrained(
+                model_id
+            )
 
         pipeline.scheduler = self._get_scheduler(pipeline, scheduler)
 
         if torch.cuda.is_available():
             pipeline = pipeline.to("cuda")
-
-        if is_nsfw_allowed():
-            pipeline.safety_checker = lambda images, **kwargs: (
-                images, False
-            )
 
         result = pipeline(prompt=prompt,
                           height=height,
