@@ -199,7 +199,7 @@ class TextToImagePage(Gtk.Box):
         button.connect("clicked", image_button_clicked, image_index)
 
         curr_file_name = os.path.join(GLib.get_user_cache_dir(),
-                                      f"image_{image_index}.png")
+                                      f"t2i_image_{image_index}.png")
 
         img = Gtk.Picture()
         img.set_filename(curr_file_name)
