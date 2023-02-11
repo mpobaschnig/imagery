@@ -67,13 +67,14 @@ class TextToImageRunner(GObject.Object):
         model_id = os.path.join(GLib.get_user_data_dir(),
                                 "stable-diffusion-v1-5")
 
+        pipeline: Optional[StableDiffusionPipeline] = None
         if is_nsfw_allowed():
-            pipeline: StableDiffusionPipeline = StableDiffusionPipeline.from_pretrained(
+            pipeline = StableDiffusionPipeline.from_pretrained(
                 model_id,
                 safety_checker=None
             )
         else:
-            pipeline: StableDiffusionPipeline = StableDiffusionPipeline.from_pretrained(
+            pipeline = StableDiffusionPipeline.from_pretrained(
                 model_id
             )
 
