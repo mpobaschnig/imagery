@@ -194,6 +194,7 @@
                                 <property name="title" translatable="yes">Open Image</property>
                                 <property name="description" translatable="yes">Add image that you want to change.</property>
                                 <property name="icon_name">image-missing-symbolic</property>
+                                <property name="vexpand">True</property>
                                 <child>
                                   <object class="GtkBox">
                                     <property name="orientation">vertical</property>
