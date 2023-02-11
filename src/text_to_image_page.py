@@ -182,7 +182,6 @@ class TextToImagePage(Gtk.Box):
             file_chooser_native.show()
 
         overlay = Gtk.Overlay()
-
         overlay.set_halign(Gtk.Align.CENTER)
 
         button = Gtk.Button()
@@ -208,6 +207,10 @@ class TextToImagePage(Gtk.Box):
         img.set_content_fit(Gtk.ContentFit.SCALE_DOWN)
         img.set_halign(Gtk.Align.CENTER)
 
+        img_width = img.get_paintable().get_intrinsic_width()
+        img_height = img.get_paintable().get_intrinsic_height()
+
+        overlay.set_size_request(img_width, img_height)
         overlay.set_child(img)
         overlay.set_clip_overlay(img, True)
 
