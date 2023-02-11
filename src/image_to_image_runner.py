@@ -64,11 +64,12 @@ class ImageToImageRunner(GObject.Object):
         model_id = os.path.join(GLib.get_user_data_dir(),
                                 "stable-diffusion-v1-5")
 
+        pipeline: Optional[SDI2IPipeline] = None
         if is_nsfw_allowed():
-            pipeline: SDI2IPipeline = SDI2IPipeline.from_pretrained(model_id,
-                                                                    safety_checker=None)
+            pipeline = SDI2IPipeline.from_pretrained(model_id,
+                                                     safety_checker=None)
         else:
-            pipeline: SDI2IPipeline = SDI2IPipeline.from_pretrained(model_id)
+            pipeline = SDI2IPipeline.from_pretrained(model_id)
 
         if torch.cuda.is_available():
             pipeline = pipeline.to("cuda")
