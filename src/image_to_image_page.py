@@ -191,8 +191,7 @@ class ImageToImagePage(Gtk.Box):
                                         (button, button_spinner))
             file_chooser_native.show()
 
-        overlay = Gtk.Overlay()
-
+        overlay: Gtk.Overlay = Gtk.Overlay()
         overlay.set_halign(Gtk.Align.CENTER)
 
         button = Gtk.Button()
@@ -210,7 +209,7 @@ class ImageToImagePage(Gtk.Box):
         button.connect("clicked", image_button_clicked, image_index)
 
         curr_file_name = os.path.join(GLib.get_user_cache_dir(),
-                                      f"image_{image_index}.png")
+                                      f"i2i_image_{image_index}.png")
 
         img = Gtk.Picture()
         img.set_filename(curr_file_name)
@@ -218,6 +217,10 @@ class ImageToImagePage(Gtk.Box):
         img.set_content_fit(Gtk.ContentFit.SCALE_DOWN)
         img.set_halign(Gtk.Align.CENTER)
 
+        img_width = img.get_paintable().get_intrinsic_width()
+        img_height = img.get_paintable().get_intrinsic_height()
+
+        overlay.set_size_request(img_width, img_height)
         overlay.set_child(img)
         overlay.set_clip_overlay(img, True)
 
@@ -285,6 +288,12 @@ class ImageToImagePage(Gtk.Box):
 
         self._image_path = dest_file.get_path()
 
+        img_width = img.get_paintable().get_intrinsic_width()
+        img_height = img.get_paintable().get_intrinsic_height()
+
+        overlay: Gtk.Overlay = user_data[1]
+        overlay.set_size_request(img_width, img_height)
+
         self._check_run_button_sensitivity()
 
         self._left_stack.set_visible_child_name("show-image")
@@ -315,7 +324,7 @@ class ImageToImagePage(Gtk.Box):
         file_chooser_native.set_accept_label(i18n("Open Image"))
         file_chooser_native.set_action(Gtk.FileChooserAction.OPEN)
         file_chooser_native.connect(
-            "response", self._open_image_to_change_response_cb, (img,)
+            "response", self._open_image_to_change_response_cb, (img, overlay,)
         )
         file_chooser_native.show()
 

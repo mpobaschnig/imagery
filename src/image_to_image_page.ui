@@ -14,12 +14,9 @@
           <object class="GtkBox">
             <property name="orientation">vertical</property>
             <property name="spacing">12</property>
-            <property name="hexpand">true</property>
-            <property name="vexpand">true</property>
             <child>
               <object class="GtkListBox" id="_list_box">
                 <property name="selection-mode">none</property>
-                <property name="valign">start</property>
                 <style>
                   <class name="boxed-list"/>
                 </style>
@@ -179,77 +176,89 @@
               </object>
             </child>
             <child>
-              <object class="GtkStack" id="_left_stack">
-                <property name="transition-type">crossfade</property>
+              <object class="GtkScrolledWindow">
+                <property name="vscrollbar-policy">automatic</property>
+                <property name="hscrollbar-policy">automatic</property>
                 <child>
-                  <object class="GtkStackPage">
-                    <property name="name">open-image</property>
-                    <property name="child">
-                      <object class="AdwStatusPage">
-                        <property name="vexpand">1</property>
-                        <property name="title" translatable="yes">Open Image</property>
-                        <property name="description" translatable="yes">Add image that you want to change.</property>
-                        <property name="icon_name">image-missing-symbolic</property>
+                  <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">12</property>
+                    <child>
+                      <object class="GtkStack" id="_left_stack">
+                        <property name="transition-type">crossfade</property>
                         <child>
-                          <object class="GtkBox">
-                            <property name="orientation">vertical</property>
-                            <property name="spacing">12</property>
-                            <child>
-                              <object class="GtkButton" id="_open_image_button">
-                                <property name="halign">center</property>
-                                <property name="label" translatable="yes">_Open Image</property>
-                                <property name="use-underline">1</property>
-                                <signal name="clicked" handler="_on_open_image_button_clicked_cb" swapped="no"/>
-                                <style>
-                                  <class name="suggested-action"/>
-                                  <class name="pill"/>
-                                </style>
+                          <object class="GtkStackPage">
+                            <property name="name">open-image</property>
+                            <property name="child">
+                              <object class="AdwStatusPage">
+                                <property name="title" translatable="yes">Open Image</property>
+                                <property name="description" translatable="yes">Add image that you want to change.</property>
+                                <property name="icon_name">image-missing-symbolic</property>
+                                <child>
+                                  <object class="GtkBox">
+                                    <property name="orientation">vertical</property>
+                                    <property name="spacing">12</property>
+                                    <child>
+                                      <object class="GtkButton" id="_open_image_button">
+                                        <property name="halign">center</property>
+                                        <property name="label" translatable="yes">_Open Image</property>
+                                        <property name="use-underline">1</property>
+                                        <signal name="clicked" handler="_on_open_image_button_clicked_cb" swapped="no"/>
+                                        <style>
+                                          <class name="suggested-action"/>
+                                          <class name="pill"/>
+                                        </style>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
                               </object>
-                            </child>
+                            </property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkStackPage">
+                            <property name="name">show-image</property>
+                            <property name="child">
+                              <object class="AdwBin" id="_image_bin">
+                                <property name="margin_top">12</property>
+                                <property name="margin_bottom">12</property>
+                                <property name="margin_start">12</property>
+                                <property name="margin_end">12</property>
+                                <property name="halign">center</property>
+                                <property name="valign">center</property>
+                              </object>
+                            </property>
                           </object>
                         </child>
                       </object>
-                    </property>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkStackPage">
-                    <property name="name">show-image</property>
-                    <property name="child">
-                      <object class="AdwBin" id="_image_bin">
-                        <property name="halign">center</property>
-                        <property name="valign">center</property>
+                    </child>
+                    <child>
+                      <object class="GtkSeparator" id="_separator">
+                        <property name="orientation">vertical</property>
+                        <property name="visible">false</property>
+                        <property name="margin-end">24</property>
+                        <property name="margin-start">24</property>
                       </object>
-                    </property>
+                    </child>
+                    <child>
+                      <object class="GtkFlowBox" id="_flow_box">
+                        <property name="visible">false</property>
+                        <property name="valign">start</property>
+                        <property name="halign">center</property>
+                        <property name="vexpand">True</property>
+                        <property name="hexpand">True</property>
+                        <property name="row-spacing">12</property>
+                        <property name="column-spacing">12</property>
+                        <property name="max-children-per-line">1</property>
+                      </object>
+                    </child>
                   </object>
                 </child>
               </object>
             </child>
           </object>
         </child>
-      </object>
-    </child>
-    <child>
-      <object class="GtkSeparator" id="_separator">
-        <property name="orientation">vertical</property>
-        <property name="visible">false</property>
-      </object>
-    </child>
-    <child>
-      <object class="GtkFlowBox" id="_flow_box">
-        <property name="visible">false</property>
-        <property name="valign">start</property>
-        <property name="halign">center</property>
-        <property name="vexpand">True</property>
-        <property name="hexpand">True</property>
-        <property name="row-spacing">12</property>
-        <property name="column-spacing">12</property>
-        <property name="margin_top">12</property>
-        <property name="margin_bottom">12</property>
-        <property name="margin_start">12</property>
-        <property name="margin_end">12</property>
-        <property name="min-children-per-line">2</property>
-        <property name="max-children-per-line">2</property>
       </object>
     </child>
   </template>
