@@ -90,7 +90,7 @@ class TextToImageRunner(GObject.Object):
 
         for i in range(n_images):
             file_name = os.path.join(GLib.get_user_cache_dir(),
-                                     f"image_{i}.png")
+                                     f"t2i_image_{i}.png")
             result.images[i].save(file_name)
 
         child_connection.send('SENTINEL')

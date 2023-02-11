@@ -158,7 +158,7 @@ class TextToImagePage(Gtk.Box):
                 dest_file: Gio.File = dialog.get_file()
                 curr_file: Gio.File = Gio.File.new_for_path(
                     os.path.join(GLib.get_user_cache_dir(),
-                                 f"image_{image}.png")
+                                 f"t2i_image_{image}.png")
                 )
 
                 button: Gtk.Button = user_data[0]
