@@ -62,6 +62,10 @@ class DownloadManager(GObject.Object):
                                 None,
                                 self._progress_cb, i)
 
+        self._current_file = None
+
+        self.emit("finished")
+
     def _progress_cb(self, current_num_bytes, total_num_bytes, i):
         fraction = current_num_bytes / total_num_bytes
 
@@ -102,6 +106,7 @@ class DownloadManager(GObject.Object):
     def cancel(self):
         if self._task_cancellable:
             self._task_cancellable.cancel()
-            self._current_file.remove()
+            if self._current_file is not None:
+                self._current_file.remove()
 
         self.emit("cancelled")
