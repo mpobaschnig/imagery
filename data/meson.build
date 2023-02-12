@@ -36,4 +36,13 @@ if compile_schemas.found()
        args: ['--strict', '--dry-run', meson.current_source_dir()])
 endif
 
+gnome.compile_resources(
+  'resources',
+  'resources.gresource.xml',
+  gresource_bundle: true,
+  source_dir: meson.current_build_dir(),
+  install: true,
+  install_dir: join_paths(get_option('prefix'), get_option('datadir'), meson.project_name()),
+)
+
 subdir('icons')

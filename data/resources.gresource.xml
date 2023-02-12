@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/io/github/mpobaschnig/Imagery">
+    <file preprocess="xml-stripblanks">ui/help-overlay.ui</file>
+    <file preprocess="xml-stripblanks">ui/window.ui</file>
+    <file preprocess="xml-stripblanks">ui/start_page.ui</file>
+    <file preprocess="xml-stripblanks">ui/text_to_image_page.ui</file>
+    <file preprocess="xml-stripblanks">ui/image_to_image_page.ui</file>
+    <file preprocess="xml-stripblanks">ui/preferences.ui</file>
+
+    <file preprocess="xml-stripblanks">icons/scalable/pci-card-symbolic.svg</file>
+  </gresource>
+</gresources>

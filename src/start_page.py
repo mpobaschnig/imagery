@@ -25,7 +25,7 @@ from .download_manager import DownloadManager
 from .model_files import sd15_files
 
 
-@Gtk.Template(resource_path='/io/github/mpobaschnig/Imagery/start_page.ui')
+@Gtk.Template(resource_path='/io/github/mpobaschnig/Imagery/ui/start_page.ui')
 class StartPage(Gtk.Box):
     __gtype_name__ = "StartPage"
 

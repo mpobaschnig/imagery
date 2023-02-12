@@ -25,7 +25,7 @@ from gi.repository import Adw, Gio, Gtk
 from .model_files import all_files_available
 
 
-@Gtk.Template(resource_path='/io/github/mpobaschnig/Imagery/window.ui')
+@Gtk.Template(resource_path='/io/github/mpobaschnig/Imagery/ui/window.ui')
 class ImageryWindow(Adw.ApplicationWindow):
     class PageState(Enum):
         START = 0

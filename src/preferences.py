@@ -22,7 +22,7 @@ import os
 from gi.repository import Adw, Gio, GLib, Gtk
 
 
-@Gtk.Template(resource_path='/io/github/mpobaschnig/Imagery/preferences.ui')
+@Gtk.Template(resource_path='/io/github/mpobaschnig/Imagery/ui/preferences.ui')
 class Preferences(Adw.PreferencesWindow):
     __gtype_name__ = "PreferencesDialog"
 

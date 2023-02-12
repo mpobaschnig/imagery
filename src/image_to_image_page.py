@@ -30,7 +30,7 @@ from .image_to_image_runner import ImageToImageRunner
 from .prompt_ideas import prompt_idea_categories
 
 
-@Gtk.Template(resource_path='/io/github/mpobaschnig/Imagery/image_to_image_page.ui')
+@Gtk.Template(resource_path='/io/github/mpobaschnig/Imagery/ui/image_to_image_page.ui')
 class ImageToImagePage(Gtk.Box):
     class PageState(Enum):
         START = 0
