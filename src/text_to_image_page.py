@@ -181,6 +181,8 @@ class TextToImagePage(Gtk.Box):
             self._spinner.set_spinning(True)
             self._spin_button.set_visible(True)
 
+            self._prompt_text_view.set_sensitive(False)
+
             self._run_button.set_visible(False)
             self._cancel_run_button.set_visible(True)
             self._settings_menu_button.set_sensitive(False)
@@ -195,6 +197,8 @@ class TextToImagePage(Gtk.Box):
         else:
             self._spin_button.set_visible(False)
             self._spinner.set_spinning(False)
+
+            self._prompt_text_view.set_sensitive(True)
 
             self._run_button.set_visible(True)
             self._cancel_run_button.set_visible(False)
