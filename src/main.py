@@ -65,7 +65,7 @@ class ImageryApplication(Adw.Application):
     def on_about_action(self, _widget, _):
         """Callback for the app.about action."""
         about = Adw.AboutWindow(transient_for=self.props.active_window,
-                                application_name='imagery',
+                                application_name='Imagery',
                                 application_icon='io.github.mpobaschnig.Imagery',
                                 developer_name='Martin Pobaschnig',
                                 version='0.1.0',
