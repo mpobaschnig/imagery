@@ -15,142 +15,177 @@
             <property name="orientation">vertical</property>
             <property name="spacing">12</property>
             <child>
-              <object class="GtkListBox" id="_list_box">
-                <property name="selection-mode">none</property>
-                <style>
-                  <class name="boxed-list"/>
-                </style>
+              <object class="GtkOverlay">
                 <child>
-                  <object class="AdwEntryRow" id="_prompt_entry">
-                    <property name="title" translatable="yes">Prompt</property>
-                    <signal name="changed" handler="_on_prompt_entry_changed" swapped="no"/>
+                  <object class="GtkTextView" id="_prompt_text_view">
+                    <property name="height-request">124</property>
+                    <property name="top-margin">8</property>
+                    <property name="left-margin">8</property>
+                    <property name="right-margin">8</property>
+                    <property name="bottom-margin">8</property>
+                    <property name="wrap-mode">word</property>
+                    <property name="hexpand">True</property>
+                    <style>
+                      <class name="card"/>
+                    </style>
+                  </object>
+                </child>
+                <child type="overlay">
+                  <object class="GtkBox">
+                    <property name="halign">end</property>
+                    <property name="valign">end</property>
+                    <property name="margin-end">6</property>
+                    <property name="margin-bottom">6</property>
                     <child>
-                      <object class="GtkBox">
-                        <property name="spacing">6</property>
-                        <child>
-                          <object class="GtkMenuButton" id="_settings_menu_button">
-                            <property name="icon-name">emblem-system-symbolic</property>
-                            <property name="valign">center</property>
-                            <property name="popover">
-                              <object class="GtkPopover">
+                      <object class="GtkMenuButton" id="_prompt_ideas_menu_button">
+                        <property name="icon-name">accessories-dictionary-symbolic</property>
+                        <property name="popover">
+                          <object class="GtkPopover">
+                            <property name="width-request">640</property>
+                            <property name="height-request">480</property>
+                            <child>
+                              <object class="GtkScrolledWindow" id="_prompt_ideas_scrolled_window">
+                                <property name="vscrollbar-policy">automatic</property>
+                                <property name="hscrollbar-policy">automatic</property>
+                                <property name="vexpand">True</property>
+                                <property name="margin-top">24</property>
                                 <child>
-                                  <object class="GtkListBox">
-                                    <property name="selection-mode">none</property>
-                                    <style>
-                                      <class name="boxed-list"/>
-                                    </style>
+                                  <object class="GtkBox" id="_prompt_ideas_box">
+                                    <property name="orientation">vertical</property>
+                                    <property name="margin-end">24</property>
+                                    <property name="margin-start">24</property>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+                          </object>
+                        </property>
+                        <style>
+                          <class name="flat"/>
+                        </style>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuButton" id="_settings_menu_button">
+                        <property name="icon-name">emblem-system-symbolic</property>
+                        <property name="popover">
+                          <object class="GtkPopover">
+                            <child>
+                              <object class="GtkListBox">
+                                <property name="selection-mode">none</property>
+                                <style>
+                                  <class name="boxed-list"/>
+                                </style>
+                                <child>
+                                  <object class="AdwActionRow">
+                                    <property name="title" translatable="yes">Strength</property>
                                     <child>
-                                      <object class="AdwActionRow">
-                                        <property name="title" translatable="yes">Strength</property>
-                                        <child>
-                                          <object class="GtkSpinButton" id="_strength_spin_button">
-                                            <property name="valign">center</property>
-                                            <property name="digits">1</property>
-                                            <property name="adjustment">
-                                              <object class="GtkAdjustment">
-                                                <property name="lower">0</property>
-                                                <property name="upper">1</property>
-                                                <property name="value">0.8</property>
-                                                <property name="step_increment">0.1</property>
-                                                <property name="page_increment">0.1</property>
-                                              </object>
-                                            </property>
+                                      <object class="GtkSpinButton" id="_strength_spin_button">
+                                        <property name="valign">center</property>
+                                        <property name="digits">1</property>
+                                        <property name="adjustment">
+                                          <object class="GtkAdjustment">
+                                            <property name="lower">0</property>
+                                            <property name="upper">1</property>
+                                            <property name="value">0.8</property>
+                                            <property name="step_increment">0.1</property>
+                                            <property name="page_increment">0.1</property>
                                           </object>
-                                        </child>
+                                        </property>
                                       </object>
                                     </child>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="AdwActionRow">
+                                    <property name="title" translatable="yes">Guidance Scale</property>
                                     <child>
-                                      <object class="AdwActionRow">
-                                        <property name="title" translatable="yes">Guidance Scale</property>
-                                        <child>
-                                          <object class="GtkSpinButton" id="_guidance_scale_spin_button">
-                                            <property name="valign">center</property>
-                                            <property name="digits">1</property>
-                                            <property name="adjustment">
-                                              <object class="GtkAdjustment">
-                                                <property name="lower">0</property>
-                                                <property name="upper">100</property>
-                                                <property name="value">7.5</property>
-                                                <property name="step_increment">0.1</property>
-                                                <property name="page_increment">0.1</property>
-                                              </object>
-                                            </property>
+                                      <object class="GtkSpinButton" id="_guidance_scale_spin_button">
+                                        <property name="valign">center</property>
+                                        <property name="digits">1</property>
+                                        <property name="adjustment">
+                                          <object class="GtkAdjustment">
+                                            <property name="lower">0</property>
+                                            <property name="upper">100</property>
+                                            <property name="value">7.5</property>
+                                            <property name="step_increment">0.1</property>
+                                            <property name="page_increment">0.1</property>
                                           </object>
-                                        </child>
+                                        </property>
                                       </object>
                                     </child>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="AdwActionRow">
+                                    <property name="title" translatable="yes">Inference Steps</property>
                                     <child>
-                                      <object class="AdwActionRow">
-                                        <property name="title" translatable="yes">Inference Steps</property>
-                                        <child>
-                                          <object class="GtkSpinButton" id="_inference_steps_spin_button">
-                                            <property name="valign">center</property>
-                                            <property name="adjustment">
-                                              <object class="GtkAdjustment">
-                                                <property name="lower">1</property>
-                                                <property name="upper">200</property>
-                                                <property name="value">50</property>
-                                                <property name="step_increment">1</property>
-                                                <property name="page_increment">1</property>
-                                              </object>
-                                            </property>
+                                      <object class="GtkSpinButton" id="_inference_steps_spin_button">
+                                        <property name="valign">center</property>
+                                        <property name="adjustment">
+                                          <object class="GtkAdjustment">
+                                            <property name="lower">1</property>
+                                            <property name="upper">200</property>
+                                            <property name="value">50</property>
+                                            <property name="step_increment">1</property>
+                                            <property name="page_increment">1</property>
                                           </object>
-                                        </child>
+                                        </property>
                                       </object>
                                     </child>
+                                  </object>
+                                </child>
+                                <child>
+                                  <object class="AdwActionRow">
+                                    <property name="title" translatable="yes">Number of Images</property>
                                     <child>
-                                      <object class="AdwActionRow">
-                                        <property name="title" translatable="yes">Number of Images</property>
-                                        <child>
-                                          <object class="GtkSpinButton" id="_number_images_spin_button">
-                                            <property name="valign">center</property>
-                                            <property name="adjustment">
-                                              <object class="GtkAdjustment">
-                                                <property name="lower">1</property>
-                                                <property name="upper">12</property>
-                                                <property name="value">1</property>
-                                                <property name="step_increment">1</property>
-                                                <property name="page_increment">1</property>
-                                              </object>
-                                            </property>
+                                      <object class="GtkSpinButton" id="_number_images_spin_button">
+                                        <property name="valign">center</property>
+                                        <property name="adjustment">
+                                          <object class="GtkAdjustment">
+                                            <property name="lower">1</property>
+                                            <property name="upper">12</property>
+                                            <property name="value">1</property>
+                                            <property name="step_increment">1</property>
+                                            <property name="page_increment">1</property>
                                           </object>
-                                        </child>
+                                        </property>
                                       </object>
                                     </child>
                                   </object>
                                 </child>
                               </object>
-                            </property>
-                            <style>
-                              <class name="flat"/>
-                            </style>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkButton" id="_run_button">
-                            <property name="sensitive">False</property>
-                            <property name="valign">center</property>
-                            <property name="icon_name">media-playback-start-symbolic</property>
-                            <signal name="clicked" handler="_on_run_button_clicked" swapped="no"/>
-                            <style>
-                              <class name="flat"/>
-                            </style>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkButton" id="_spin_button">
-                            <property name="sensitive">True</property>
-                            <property name="visible">False</property>
-                            <property name="valign">center</property>
-                            <child>
-                              <object class="GtkSpinner" id="_spinner">
-                              </object>
                             </child>
-                            <style>
-                              <class name="flat"/>
-                            </style>
+                          </object>
+                        </property>
+                        <style>
+                          <class name="flat"/>
+                        </style>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="_run_button">
+                        <property name="sensitive">False</property>
+                        <property name="valign">center</property>
+                        <property name="icon_name">media-playback-start-symbolic</property>
+                        <signal name="clicked" handler="_on_run_button_clicked" swapped="no"/>
+                        <style>
+                          <class name="flat"/>
+                        </style>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="_spin_button">
+                        <property name="sensitive">True</property>
+                        <property name="visible">False</property>
+                        <property name="valign">center</property>
+                        <child>
+                          <object class="GtkSpinner" id="_spinner">
                           </object>
                         </child>
+                        <style>
+                          <class name="flat"/>
+                        </style>
                       </object>
                     </child>
                   </object>

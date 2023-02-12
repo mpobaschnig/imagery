@@ -27,6 +27,7 @@ from typing import List, Optional
 from gi.repository import Adw, Gio, GLib, Gtk
 
 from .image_to_image_runner import ImageToImageRunner
+from .prompt_ideas import prompt_idea_categories
 
 
 @Gtk.Template(resource_path='/io/github/mpobaschnig/Imagery/image_to_image_page.ui')
@@ -42,9 +43,7 @@ class ImageToImagePage(Gtk.Box):
     _flow_box: Gtk.FlowBox = Gtk.Template.Child()
     _generating_progress_bar: Gtk.ProgressBar = Gtk.Template.Child()
     _inference_steps_spin_button: Gtk.SpinButton = Gtk.Template.Child()
-    _list_box: Gtk.ListBox = Gtk.Template.Child()
     _number_images_spin_button: Gtk.SpinButton = Gtk.Template.Child()
-    _prompt_entry: Adw.EntryRow = Gtk.Template.Child()
     _run_button: Gtk.Button = Gtk.Template.Child()
     _cancel_run_button: Gtk.Button = Gtk.Template.Child()
     _open_image_button: Gtk.Button = Gtk.Template.Child()
@@ -57,6 +56,8 @@ class ImageToImagePage(Gtk.Box):
     _spin_button: Gtk.Button = Gtk.Template.Child()
     _spinner: Gtk.Spinner = Gtk.Template.Child()
     _image_path: Optional[str] = None
+    _prompt_ideas_box: Gtk.Box = Gtk.Template.Child()
+    _prompt_text_view: Gtk.TextView = Gtk.Template.Child()
 
     def __init__(self, orientation=None, spacing=None):
         super().__init__(orientation, spacing)
@@ -66,6 +67,12 @@ class ImageToImagePage(Gtk.Box):
         self._image_to_image_runner.connect("update", self._update)
         self._image_to_image_runner.connect("finished", self._finished)
         self._image_to_image_runner.connect("cancelled", self._cancelled)
+
+        self._prompt_text_view.get_buffer().connect(
+            "changed", self._on_prompt_text_view_buffer_change_cb
+        )
+
+        self._fill_prompt_box()
 
         self.page_state: self.PageState = self.PageState.START
 
@@ -101,6 +108,52 @@ class ImageToImagePage(Gtk.Box):
 
     def _cancelled(self, _):
         self.page_state = self.PageState.START
+
+    def _fill_prompt_box(self):
+        def _append_text(button: Gtk.Button, text_view: Gtk.TextView) -> None:
+            start, end = text_view.get_buffer().get_bounds()
+            text: str = str(text_view.get_buffer().get_text(start, end, False))
+            idea: str = str(button.get_label())
+
+            text = text.strip()
+
+            if text == "":
+                text = f"{idea}, "
+            elif text.endswith(","):
+                text += f" {idea}"
+            else:
+                text += f", {idea}"
+
+            text_view.get_buffer().set_text(text)
+
+        box: Gtk.Box = self._prompt_ideas_box
+        box.set_spacing(12)
+
+        label: Gtk.Label = Gtk.Label()
+        label.set_text(i18n("Here are some prompt ideas!"))
+        label.add_css_class("title-2")
+        box.append(label)
+
+        for category, examples in prompt_idea_categories.items():
+            label: Gtk.Label = Gtk.Label()
+            label.set_text(category)
+            label.set_halign(Gtk.Align.START)
+            label.add_css_class("title-4")
+
+            box.append(label)
+
+            flow_box: Gtk.FlowBox = Gtk.FlowBox()
+            flow_box.set_homogeneous(False)
+
+            for example in examples:
+                button: Gtk.Button = Gtk.Button()
+                button.set_label(example)
+                button.connect("clicked",
+                               _append_text,
+                               self._prompt_text_view)
+                flow_box.append(button)
+
+            box.append(flow_box)
 
     @property
     def page_state(self) -> PageState:
@@ -234,7 +287,8 @@ class ImageToImagePage(Gtk.Box):
     @Gtk.Template.Callback()
     def _on_run_button_clicked(self, _button):
         image_path = self._image_path
-        prompt = str(self._prompt_entry.get_text())
+        start, end = self._prompt_text_view.get_buffer().get_bounds()
+        prompt = str(self._prompt_text_view.get_buffer().get_text(start, end, False))
         strength = float(self._strength_spin_button.get_value())
         guidance_scale = float(self._guidance_scale_spin_button.get_value())
         inf_steps = int(self._inference_steps_spin_button.get_value())
@@ -254,13 +308,15 @@ class ImageToImagePage(Gtk.Box):
         )
 
     def _check_run_button_sensitivity(self):
-        if self._prompt_entry.get_text() and self._image_path is not None:
+        buffer = self._prompt_text_view.get_buffer()
+        start, end = buffer.get_bounds()
+        text = buffer.get_text(start, end, False)
+        if text and self._image_path is not None:
             self._run_button.set_sensitive(True)
         else:
             self._run_button.set_sensitive(False)
 
-    @Gtk.Template.Callback()
-    def _on_prompt_entry_changed(self, _entry):
+    def _on_prompt_text_view_buffer_change_cb(self, _buffer: Gtk.TextBuffer) -> None:
         self._check_run_button_sensitivity()
 
     @Gtk.Template.Callback()
