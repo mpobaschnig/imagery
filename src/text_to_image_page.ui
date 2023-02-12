@@ -15,23 +15,33 @@
             <property name="orientation">vertical</property>
             <property name="spacing">12</property>
             <child>
-              <object class="GtkListBox" id="_list_box">
-                <property name="selection-mode">none</property>
-                <property name="valign">start</property>
-                <style>
-                  <class name="boxed-list"/>
-                </style>
+              <object class="GtkBox">
+                <property name="hexpand">True</property>
                 <child>
-                  <object class="AdwEntryRow" id="_prompt_entry">
-                    <property name="title" translatable="yes">Prompt</property>
-                    <signal name="changed" handler="_on_prompt_entry_changed" swapped="no"/>
+                  <object class="GtkOverlay">
                     <child>
+                      <object class="GtkTextView" id="_prompt_text_view">
+                        <property name="height-request">124</property>
+                        <property name="top-margin">8</property>
+                        <property name="left-margin">8</property>
+                        <property name="right-margin">8</property>
+                        <property name="bottom-margin">8</property>
+                        <property name="wrap-mode">word</property>
+                        <property name="hexpand">True</property>
+                        <style>
+                          <class name="card"/>
+                        </style>
+                      </object>
+                    </child>
+                    <child type="overlay">
                       <object class="GtkBox">
-                        <property name="spacing">6</property>
+                        <property name="halign">end</property>
+                        <property name="valign">end</property>
+                        <property name="margin-end">6</property>
+                        <property name="margin-bottom">6</property>
                         <child>
                           <object class="GtkMenuButton" id="_prompt_ideas_menu_button">
                             <property name="icon-name">accessories-dictionary-symbolic</property>
-                            <property name="valign">center</property>
                             <property name="popover">
                               <object class="GtkPopover">
                                 <property name="width-request">640</property>
@@ -61,7 +71,6 @@
                         <child>
                           <object class="GtkMenuButton" id="_settings_menu_button">
                             <property name="icon-name">emblem-system-symbolic</property>
-                            <property name="valign">center</property>
                             <property name="popover">
                               <object class="GtkPopover">
                                 <child>

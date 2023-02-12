@@ -24,7 +24,7 @@ from enum import Enum
 from gettext import gettext as i18n
 from typing import List
 
-from gi.repository import Adw, Gio, GLib, Gtk
+from gi.repository import Gio, GLib, Gtk
 
 from .text_to_image_runner import TextToImageRunner
 from .prompt_ideas import prompt_idea_categories
@@ -44,9 +44,7 @@ class TextToImagePage(Gtk.Box):
     _generating_progress_bar: Gtk.ProgressBar = Gtk.Template.Child()
     _height_spin_button: Gtk.SpinButton = Gtk.Template.Child()
     _inference_steps_spin_button: Gtk.SpinButton = Gtk.Template.Child()
-    _list_box: Gtk.ListBox = Gtk.Template.Child()
     _number_images_spin_button: Gtk.SpinButton = Gtk.Template.Child()
-    _prompt_entry: Adw.EntryRow = Gtk.Template.Child()
     _run_button: Gtk.Button = Gtk.Template.Child()
     _scheduler_drop_down: Gtk.DropDown = Gtk.Template.Child()
     _width_spin_button: Gtk.SpinButton = Gtk.Template.Child()
@@ -56,6 +54,7 @@ class TextToImagePage(Gtk.Box):
     _prompt_ideas_scrolled_window: Gtk.ScrolledWindow = Gtk.Template.Child()
     _flow_box_scrolled_window: Gtk.ScrolledWindow = Gtk.Template.Child()
     _prompt_ideas_box: Gtk.Box = Gtk.Template.Child()
+    _prompt_text_view: Gtk.TextView = Gtk.Template.Child()
 
     _flow_box_pictures: List[Gtk.Picture] = []
 
@@ -67,6 +66,10 @@ class TextToImagePage(Gtk.Box):
         self._text_to_image_runner.connect("update", self._update)
         self._text_to_image_runner.connect("finished", self._finished)
         self._text_to_image_runner.connect("cancelled", self._cancelled)
+
+        self._prompt_text_view.get_buffer().connect(
+            "changed", self._on_prompt_text_view_buffer_change_cb
+        )
 
         self._fill_prompt_box()
 
@@ -106,8 +109,9 @@ class TextToImagePage(Gtk.Box):
         self.page_state = self.PageState.START
 
     def _fill_prompt_box(self):
-        def _append_text(button: Gtk.Button, entry: Adw.EntryRow) -> None:
-            text: str = str(entry.get_text())
+        def _append_text(button: Gtk.Button, text_view: Gtk.TextView) -> None:
+            start, end = text_view.get_buffer().get_bounds()
+            text: str = str(text_view.get_buffer().get_text(start, end, False))
             idea: str = str(button.get_label())
 
             text = text.strip()
@@ -119,7 +123,7 @@ class TextToImagePage(Gtk.Box):
             else:
                 text += f", {idea}"
 
-            entry.set_text(text)
+            text_view.get_buffer().set_text(text)
 
         box: Gtk.Box = self._prompt_ideas_box
         box.set_spacing(12)
@@ -145,7 +149,7 @@ class TextToImagePage(Gtk.Box):
                 button.set_label(example)
                 button.connect("clicked",
                                _append_text,
-                               self._prompt_entry)
+                               self._prompt_text_view)
                 flow_box.append(button)
 
             box.append(flow_box)
@@ -285,7 +289,8 @@ class TextToImagePage(Gtk.Box):
     @Gtk.Template.Callback()
     def _on_run_button_clicked(self, _button):
         scheduler = str(self._scheduler_drop_down.get_selected_item().get_string())
-        prompt = str(self._prompt_entry.get_text())
+        start, end = self._prompt_text_view.get_buffer().get_bounds()
+        prompt = str(self._prompt_text_view.get_buffer().get_text(start, end, False))
         height = int(self._width_spin_button.get_value())
         width = int(self._height_spin_button.get_value())
         inf_steps = int(self._inference_steps_spin_button.get_value())
@@ -304,9 +309,9 @@ class TextToImagePage(Gtk.Box):
             n_images
         )
 
-    @Gtk.Template.Callback()
-    def _on_prompt_entry_changed(self, _entry):
-        if self._prompt_entry.get_text():
+    def _on_prompt_text_view_buffer_change_cb(self, buffer: Gtk.TextBuffer) -> None:
+        start, end = buffer.get_bounds()
+        if buffer.get_text(start, end, False):
             self._run_button.set_sensitive(True)
         else:
             self._run_button.set_sensitive(False)
