@@ -23,6 +23,7 @@ from gettext import gettext as i18n
 from gi.repository import Adw, Gio, Gtk
 
 from .model_files import all_files_available
+from .settings_manager import is_model_download_finished, set_model_download_finished
 
 
 @Gtk.Template(resource_path='/io/github/mpobaschnig/Imagery/ui/window.ui')
@@ -48,7 +49,7 @@ class ImageryWindow(Adw.ApplicationWindow):
         self.create_action('text_to_image', self._on_text_to_image_clicked)
         self.create_action('image_to_image', self._on_image_to_image_clicked)
 
-        if all_files_available():
+        if is_model_download_finished():
             self._header_bar.remove_css_class("flat")
             self._settings_menu_button.set_visible(True)
             self.page_state = self.PageState.TEXT_TO_IMAGE

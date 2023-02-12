@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist gettext-domain="imagery">
-	<schema id="io.github.mpobaschnig.Imagery" path="/io/github/mpobaschnig/Imagery/">
+    <schema id="io.github.mpobaschnig.Imagery" path="/io/github/mpobaschnig/Imagery/">
         <key type="b" name="allow-nsfw">
             <default>false</default>
             <summary>Allow generating Not Safe For Work images.</summary>
             <description></description>
         </key>
-	</schema>
+        <key type="b" name="download-finished">
+            <default>false</default>
+            <summary>Boolean value indicating if the model has successfully been download.</summary>
+            <description></description>
+        </key>
+    </schema>
 </schemalist>

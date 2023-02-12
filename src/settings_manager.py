@@ -24,3 +24,11 @@ settings = Gio.Settings.new("io.github.mpobaschnig.Imagery")
 
 def is_nsfw_allowed() -> bool:
     return settings.get_boolean("allow-nsfw")
+
+
+def is_model_download_finished() -> bool:
+    return settings.get_boolean("download-finished")
+
+
+def set_model_download_finished() -> bool:
+    return settings.set_boolean("download-finished", True)

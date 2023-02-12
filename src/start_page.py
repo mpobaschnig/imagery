@@ -24,6 +24,7 @@ from gi.repository import Adw, GObject, Gtk
 
 from .download_manager import DownloadManager
 from .model_files import sd15_files
+from .settings_manager import set_model_download_finished
 
 
 @Gtk.Template(resource_path='/io/github/mpobaschnig/Imagery/ui/start_page.ui')
@@ -88,6 +89,8 @@ class StartPage(Gtk.Box):
         self._progress_bar.set_text(i18n("Download finished."))
         self._continue_button.set_visible(True)
         self._cancel_download_button.set_visible(False)
+
+        set_model_download_finished()
 
     def _check_cuda_support(self):
         if torch.cuda.is_available():
