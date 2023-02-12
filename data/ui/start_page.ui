@@ -2,76 +2,140 @@
 <interface>
   <template class="StartPage" parent="GtkBox">
     <property name="orientation">vertical</property>
+    <property name="margin-start">12</property>
+    <property name="margin-end">12</property>
+    <property name="margin-top">12</property>
+    <property name="margin-bottom">12</property>
     <child>
-      <object class="AdwStatusPage">
-        <property name="vexpand">1</property>
-        <property name="icon-name">io.github.mpobaschnig.Imagery</property>
-        <property name="title" translatable="yes">Imagery</property>
-        <property name="description" translatable="yes">Create images at will</property>
+      <object class="GtkOverlay">
         <child>
-          <object class="GtkBox">
-            <property name="orientation">vertical</property>
-            <property name="spacing">12</property>
+          <object class="AdwCarousel" id="_carousel">
+            <property name="hexpand">True</property>
+            <property name="vexpand">True</property>
             <child>
-              <object class="AdwClamp">
-                <property name="maximum-size">360</property>
+              <object class="AdwStatusPage">
+                <property name="vexpand">True</property>
+                <property name="hexpand">True</property>
+                <property name="icon-name">io.github.mpobaschnig.Imagery</property>
+                <property name="title" translatable="yes">Welcome to Imagery</property>
+                <property name="description" translatable="yes">We only need to check a few things up and set everything up.</property>
+              </object>
+            </child>
+            <child>
+              <object class="AdwStatusPage" id="_status_page_acceleration">
+                <property name="vexpand">True</property>
+                <property name="hexpand">True</property>
+                <property name="icon-name">pci-card-symbolic</property>
                 <child>
-                  <object class="GtkProgressBar" id="_progress_bar">
-                    <property name="visible">false</property>
+                  <object class="GtkLabel" id="_acceleration_hint">
+                    <property name="visible">False</property>
+                    <property name="label" translatable="yes">To check if your graphics card is suitable for machine learning acceleration, click &lt;a href="https://github.com/mpobaschnig/imagery/wiki/Graphics-Card-Support/">here&lt;/a&gt;.</property>
+                    <property name="use-markup">True</property>
+                    <property name="wrap">True</property>
                   </object>
                 </child>
               </object>
             </child>
             <child>
-              <object class="GtkButton" id="_download_model_button">
-                <property name="halign">center</property>
-                <property name="label" translatable="yes">_Download Model</property>
-                <property name="use-underline">1</property>
-                <signal name="clicked" handler="_on_download_model_button_clicked" swapped="no"/>
-                <style>
-                  <class name="suggested-action"/>
-                  <class name="pill"/>
-                </style>
-              </object>
-            </child>
-            <child>
-              <object class="GtkButton" id="_cancel_download_button">
-                <property name="halign">center</property>
-                <property name="label" translatable="yes">_Cancel Download</property>
-                <property name="use-underline">1</property>
-                <property name="visible">False</property>
-                <signal name="clicked" handler="_on_cancel_download_button_clicked" swapped="no"/>
-                <style>
-                  <class name="destructive-action"/>
-                  <class name="pill"/>
-                </style>
-              </object>
-            </child>
-            <child>
-              <object class="GtkButton" id="_continue_button">
-                <property name="halign">center</property>
-                <property name="label" translatable="yes">_Continue</property>
-                <property name="use-underline">1</property>
-                <property name="visible">False</property>
-                <signal name="clicked" handler="_on_continue_button_clicked" swapped="no"/>
-                <style>
-                  <class name="suggested-action"/>
-                  <class name="pill"/>
-                </style>
-              </object>
-            </child>
-            <child>
-              <object class="GtkLabel" id="_model_license_hint_label">
-                <property name="label" translatable="yes">By downloading, you accept the &lt;a href="https://github.com/CompVis/stable-diffusion/blob/21f890f9da3cfbeaba8e2ac3c425ee9e998d5229/LICENSE/">CreativeML Open RAIL-M license&lt;/a&gt;</property>
-                <property name="use-markup">True</property>
-                <property name="wrap">True</property>
-                <style>
-                  <class name="dim-label"/>
-                </style>
+              <object class="AdwStatusPage">
+                <property name="vexpand">True</property>
+                <property name="hexpand">True</property>
+                <property name="icon-name">item-missing-symbolic</property>
+                <property name="title" translatable="yes">Stable Diffusion Model Missing</property>
+                <property name="description" translatable="yes">Imagery needs the Stable Diffusion model to generate images. The Stable Diffusion model needs about 18 GB of disk space.</property>
+                <child>
+                  <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <property name="valign">center</property>
+                    <property name="halign">center</property>
+                    <property name="spacing">12</property>
+                    <child>
+                      <object class="GtkButton" id="_download_model_button">
+                        <property name="label" translatable="yes">_Download Model</property>
+                        <property name="halign">center</property>
+                        <property name="use-underline">1</property>
+                        <signal name="clicked" handler="_on_download_model_button_clicked" swapped="no"/>
+                        <style>
+                          <class name="suggested-action"/>
+                          <class name="pill"/>
+                        </style>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="_cancel_download_button">
+                        <property name="halign">center</property>
+                        <property name="label" translatable="yes">_Cancel Download</property>
+                        <property name="use-underline">1</property>
+                        <property name="visible">False</property>
+                        <signal name="clicked" handler="_on_cancel_download_button_clicked" swapped="no"/>
+                        <style>
+                          <class name="destructive-action"/>
+                          <class name="pill"/>
+                        </style>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="_continue_button">
+                        <property name="halign">center</property>
+                        <property name="label" translatable="yes">_Continue</property>
+                        <property name="use-underline">1</property>
+                        <property name="visible">False</property>
+                        <signal name="clicked" handler="_on_continue_button_clicked" swapped="no"/>
+                        <style>
+                          <class name="suggested-action"/>
+                          <class name="pill"/>
+                        </style>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="_model_license_hint_label">
+                        <property name="label" translatable="yes">By downloading, you accept the &lt;a href="https://github.com/CompVis/stable-diffusion/blob/21f890f9da3cfbeaba8e2ac3c425ee9e998d5229/LICENSE/">CreativeML Open RAIL-M license&lt;/a&gt;</property>
+                        <property name="use-markup">True</property>
+                        <property name="wrap">True</property>
+                        <style>
+                          <class name="dim-label"/>
+                        </style>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkProgressBar" id="_progress_bar">
+                        <property name="visible">false</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
               </object>
             </child>
           </object>
         </child>
+        <child type="overlay">
+          <object class="GtkButton" id="_previous_button">
+            <property name="visible">False</property>
+            <property name="halign">start</property>
+            <property name="valign">center</property>
+            <property name="icon-name">go-previous-symbolic</property>
+            <signal name="clicked" handler="_on_previous_button_clicked" swapped="no"/>
+            <style>
+              <class name="circular"/>
+            </style>
+          </object>
+        </child>
+        <child type="overlay">
+          <object class="GtkButton" id="_next_button">
+            <property name="halign">end</property>
+            <property name="valign">center</property>
+            <property name="icon-name">go-next-symbolic</property>
+            <signal name="clicked" handler="_on_next_button_clicked" swapped="no"/>
+            <style>
+              <class name="circular"/>
+            </style>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="AdwCarouselIndicatorDots">
+        <property name="carousel">_carousel</property>
       </object>
     </child>
   </template>

@@ -35,6 +35,7 @@ class ImageryWindow(Adw.ApplicationWindow):
     __gtype_name__ = 'ImageryWindow'
 
     _header_bar: Gtk.HeaderBar = Gtk.Template.Child()
+    _settings_menu_button: Gtk.MenuButton = Gtk.Template.Child()
     _stack: Gtk.Stack = Gtk.Template.Child()
     _menu_button_page: Gtk.MenuButton = Gtk.Template.Child()
     _page_state: PageState = PageState.START
@@ -49,6 +50,7 @@ class ImageryWindow(Adw.ApplicationWindow):
 
         if all_files_available():
             self._header_bar.remove_css_class("flat")
+            self._settings_menu_button.set_visible(True)
             self.page_state = self.PageState.TEXT_TO_IMAGE
             return
 
@@ -57,6 +59,8 @@ class ImageryWindow(Adw.ApplicationWindow):
         self.page_state = self.PageState.START
 
     def _start_finished(self, _object):
+        self._header_bar.remove_css_class("flat")
+        self._settings_menu_button.set_visible(True)
         self._menu_button_page.set_visible(True)
         self.page_state = self.PageState.TEXT_TO_IMAGE
 

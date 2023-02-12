@@ -19,7 +19,8 @@
 
 from gettext import gettext as i18n
 
-from gi.repository import GObject, Gtk
+import torch
+from gi.repository import Adw, GObject, Gtk
 
 from .download_manager import DownloadManager
 from .model_files import sd15_files
@@ -33,6 +34,11 @@ class StartPage(Gtk.Box):
         "finished": (GObject.SignalFlags.RUN_FIRST, None, ())
     }
 
+    _status_page_acceleration: Adw.StatusPage = Gtk.Template.Child()
+    _acceleration_hint: Gtk.Label = Gtk.Template.Child()
+    _carousel: Adw.Carousel = Gtk.Template.Child()
+    _next_button: Gtk.Button = Gtk.Template.Child()
+    _previous_button: Gtk.Button = Gtk.Template.Child()
     _progress_bar: Gtk.ProgressBar = Gtk.Template.Child()
     _download_model_button: Gtk.Button = Gtk.Template.Child()
     _cancel_download_button: Gtk.Button = Gtk.Template.Child()
@@ -48,6 +54,10 @@ class StartPage(Gtk.Box):
         self._download_manager.connect("update", self._update)
         self._download_manager.connect("cancelled", self._cancelled)
         self._download_manager.connect("finished", self._finished)
+
+        self._check_cuda_support()
+
+        self._current_page: int = 0
 
     def _reset(self, _download_manager: DownloadManager) -> None:
         self._progress_bar.set_show_text(i18n("Initializing..."))
@@ -79,6 +89,22 @@ class StartPage(Gtk.Box):
         self._continue_button.set_visible(True)
         self._cancel_download_button.set_visible(False)
 
+    def _check_cuda_support(self):
+        if torch.cuda.is_available():
+            self._status_page_acceleration.set_title(
+                i18n("Hardware Acceleration Detected"))
+            self._status_page_acceleration.set_description(i18n(
+                "Your system can accelerate the execution of the machine learning model.")  # noqa: E501, pylint: disable=line-too-long
+            )
+            self._acceleration_hint.set_visible(False)
+        else:
+            self._status_page_acceleration.set_title(
+                i18n("No Hardware Acceleration Detected"))
+            self._status_page_acceleration.set_description(
+                i18n("Your system cannot accelerate the execution of the machine learning model, which results in increased memory consumption and degraded performance.")  # noqa: E501, pylint: disable=line-too-long
+            )
+            self._acceleration_hint.set_visible(True)
+
     @Gtk.Template.Callback()
     def _on_download_model_button_clicked(self, _button):
         self._cancel_download_button.set_visible(True)
@@ -95,6 +121,34 @@ class StartPage(Gtk.Box):
     @Gtk.Template.Callback()
     def _on_continue_button_clicked(self, _button):
         self.emit("finished")
+
+    @Gtk.Template.Callback()
+    def _on_next_button_clicked(self, _button):
+        self._carousel.scroll_to(
+            self._carousel.get_nth_page(self._current_page + 1), True
+        )
+
+        self._current_page += 1
+
+        if self._current_page > 0:
+            self._previous_button.set_visible(True)
+
+        if self._current_page == 2:
+            self._next_button.set_visible(False)
+
+    @Gtk.Template.Callback()
+    def _on_previous_button_clicked(self, _button):
+        self._carousel.scroll_to(
+            self._carousel.get_nth_page(self._current_page - 1), True
+        )
+
+        self._current_page -= 1
+
+        if self._current_page == 0:
+            self._previous_button.set_visible(False)
+
+        if self._current_page < 2:
+            self._next_button.set_visible(True)
 
     def cleanup(self):
         self._download_manager.cancel()
