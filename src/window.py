@@ -34,6 +34,7 @@ class ImageryWindow(Adw.ApplicationWindow):
 
     __gtype_name__ = 'ImageryWindow'
 
+    _header_bar: Gtk.HeaderBar = Gtk.Template.Child()
     _stack: Gtk.Stack = Gtk.Template.Child()
     _menu_button_page: Gtk.MenuButton = Gtk.Template.Child()
     _page_state: PageState = PageState.START
@@ -47,6 +48,7 @@ class ImageryWindow(Adw.ApplicationWindow):
         self.create_action('image_to_image', self._on_image_to_image_clicked)
 
         if all_files_available():
+            self._header_bar.remove_css_class("flat")
             self.page_state = self.PageState.TEXT_TO_IMAGE
             return
 
