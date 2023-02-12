@@ -55,6 +55,7 @@ class TextToImagePage(Gtk.Box):
     _flow_box_scrolled_window: Gtk.ScrolledWindow = Gtk.Template.Child()
     _prompt_ideas_box: Gtk.Box = Gtk.Template.Child()
     _prompt_text_view: Gtk.TextView = Gtk.Template.Child()
+    _prompt_ideas_menu_button: Gtk.Button = Gtk.Template.Child()
 
     _flow_box_pictures: List[Gtk.Picture] = []
 
@@ -183,6 +184,7 @@ class TextToImagePage(Gtk.Box):
             self._run_button.set_visible(False)
             self._cancel_run_button.set_visible(True)
             self._settings_menu_button.set_sensitive(False)
+            self._prompt_ideas_menu_button.set_sensitive(False)
 
             self._generating_progress_bar.set_text(i18n("Estimating time left..."))
             self._generating_progress_bar.set_show_text(True)
@@ -197,6 +199,7 @@ class TextToImagePage(Gtk.Box):
             self._run_button.set_visible(True)
             self._cancel_run_button.set_visible(False)
             self._settings_menu_button.set_sensitive(True)
+            self._prompt_ideas_menu_button.set_sensitive(True)
 
             self._generating_progress_bar.set_visible(False)
 
