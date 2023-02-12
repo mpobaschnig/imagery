@@ -22,8 +22,7 @@ from gettext import gettext as i18n
 
 from gi.repository import Adw, Gio, Gtk
 
-from .model_files import all_files_available
-from .settings_manager import is_model_download_finished, set_model_download_finished
+from .settings_manager import is_model_download_finished
 
 
 @Gtk.Template(resource_path='/io/github/mpobaschnig/Imagery/ui/window.ui')
