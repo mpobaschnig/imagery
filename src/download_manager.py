@@ -17,7 +17,10 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+import hashlib
 import logging
+import os
+from pathlib import Path
 from typing import List, Optional
 
 from gi.repository import Gio, GObject
@@ -28,6 +31,8 @@ from .file import File
 class DownloadManager(GObject.Object):
     __gsignals__ = {
         "reset": (GObject.SignalFlags.RUN_FIRST, None, ()),
+        "verify": (GObject.SignalFlags.RUN_FIRST, None, ()),
+        "verify-progress": (GObject.SignalFlags.RUN_FIRST, None, (float,)),
         "update": (GObject.SignalFlags.RUN_FIRST,
                    None,
                    (float, int, int, str, int, int,)),
@@ -44,12 +49,38 @@ class DownloadManager(GObject.Object):
 
         self._task: Optional[Gio.Task] = None
         self._task_cancellable: Optional[Gio.Cancellable] = None
+        self._cancelled: bool = False
 
     def _start_download(self, _task, _source_object, _task_data, _cancellable):
         for (i, file) in enumerate(self._files):
             if file.exists():
-                logging.info("File %s exists, skipping.", file.path)
-                continue
+                logging.info("File %s exists, checking sha256 value...", file.path)
+
+                self.emit("verify")
+
+                path: Path = Path(file.path)
+                current_size: int = 0
+                total_size: int = os.path.getsize(path)
+                buffer_size = 65536
+                sha256 = hashlib.sha256()
+                with open(path, "rb") as open_file:
+                    while (data := open_file.read(buffer_size)):
+                        if self._cancelled is True:
+                            break
+
+                        sha256.update(data)
+
+                        current_size += buffer_size
+
+                        self.emit("verify-progress", current_size / total_size)
+
+                if file.sha256 == sha256.hexdigest():
+                    logging.info("sha256 values match, continuing...")
+                    continue
+
+                logging.info("sha256 values mismatch, downloading file...")
+
+            self.emit("reset")
 
             self._current_file = file
 
@@ -93,8 +124,6 @@ class DownloadManager(GObject.Object):
                   len(self._files))
 
     def start(self):
-        self.emit("reset")
-
         self._task_cancellable = Gio.Cancellable.new()
         self._task = Gio.Task.new(self,  # type: ignore
                                   self._task_cancellable,
@@ -104,9 +133,9 @@ class DownloadManager(GObject.Object):
         self._task.run_in_thread(self._start_download)  # type: ignore
 
     def cancel(self):
+        self._cancelled = True
+
         if self._task_cancellable:
             self._task_cancellable.cancel()
-            if self._current_file is not None:
-                self._current_file.remove()
 
         self.emit("cancelled")

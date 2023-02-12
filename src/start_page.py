@@ -53,6 +53,8 @@ class StartPage(Gtk.Box):
 
         self._download_manager.connect("reset", self._reset)
         self._download_manager.connect("update", self._update)
+        self._download_manager.connect("verify", self._verify)
+        self._download_manager.connect("verify-progress", self._verify_progress)
         self._download_manager.connect("cancelled", self._cancelled)
         self._download_manager.connect("finished", self._finished)
 
@@ -64,6 +66,16 @@ class StartPage(Gtk.Box):
         self._progress_bar.set_show_text(i18n("Initializing..."))
         self._progress_bar.set_fraction(0.0)
         self._progress_bar.set_visible(True)
+
+    def _verify(self, _download_manager: DownloadManager) -> None:
+        self._progress_bar.set_show_text(i18n("Verifying file..."))
+        self._progress_bar.set_fraction(0.0)
+        self._progress_bar.set_visible(True)
+
+    def _verify_progress(self,
+                         _download_manager: DownloadManager,
+                         progress: float) -> None:
+        self._progress_bar.set_fraction(progress)
 
     def _update(self,  # pylint: disable=too-many-arguments
                 _download_manager: DownloadManager,
