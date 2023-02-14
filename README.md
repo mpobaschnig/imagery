@@ -1,6 +1,6 @@
 # Imagery
 
-<img src="data/resources/screenshots/main_t2i.png" alt="Vaults" width="466" height="330"/><br>
+<img src="data/resources/screenshots/t2i_finished.png" alt="Vaults" width="600" height="600"/><br>
 
 Imagery lets you generate images using [Stable Diffusion](https://github.com/Stability-AI/stablediffusion) based on text or image input.
 
