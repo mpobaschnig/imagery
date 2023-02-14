@@ -48,12 +48,13 @@
                                 <property name="vscrollbar-policy">automatic</property>
                                 <property name="hscrollbar-policy">automatic</property>
                                 <property name="vexpand">True</property>
-                                <property name="margin-top">24</property>
                                 <child>
                                   <object class="GtkBox" id="_prompt_ideas_box">
                                     <property name="orientation">vertical</property>
-                                    <property name="margin-end">24</property>
+                                    <property name="margin-top">24</property>
+                                    <property name="margin-bottom">24</property>
                                     <property name="margin-start">24</property>
+                                    <property name="margin-end">24</property>
                                   </object>
                                 </child>
                               </object>
