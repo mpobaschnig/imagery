@@ -49,7 +49,6 @@ prompt_idea_categories: Dict[str, List[str]] = {
     ],
     i18n("Pen"): [
         "Chalk",
-        "Colored Pencil",
         "Graphite",
         "Ink",
         "Oil Paint",
@@ -62,7 +61,6 @@ prompt_idea_categories: Dict[str, List[str]] = {
         "Dramatic",
         "Film Grain",
         "Fisheye Lens",
-        "HD",
         "Landscape",
         "Polaroid",
         "Photoshoot",
