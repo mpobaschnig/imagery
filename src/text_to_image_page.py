@@ -129,11 +129,6 @@ class TextToImagePage(Gtk.Box):
         box: Gtk.Box = self._prompt_ideas_box
         box.set_spacing(12)
 
-        label: Gtk.Label = Gtk.Label()
-        label.set_text(i18n("Here are some prompt ideas!"))
-        label.add_css_class("title-2")
-        box.append(label)
-
         for category, examples in prompt_idea_categories.items():
             label: Gtk.Label = Gtk.Label()
             label.set_text(category)
