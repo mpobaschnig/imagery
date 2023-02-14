@@ -39,6 +39,7 @@
                     <child>
                       <object class="GtkMenuButton" id="_prompt_ideas_menu_button">
                         <property name="icon-name">accessories-dictionary-symbolic</property>
+                        <property name="tooltip-text" translatable="yes">Prompt Ideas</property>
                         <property name="popover">
                           <object class="GtkPopover">
                             <property name="width-request">640</property>
@@ -69,6 +70,7 @@
                     <child>
                       <object class="GtkMenuButton" id="_settings_menu_button">
                         <property name="icon-name">emblem-system-symbolic</property>
+                        <property name="tooltip-text" translatable="yes">Model Settings</property>
                         <property name="popover">
                           <object class="GtkPopover">
                             <child>
@@ -169,6 +171,7 @@
                         <property name="sensitive">False</property>
                         <property name="valign">center</property>
                         <property name="icon_name">media-playback-start-symbolic</property>
+                        <property name="tooltip-text" translatable="yes">Generate</property>
                         <signal name="clicked" handler="_on_run_button_clicked" swapped="no"/>
                         <style>
                           <class name="flat"/>
