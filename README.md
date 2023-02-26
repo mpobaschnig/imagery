@@ -1,20 +1,22 @@
-# Imagery
-
-<img src="data/screenshots/t2i_finished.png" alt="Vaults" width="600" height="600"/><br>
+<h1 align="center">
+  <img src="data/icons/hicolor/scalable/apps/io.github.mpobaschnig.Imagery.svg" alt="Imagery" width="128" height="128"/><br>
+  Imagery 
+</h1>
+<p align="center"><strong>Create images at will</strong></p>
+<br>
+<p align="center">
+ <img src="data/screenshots/t2i_finished.png" alt="Imagery" width="600" height="600"/>
+</p>
+<br>
 
 Imagery lets you generate images using [Stable Diffusion](https://github.com/Stability-AI/stablediffusion) based on text or image input.
 
-All images are currently saved in the cache folder of the Flatpak, i.e.: `/home/USER/.var/app/io.github.mpobaschnig.Imagery/cache`
+All generated images are saved in the cache folder, i.e.: `/home/USER/.var/app/io.github.mpobaschnig.Imagery/cache`
 
-# How to Build
+# How to build
 
-Open GNOME Builder (or Visual Studio Code with Flatpak extension), and run it from there.
-Manual building is not supported.
+Open GNOME Builder (or Visual Studio Code with the Flatpak extension), clone the repository, build and run it.
 
-The models are downloaded within the app.
+# Translations
 
-If somehow downloads are not working, you can download the models manually:
-
-## Text to Image
-
-Download the repository at `https://huggingface.co/runwayml/stable-diffusion-v1-5` and place it at `/home/USER/.var/app/io.github.mpobaschnig.Imagery/data/stable-diffusion-v1-5`
+Imagery will be translated using [Transifex](https://www.transifex.com/mpobaschnig/imagery/), which will be added with the first release.
