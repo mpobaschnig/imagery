@@ -88,6 +88,7 @@
                                         <child>
                                           <object class="GtkSpinButton" id="_height_spin_button">
                                             <property name="valign">center</property>
+                                            <property name="snap-to-ticks">True</property>
                                             <property name="adjustment">
                                               <object class="GtkAdjustment">
                                                 <property name="lower">8</property>
@@ -107,6 +108,7 @@
                                         <child>
                                           <object class="GtkSpinButton" id="_width_spin_button">
                                             <property name="valign">center</property>
+                                            <property name="snap-to-ticks">True</property>
                                             <property name="adjustment">
                                               <object class="GtkAdjustment">
                                                 <property name="lower">8</property>
