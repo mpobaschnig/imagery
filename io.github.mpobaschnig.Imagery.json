@@ -10,9 +10,8 @@
         "--socket=fallback-x11",
         "--device=dri",
         "--socket=wayland",
-        "--socket=system-bus",
-        "--socket=session-bus",
         "--filesystem=xdg-run/gvfsd",
+        "--talk-name=org.freedesktop.Flatpak",
         "--talk-name=org.gtk.vfs.*"
     ],
     "cleanup" : [
@@ -32,6 +31,32 @@
     	"build-aux/python3-torch.json",
         "build-aux/python3-accelerate.json",
         "build-aux/python3-scipy.json",
+        {
+            "name": "nvidia-smi",
+            "buildsystem": "simple",
+            "build-commands": [
+                "install nvidia-smi-wrapper.sh /app/bin/nvidia-smi"
+            ],
+            "sources": [
+                {
+                    "type": "file",
+                    "path": "build-aux/nvidia-smi-wrapper.sh"
+                }
+            ]
+        },
+        {
+            "name": "test",
+            "buildsystem": "simple",
+            "build-commands": [
+                "install test.py /app/bin/test"
+            ],
+            "sources": [
+                {
+                    "type": "file",
+                    "path": "build-aux/test.py"
+                }
+            ]
+        },
         {
             "name" : "imagery",
             "builddir" : true,
