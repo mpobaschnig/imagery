@@ -46,7 +46,13 @@ class TextToImagePage(Gtk.Box):
     _inference_steps_spin_button: Gtk.SpinButton = Gtk.Template.Child()
     _number_images_spin_button: Gtk.SpinButton = Gtk.Template.Child()
     _run_button: Gtk.Button = Gtk.Template.Child()
-    _scheduler_drop_down: Gtk.DropDown = Gtk.Template.Child()
+    _radio_button_pndm: Gtk.CheckButton = Gtk.Template.Child()
+    _radio_button_lms: Gtk.CheckButton = Gtk.Template.Child()
+    _radio_button_ed: Gtk.CheckButton = Gtk.Template.Child()
+    _radio_button_ead: Gtk.CheckButton = Gtk.Template.Child()
+    _radio_button_dpmsm: Gtk.CheckButton = Gtk.Template.Child()
+    _radio_button_ddpm: Gtk.CheckButton = Gtk.Template.Child()
+    _radio_button_ddim: Gtk.CheckButton = Gtk.Template.Child()
     _width_spin_button: Gtk.SpinButton = Gtk.Template.Child()
     _cancel_run_button: Gtk.Button = Gtk.Template.Child()
     _spin_button: Gtk.Button = Gtk.Template.Child()
@@ -149,6 +155,21 @@ class TextToImagePage(Gtk.Box):
                 flow_box.append(button)
 
             box.append(flow_box)
+
+    def _get_scheduler(self) -> str:  # pylint: disable=too-many-return-statements
+        if self._radio_button_lms.get_active():
+            return "LMSDiscreteScheduler"
+        if self._radio_button_ed.get_active():
+            return "EulerDiscreteScheduler"
+        if self._radio_button_ead.get_active():
+            return "EulerAncestralDiscreteScheduler"
+        if self._radio_button_dpmsm.get_active():
+            return "DPMSolverMultistepScheduler"
+        if self._radio_button_ddpm.get_active():
+            return "DDPMScheduler"
+        if self._radio_button_ddim.get_active():
+            return "DDIMScheduler"
+        return "PNDMScheduler"
 
     @property
     def page_state(self) -> PageState:
@@ -290,7 +311,7 @@ class TextToImagePage(Gtk.Box):
 
     @Gtk.Template.Callback()
     def _on_run_button_clicked(self, _button):
-        scheduler = str(self._scheduler_drop_down.get_selected_item().get_string())
+        scheduler = self._get_scheduler()
         start, end = self._prompt_text_view.get_buffer().get_bounds()
         prompt = str(self._prompt_text_view.get_buffer().get_text(start, end, False))
         height = int(self._width_spin_button.get_value())
