@@ -81,6 +81,8 @@ sd15_files = [
          "20b7f0acae54d1f88384a6ca15b5d62c0ee4fbbca07ff72f3761fe936083210d")
 ]
 
+sd_files_size = 17452213253
+
 
 def all_files_available() -> bool:
     for file in sd15_files:
