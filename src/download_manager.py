@@ -19,13 +19,13 @@
 
 import hashlib
 import logging
-import os
 from pathlib import Path
 from typing import List, Optional
 
-from gi.repository import Gio, GObject
+from gi.repository import Gio, GLib, GObject
 
 from .file import File
+from .model_files import sd_files_size
 
 
 class DownloadManager(GObject.Object):
@@ -35,7 +35,7 @@ class DownloadManager(GObject.Object):
         "verify-progress": (GObject.SignalFlags.RUN_FIRST, None, (float,)),
         "update": (GObject.SignalFlags.RUN_FIRST,
                    None,
-                   (float, int, int, str, int, int,)),
+                   (int, int,)),
         "cancelled": (GObject.SignalFlags.RUN_FIRST, None, ()),
         "finished": (GObject.SignalFlags.RUN_FIRST, None, ())
     }
@@ -45,86 +45,70 @@ class DownloadManager(GObject.Object):
         super().__init__()
 
         self._files = files
-        self._current_file: Optional[File] = None
+        self._current_download_size: int = 0
+        self._total_download_size: int = sd_files_size
 
         self._task: Optional[Gio.Task] = None
-        self._task_cancellable: Optional[Gio.Cancellable] = None
+        self._task_cancellable: Gio.Cancellable = Gio.Cancellable()
         self._cancelled: bool = False
 
     def _start_download(self, _task, _source_object, _task_data, _cancellable):
-        for (i, file) in enumerate(self._files):
+        logging.info("Start downloading")
+        self._current_download_size: int = 0
+
+        download_queue: List[File] = []
+
+        for file in self._files:
             if file.exists():
-                logging.info("File %s exists, checking sha256 value...", file.path)
-
-                self.emit("verify")
-
                 path: Path = Path(file.path)
                 current_size: int = 0
-                total_size: int = os.path.getsize(path)
                 buffer_size = 65536
                 sha256 = hashlib.sha256()
                 with open(path, "rb") as open_file:
                     while (data := open_file.read(buffer_size)):
                         if self._cancelled is True:
-                            break
+                            return
 
                         sha256.update(data)
 
                         current_size += buffer_size
 
-                        self.emit("verify-progress", current_size / total_size)
-
                 if file.sha256 == sha256.hexdigest():
-                    logging.info("sha256 values match, continuing...")
+                    self._total_download_size -= file.get_size()
                     continue
 
-                logging.info("sha256 values mismatch, downloading file...")
+            download_queue.append(file)
 
-            self.emit("reset")
-
-            self._current_file = file
-
+        for file in download_queue:
             file.create_path()
 
             model_uri_file: Gio.File = Gio.File.new_for_uri(file.url)
             model_file = Gio.File.new_for_path(file.path)
-            model_uri_file.copy(model_file,
-                                Gio.FileCopyFlags.OVERWRITE,
-                                None,
-                                self._progress_cb, i)
+            try:
+                model_uri_file.copy(model_file,
+                                    Gio.FileCopyFlags.OVERWRITE,
+                                    _cancellable,
+                                    self._progress_cb)
+            except GLib.Error as err:
+                logging.error(err.message)
+                return
 
-        self._current_file = None
+            self._current_download_size += file.get_size()
 
         self.emit("finished")
 
-    def _progress_cb(self, current_num_bytes, total_num_bytes, i):
-        fraction = current_num_bytes / total_num_bytes
-
-        curr = current_num_bytes / 1024
-        total = total_num_bytes / 1024
-        unit = "KiB"
-        if total_num_bytes > 1048576:
-            curr /= 1024
-            total /= 1024
-            unit = "MiB"
-        if total_num_bytes > 1073741824:
-            curr /= 1024
-            total /= 1024
-            unit = "GiB"
-
-        curr = round(curr, 1)
-        total = round(total, 1)
+    def _progress_cb(self, current_num_bytes, _total_num_bytes):
+        curr = (self._current_download_size + current_num_bytes) / 1024 / 1024
+        total = self._total_download_size / 1024 / 1024
 
         self.emit("update",
-                  fraction,
                   curr,
-                  total,
-                  unit,
-                  i + 1,
-                  len(self._files))
+                  total)
 
     def start(self):
-        self._task_cancellable = Gio.Cancellable.new()
+        self._cancelled: bool = False
+        self._task_cancellable.reset()
+
         self._task = Gio.Task.new(self,  # type: ignore
                                   self._task_cancellable,
                                   None,
@@ -135,7 +119,6 @@ class DownloadManager(GObject.Object):
     def cancel(self):
         self._cancelled = True
 
-        if self._task_cancellable:
-            self._task_cancellable.cancel()
+        self._task_cancellable.cancel()
 
         self.emit("cancelled")

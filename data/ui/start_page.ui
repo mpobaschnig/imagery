@@ -100,6 +100,7 @@
                     <child>
                       <object class="GtkProgressBar" id="_progress_bar">
                         <property name="visible">false</property>
+                        <property name="show-text">True</property>
                       </object>
                     </child>
                   </object>

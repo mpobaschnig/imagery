@@ -51,10 +51,7 @@ class StartPage(Gtk.Box):
 
         self._download_manager: DownloadManager = DownloadManager(sd15_files)
 
-        self._download_manager.connect("reset", self._reset)
         self._download_manager.connect("update", self._update)
-        self._download_manager.connect("verify", self._verify)
-        self._download_manager.connect("verify-progress", self._verify_progress)
         self._download_manager.connect("cancelled", self._cancelled)
         self._download_manager.connect("finished", self._finished)
 
@@ -62,33 +59,12 @@ class StartPage(Gtk.Box):
 
         self._current_page: int = 0
 
-    def _reset(self, _download_manager: DownloadManager) -> None:
-        self._progress_bar.set_show_text(i18n("Initializing..."))
-        self._progress_bar.set_fraction(0.0)
-        self._progress_bar.set_visible(True)
-
-    def _verify(self, _download_manager: DownloadManager) -> None:
-        self._progress_bar.set_show_text(i18n("Verifying file..."))
-        self._progress_bar.set_fraction(0.0)
-        self._progress_bar.set_visible(True)
-
-    def _verify_progress(self,
-                         _download_manager: DownloadManager,
-                         progress: float) -> None:
-        self._progress_bar.set_fraction(progress)
-
-    def _update(self,  # pylint: disable=too-many-arguments
+    def _update(self,
                 _download_manager: DownloadManager,
-                fraction: float,
                 current_downloaded: int,
-                total_size: int,
-                unit: str,
-                current_index: int,
-                total_files: int) -> None:
-        self._progress_bar.set_text(i18n(
-            f"{current_downloaded} {unit} / {total_size} {unit} - ({current_index} of {total_files})"  # noqa: E501, pylint: disable=line-too-long
-        ))
-        self._progress_bar.set_fraction(fraction)
+                total_download: int) -> None:
+        self._progress_bar.set_text(f"{current_downloaded} MiB / {total_download} MiB")
+        self._progress_bar.set_fraction(current_downloaded / total_download)
 
     def _cancelled(self, _download_manager: DownloadManager) -> None:
         self._progress_bar.set_visible(False)
@@ -126,6 +102,10 @@ class StartPage(Gtk.Box):
         self._download_model_button.set_visible(False)
 
         self._model_license_hint_label.set_visible(False)
+
+        self._progress_bar.set_text(i18n("Verifying files..."))
+        self._progress_bar.set_fraction(0.0)
+        self._progress_bar.set_visible(True)
 
         self._download_manager.start()
 
