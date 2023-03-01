@@ -12,7 +12,8 @@
         "--socket=wayland",
         "--socket=system-bus",
         "--socket=session-bus",
-        "--filesystem=xdg-run/gvfsd"
+        "--filesystem=xdg-run/gvfsd",
+        "--talk-name=org.gtk.vfs.*"
     ],
     "cleanup" : [
         "/include",
