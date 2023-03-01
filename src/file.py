@@ -19,6 +19,7 @@
 
 import os
 from pathlib import Path
+from typing import Optional
 
 from gi.repository import GObject
 
@@ -78,3 +79,11 @@ class File(GObject.Object):
 
         if self.exists():
             path.unlink()
+
+    def get_size(self) -> Optional[int]:
+        path: Path = Path(self.path)
+
+        if self.exists():
+            return os.path.getsize(path)
+
+        return None
