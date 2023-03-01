@@ -47,7 +47,7 @@
                   <object class="GtkBox">
                     <property name="orientation">vertical</property>
                     <property name="valign">center</property>
-                    <property name="halign">center</property>
+                    <property name="hexpand">True</property>
                     <property name="spacing">12</property>
                     <child>
                       <object class="GtkButton" id="_download_model_button">
@@ -62,9 +62,15 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkProgressBar" id="_progress_bar">
-                        <property name="visible">false</property>
-                        <property name="show-text">True</property>
+                      <object class="AdwClamp">
+                        <property name="tightening-threshold">240</property>
+                        <property name="maximum-size">360</property>
+                        <child>
+                          <object class="GtkProgressBar" id="_progress_bar">
+                            <property name="visible">false</property>
+                            <property name="show-text">True</property>
+                          </object>
+                        </child>
                       </object>
                     </child>
                     <child>
