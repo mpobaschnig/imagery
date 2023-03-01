@@ -82,11 +82,3 @@ sd15_files = [
 ]
 
 sd_files_size = 17452213253
-
-
-def all_files_available() -> bool:
-    for file in sd15_files:
-        if file.exists() is False:
-            return False
-
-    return True
