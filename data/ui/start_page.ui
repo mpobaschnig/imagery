@@ -62,6 +62,12 @@
                       </object>
                     </child>
                     <child>
+                      <object class="GtkProgressBar" id="_progress_bar">
+                        <property name="visible">false</property>
+                        <property name="show-text">True</property>
+                      </object>
+                    </child>
+                    <child>
                       <object class="GtkButton" id="_cancel_download_button">
                         <property name="halign">center</property>
                         <property name="label" translatable="yes">_Cancel Download</property>
@@ -95,12 +101,6 @@
                         <style>
                           <class name="dim-label"/>
                         </style>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkProgressBar" id="_progress_bar">
-                        <property name="visible">false</property>
-                        <property name="show-text">True</property>
                       </object>
                     </child>
                   </object>
