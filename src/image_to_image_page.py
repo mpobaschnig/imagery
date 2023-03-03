@@ -333,6 +333,7 @@ class ImageToImagePage(Gtk.Box):
     def _image_to_change_remove_cb(self, _button):
         self._image_path = None
         self._check_run_button_sensitivity()
+        self._image_bin.set_child(None)
         self._left_stack.set_visible_child_name("open-image")
         self.page_state = self.PageState.START
 
