@@ -231,8 +231,6 @@
             </child>
             <child>
               <object class="GtkScrolledWindow">
-                <property name="vscrollbar-policy">automatic</property>
-                <property name="hscrollbar-policy">automatic</property>
                 <child>
                   <object class="GtkBox">
                     <property name="orientation">vertical</property>
