@@ -215,7 +215,7 @@ class TextToImagePage(Gtk.Box):
 
             self._generating_progress_bar.set_visible(False)
 
-    def _add_image(self, image_index: int) -> Gtk.Overlay:
+    def _add_image(self, image_index: int) -> Gtk.Overlay:  # noqa: E501, pylint: disable=too-many-statements
         def image_button_clicked(button: Gtk.Button, image: int) -> None:
             def response_cb(dialog: Gtk.FileChooserNative,
                             response: int,
@@ -289,6 +289,10 @@ class TextToImagePage(Gtk.Box):
 
         img_width = img.get_paintable().get_intrinsic_width()
         img_height = img.get_paintable().get_intrinsic_height()
+        maximum_width = 300
+        if img_width > maximum_width:
+            img_height = img_height / (img_width / maximum_width)
+            img_width = maximum_width
 
         overlay.set_size_request(img_width, img_height)
         overlay.set_child(img)
