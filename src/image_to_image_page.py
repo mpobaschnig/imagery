@@ -346,7 +346,7 @@ class ImageToImagePage(Gtk.Box):
 
         dest_file: Gio.File = dialog.get_file()
 
-        img = user_data[0]
+        img: Gtk.Picture = user_data[0]
         img.set_filename(dest_file.get_path())
 
         self._image_path = dest_file.get_path()
