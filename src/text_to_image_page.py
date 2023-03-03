@@ -57,7 +57,6 @@ class TextToImagePage(Gtk.Box):
     _cancel_run_button: Gtk.Button = Gtk.Template.Child()
     _spin_button: Gtk.Button = Gtk.Template.Child()
     _spinner: Gtk.Spinner = Gtk.Template.Child()
-    _prompt_ideas_scrolled_window: Gtk.ScrolledWindow = Gtk.Template.Child()
     _flow_box_scrolled_window: Gtk.ScrolledWindow = Gtk.Template.Child()
     _prompt_ideas_box: Gtk.Box = Gtk.Template.Child()
     _prompt_text_view: Gtk.TextView = Gtk.Template.Child()
@@ -179,10 +178,6 @@ class TextToImagePage(Gtk.Box):
     def page_state(self, new_page_state: PageState) -> None:
         self._page_state = new_page_state
 
-        if new_page_state == self.PageState.START:
-            self._prompt_ideas_box.set_visible(True)
-            self._prompt_ideas_scrolled_window.set_visible(True)
-
         if new_page_state in (self.PageState.START, self.PageState.RUNNING):
             for i, _ in enumerate(self._flow_box_pictures):
                 self._flow_box.remove(self._flow_box_pictures[i])
@@ -191,7 +186,6 @@ class TextToImagePage(Gtk.Box):
 
         if new_page_state == self.PageState.FINISHED:
             self._flow_box_scrolled_window.set_visible(True)
-            self._prompt_ideas_scrolled_window.set_visible(False)
 
         if new_page_state == self.PageState.RUNNING:
             self._spinner.set_spinning(True)
@@ -208,8 +202,6 @@ class TextToImagePage(Gtk.Box):
             self._generating_progress_bar.set_show_text(True)
             self._generating_progress_bar.set_fraction(0.0)
             self._generating_progress_bar.set_visible(True)
-
-            self._prompt_ideas_box.set_visible(False)
         else:
             self._spin_button.set_visible(False)
             self._spinner.set_spinning(False)
