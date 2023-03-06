@@ -322,6 +322,7 @@ class TextToImagePage(Gtk.Box):
         height = int(self._width_spin_button.get_value())
         width = int(self._height_spin_button.get_value())
         inf_steps = int(self._inference_steps_spin_button.get_value())
+        use_seed = bool(self._seed_switch.get_active())
         seed = int(self._seed_spin_button.get_value())
         n_images = int(self._number_images_spin_button.get_value())
 
@@ -335,6 +336,7 @@ class TextToImagePage(Gtk.Box):
             height,
             width,
             inf_steps,
+            use_seed,
             seed,
             n_images
         )
