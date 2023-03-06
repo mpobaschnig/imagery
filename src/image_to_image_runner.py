@@ -55,6 +55,7 @@ class ImageToImageRunner(GObject.Object):
                     strength: float,
                     guidance_scale: float,
                     inf_steps: int,
+                    use_seed: bool,
                     seed: int,
                     n_images: int) -> None:
         def pipeline_callback(step: int,
@@ -75,9 +76,11 @@ class ImageToImageRunner(GObject.Object):
         generator: Optional[torch.Generator] = None
         if torch.cuda.is_available():
             pipeline = pipeline.to("cuda")
-            generator = torch.Generator(device="cuda").manual_seed(seed)
+            generator = torch.Generator(device="cuda")
         else:
-            generator = torch.Generator().manual_seed(seed)
+            generator = torch.Generator()
+        if use_seed:
+            generator.manual_seed(seed)
 
         image = Image.open(image_path).convert("RGB")
 
@@ -114,6 +117,7 @@ class ImageToImageRunner(GObject.Object):
             height: int,
             width: int,
             inf_steps: int,
+            use_seed: bool,
             seed: int,
             n_images: int) -> None:
         self._parent_connection, self._child_connection = Pipe()
@@ -132,6 +136,7 @@ class ImageToImageRunner(GObject.Object):
                                       height,
                                       width,
                                       inf_steps,
+                                      use_seed,
                                       seed,
                                       n_images))
         self._process.start()

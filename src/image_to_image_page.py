@@ -307,6 +307,7 @@ class ImageToImagePage(Gtk.Box):
         strength = float(self._strength_spin_button.get_value())
         guidance_scale = float(self._guidance_scale_spin_button.get_value())
         inf_steps = int(self._inference_steps_spin_button.get_value())
+        use_seed = bool(self._seed_switch.get_value())
         seed = int(self._seed_spin_button.get_value())
         n_images = int(self._number_images_spin_button.get_value())
 
@@ -320,6 +321,7 @@ class ImageToImagePage(Gtk.Box):
             strength,
             guidance_scale,
             inf_steps,
+            use_seed,
             seed,
             n_images
         )
