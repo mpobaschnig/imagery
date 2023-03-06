@@ -181,17 +181,28 @@
                                                   <object class="AdwActionRow">
                                                     <property name="title">Seed</property>
                                                     <child>
-                                                      <object class="GtkSpinButton" id="_seed_spin_button">
+                                                      <object class="GtkSwitch" id="_seed_switch">
                                                         <property name="valign">center</property>
-                                                        <property name="adjustment">
-                                                          <object class="GtkAdjustment">
-                                                            <property name="lower">0</property>
-                                                            <property name="value">0</property>
-                                                            <property name="upper">99999</property>
-                                                            <property name="step_increment">1</property>
-                                                            <property name="page_increment">1</property>
+                                                      </object>
+                                                    </child>
+                                                    <child>
+                                                      <object class="GtkBox">
+                                                        <property name="spacing">6</property>
+                                                        <child>
+                                                          <object class="GtkSpinButton" id="_seed_spin_button">
+                                                            <property name="valign">center</property>
+                                                            <property name="sensitive">False</property>
+                                                            <property name="adjustment">
+                                                              <object class="GtkAdjustment">
+                                                                <property name="lower">0</property>
+                                                                <property name="value">0</property>
+                                                                <property name="upper">99999</property>
+                                                                <property name="step_increment">1</property>
+                                                                <property name="page_increment">1</property>
+                                                              </object>
+                                                            </property>
                                                           </object>
-                                                        </property>
+                                                        </child>
                                                       </object>
                                                     </child>
                                                   </object>
