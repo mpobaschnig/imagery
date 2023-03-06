@@ -43,6 +43,7 @@ class ImageToImagePage(Gtk.Box):
     _flow_box: Gtk.FlowBox = Gtk.Template.Child()
     _generating_progress_bar: Gtk.ProgressBar = Gtk.Template.Child()
     _inference_steps_spin_button: Gtk.SpinButton = Gtk.Template.Child()
+    _seed_spin_button: Gtk.SpinButton = Gtk.Template.Child()
     _number_images_spin_button: Gtk.SpinButton = Gtk.Template.Child()
     _run_button: Gtk.Button = Gtk.Template.Child()
     _cancel_run_button: Gtk.Button = Gtk.Template.Child()
@@ -298,6 +299,7 @@ class ImageToImagePage(Gtk.Box):
         strength = float(self._strength_spin_button.get_value())
         guidance_scale = float(self._guidance_scale_spin_button.get_value())
         inf_steps = int(self._inference_steps_spin_button.get_value())
+        seed = int(self._seed_spin_button.get_value())
         n_images = int(self._number_images_spin_button.get_value())
 
         self.page_state = self.PageState.RUNNING
@@ -310,6 +312,7 @@ class ImageToImagePage(Gtk.Box):
             strength,
             guidance_scale,
             inf_steps,
+            seed,
             n_images
         )
 
