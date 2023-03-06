@@ -44,6 +44,7 @@ class TextToImagePage(Gtk.Box):
     _generating_progress_bar: Gtk.ProgressBar = Gtk.Template.Child()
     _height_spin_button: Gtk.SpinButton = Gtk.Template.Child()
     _inference_steps_spin_button: Gtk.SpinButton = Gtk.Template.Child()
+    _seed_spin_button: Gtk.SpinButton = Gtk.Template.Child()
     _number_images_spin_button: Gtk.SpinButton = Gtk.Template.Child()
     _run_button: Gtk.Button = Gtk.Template.Child()
     _radio_button_pndm: Gtk.CheckButton = Gtk.Template.Child()
@@ -313,6 +314,7 @@ class TextToImagePage(Gtk.Box):
         height = int(self._width_spin_button.get_value())
         width = int(self._height_spin_button.get_value())
         inf_steps = int(self._inference_steps_spin_button.get_value())
+        seed = int(self._seed_spin_button.get_value())
         n_images = int(self._number_images_spin_button.get_value())
 
         self.page_state = self.PageState.RUNNING
@@ -325,6 +327,7 @@ class TextToImagePage(Gtk.Box):
             height,
             width,
             inf_steps,
+            seed,
             n_images
         )
 

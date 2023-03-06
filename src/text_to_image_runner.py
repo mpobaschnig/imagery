@@ -51,13 +51,14 @@ class TextToImageRunner(GObject.Object):
         self._parent_connection: Optional[connection.Connection] = None
         self._child_connection: Optional[connection.Connection] = None
 
-    def _child_func(self,  # pylint: disable=too-many-arguments
+    def _child_func(self,  # pylint: disable=too-many-arguments, disable=too-many-locals
                     child_connection: connection.Connection,
                     scheduler: str,
                     prompt: str,
                     height: int,
                     width: int,
                     inf_steps: int,
+                    seed: int,
                     n_images: int) -> None:
         def pipeline_cb(step: int,
                         _timestep: int,
@@ -80,10 +81,15 @@ class TextToImageRunner(GObject.Object):
 
         pipeline.scheduler = self._get_scheduler(pipeline, scheduler)
 
+        generator: Optional[torch.Generator] = None
         if torch.cuda.is_available():
             pipeline = pipeline.to("cuda")
+            generator = torch.Generator(device="cuda").manual_seed(seed)
+        else:
+            generator = torch.Generator().manual_seed(seed)
 
-        result = pipeline(prompt=prompt,
+        result = pipeline(generator=generator,
+                          prompt=prompt,
                           height=height,
                           width=width,
                           num_inference_steps=inf_steps,
@@ -135,6 +141,7 @@ class TextToImageRunner(GObject.Object):
             height: int,
             width: int,
             inf_steps: int,
+            seed: int,
             n_images: int) -> None:
         self._parent_connection, self._child_connection = Pipe()
 
@@ -152,6 +159,7 @@ class TextToImageRunner(GObject.Object):
                                       height,
                                       width,
                                       inf_steps,
+                                      seed,
                                       n_images))
         self._process.start()
 
