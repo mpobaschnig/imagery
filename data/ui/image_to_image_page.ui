@@ -132,15 +132,15 @@
                                         </child>
                                         <child>
                                           <object class="AdwActionRow">
-                                            <property name="title" translatable="yes">Inference Steps</property>
+                                            <property name="title" translatable="yes">Number of Images</property>
                                             <child>
-                                              <object class="GtkSpinButton" id="_inference_steps_spin_button">
+                                              <object class="GtkSpinButton" id="_number_images_spin_button">
                                                 <property name="valign">center</property>
                                                 <property name="adjustment">
                                                   <object class="GtkAdjustment">
                                                     <property name="lower">1</property>
-                                                    <property name="upper">200</property>
-                                                    <property name="value">50</property>
+                                                    <property name="upper">12</property>
+                                                    <property name="value">1</property>
                                                     <property name="step_increment">1</property>
                                                     <property name="page_increment">1</property>
                                                   </object>
@@ -151,15 +151,15 @@
                                         </child>
                                         <child>
                                           <object class="AdwActionRow">
-                                            <property name="title" translatable="yes">Number of Images</property>
+                                            <property name="title" translatable="yes">Inference Steps</property>
                                             <child>
-                                              <object class="GtkSpinButton" id="_number_images_spin_button">
+                                              <object class="GtkSpinButton" id="_inference_steps_spin_button">
                                                 <property name="valign">center</property>
                                                 <property name="adjustment">
                                                   <object class="GtkAdjustment">
                                                     <property name="lower">1</property>
-                                                    <property name="upper">12</property>
-                                                    <property name="value">1</property>
+                                                    <property name="upper">200</property>
+                                                    <property name="value">50</property>
                                                     <property name="step_increment">1</property>
                                                     <property name="page_increment">1</property>
                                                   </object>
