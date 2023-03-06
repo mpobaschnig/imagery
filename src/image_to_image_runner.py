@@ -52,6 +52,7 @@ class ImageToImageRunner(GObject.Object):
                     child_connection: connection.Connection,
                     image_path: str,
                     prompt: str,
+                    neg_prompt: str,
                     strength: float,
                     guidance_scale: float,
                     inf_steps: int,
@@ -85,6 +86,7 @@ class ImageToImageRunner(GObject.Object):
         image = Image.open(image_path).convert("RGB")
 
         result = pipeline(prompt=prompt,
+                          negative_prompt=neg_prompt,
                           image=[image for _ in range(n_images)],
                           strength=strength,
                           guidance_scale=guidance_scale,
@@ -114,6 +116,7 @@ class ImageToImageRunner(GObject.Object):
     def run(self,  # pylint: disable=too-many-arguments
             scheduler: str,
             prompt: str,
+            neg_prompt: str,
             height: int,
             width: int,
             inf_steps: int,
@@ -133,6 +136,7 @@ class ImageToImageRunner(GObject.Object):
                                 args=(self._child_connection,
                                       scheduler,
                                       prompt,
+                                      neg_prompt,
                                       height,
                                       width,
                                       inf_steps,

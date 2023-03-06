@@ -60,6 +60,7 @@ class ImageToImagePage(Gtk.Box):
     _image_path: Optional[str] = None
     _prompt_ideas_box: Gtk.Box = Gtk.Template.Child()
     _prompt_text_view: Gtk.TextView = Gtk.Template.Child()
+    _neg_prompt_text_view: Gtk.TextView = Gtk.Template.Child()
     _prompt_ideas_menu_button: Gtk.Button = Gtk.Template.Child()
 
     def __init__(self, orientation=None, spacing=None):
@@ -186,6 +187,7 @@ class ImageToImagePage(Gtk.Box):
             self._spin_button.set_visible(True)
 
             self._prompt_text_view.set_sensitive(False)
+            self._neg_prompt_text_view.set_sensitive(False)
 
             self._run_button.set_visible(False)
             self._cancel_run_button.set_visible(True)
@@ -201,6 +203,7 @@ class ImageToImagePage(Gtk.Box):
             self._spinner.set_spinning(False)
 
             self._prompt_text_view.set_sensitive(True)
+            self._neg_prompt_text_view.set_sensitive(True)
 
             self._run_button.set_visible(True)
             self._cancel_run_button.set_visible(False)
@@ -304,10 +307,14 @@ class ImageToImagePage(Gtk.Box):
         image_path = self._image_path
         start, end = self._prompt_text_view.get_buffer().get_bounds()
         prompt = str(self._prompt_text_view.get_buffer().get_text(start, end, False))
+        nstart, nend = self._neg_prompt_text_view.get_buffer().get_bounds()
+        neg_prompt = str(self._neg_prompt_text_view.get_buffer().get_text(
+            nstart, nend, False)
+        )
         strength = float(self._strength_spin_button.get_value())
         guidance_scale = float(self._guidance_scale_spin_button.get_value())
         inf_steps = int(self._inference_steps_spin_button.get_value())
-        use_seed = bool(self._seed_switch.get_value())
+        use_seed = bool(self._seed_switch.get_active())
         seed = int(self._seed_spin_button.get_value())
         n_images = int(self._number_images_spin_button.get_value())
 
@@ -318,6 +325,7 @@ class ImageToImagePage(Gtk.Box):
         self._image_to_image_runner.run(
             image_path,
             prompt,
+            neg_prompt,
             strength,
             guidance_scale,
             inf_steps,
