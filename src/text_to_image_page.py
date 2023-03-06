@@ -62,6 +62,7 @@ class TextToImagePage(Gtk.Box):
     _flow_box_scrolled_window: Gtk.ScrolledWindow = Gtk.Template.Child()
     _prompt_ideas_box: Gtk.Box = Gtk.Template.Child()
     _prompt_text_view: Gtk.TextView = Gtk.Template.Child()
+    _neg_prompt_text_view: Gtk.TextView = Gtk.Template.Child()
     _prompt_ideas_menu_button: Gtk.Button = Gtk.Template.Child()
 
     _flow_box_pictures: List[Gtk.Picture] = []
@@ -201,6 +202,7 @@ class TextToImagePage(Gtk.Box):
             self._spin_button.set_visible(True)
 
             self._prompt_text_view.set_sensitive(False)
+            self._neg_prompt_text_view.set_sensitive(False)
 
             self._run_button.set_visible(False)
             self._cancel_run_button.set_visible(True)
@@ -216,6 +218,7 @@ class TextToImagePage(Gtk.Box):
             self._spinner.set_spinning(False)
 
             self._prompt_text_view.set_sensitive(True)
+            self._neg_prompt_text_view.set_sensitive(True)
 
             self._run_button.set_visible(True)
             self._cancel_run_button.set_visible(False)
@@ -319,6 +322,10 @@ class TextToImagePage(Gtk.Box):
         scheduler = self._get_scheduler()
         start, end = self._prompt_text_view.get_buffer().get_bounds()
         prompt = str(self._prompt_text_view.get_buffer().get_text(start, end, False))
+        nstart, nend = self._neg_prompt_text_view.get_buffer().get_bounds()
+        neg_prompt = str(
+            self._neg_prompt_text_view.get_buffer().get_text(nstart, nend, False)
+        )
         height = int(self._width_spin_button.get_value())
         width = int(self._height_spin_button.get_value())
         inf_steps = int(self._inference_steps_spin_button.get_value())
@@ -333,6 +340,7 @@ class TextToImagePage(Gtk.Box):
         self._text_to_image_runner.run(
             scheduler,
             prompt,
+            neg_prompt,
             height,
             width,
             inf_steps,

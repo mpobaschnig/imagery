@@ -55,6 +55,7 @@ class TextToImageRunner(GObject.Object):
                     child_connection: connection.Connection,
                     scheduler: str,
                     prompt: str,
+                    neg_prompt: str,
                     height: int,
                     width: int,
                     inf_steps: int,
@@ -93,6 +94,7 @@ class TextToImageRunner(GObject.Object):
 
         result = pipeline(generator=generator,
                           prompt=prompt,
+                          negative_prompt=neg_prompt,
                           height=height,
                           width=width,
                           num_inference_steps=inf_steps,
@@ -141,6 +143,7 @@ class TextToImageRunner(GObject.Object):
     def run(self,  # pylint: disable=too-many-arguments
             scheduler: str,
             prompt: str,
+            neg_prompt: str,
             height: int,
             width: int,
             inf_steps: int,
@@ -160,6 +163,7 @@ class TextToImageRunner(GObject.Object):
                                 args=(self._child_connection,
                                       scheduler,
                                       prompt,
+                                      neg_prompt,
                                       height,
                                       width,
                                       inf_steps,
