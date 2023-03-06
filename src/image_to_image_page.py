@@ -24,7 +24,7 @@ import time
 from gettext import gettext as i18n
 from typing import List, Optional
 
-from gi.repository import Adw, Gio, GLib, Gtk
+from gi.repository import Adw, Gio, GLib, Gtk, GObject
 
 from .image_to_image_runner import ImageToImageRunner
 from .prompt_ideas import prompt_idea_categories
@@ -43,6 +43,7 @@ class ImageToImagePage(Gtk.Box):
     _flow_box: Gtk.FlowBox = Gtk.Template.Child()
     _generating_progress_bar: Gtk.ProgressBar = Gtk.Template.Child()
     _inference_steps_spin_button: Gtk.SpinButton = Gtk.Template.Child()
+    _seed_switch: Gtk.Switch = Gtk.Template.Child()
     _seed_spin_button: Gtk.SpinButton = Gtk.Template.Child()
     _number_images_spin_button: Gtk.SpinButton = Gtk.Template.Child()
     _run_button: Gtk.Button = Gtk.Template.Child()
@@ -72,6 +73,13 @@ class ImageToImagePage(Gtk.Box):
 
         self._prompt_text_view.get_buffer().connect(
             "changed", self._on_prompt_text_view_buffer_change_cb
+        )
+
+        self._seed_switch.bind_property(
+            "active",
+            self._seed_spin_button,
+            "sensitive",
+            GObject.BindingFlags.BIDIRECTIONAL
         )
 
         self._fill_prompt_box()
