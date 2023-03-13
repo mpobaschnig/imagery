@@ -3,8 +3,8 @@
   <requires lib="gtk" version="4.0"/>
   <requires lib="Adw" version="1.0"/>
   <template class="ImageryWindow" parent="AdwApplicationWindow">
-    <property name="default-width">842</property>
-    <property name="default-height">842</property>
+    <property name="default-width">880</property>
+    <property name="default-height">880</property>
     <child>
       <object class="GtkBox">
         <property name="orientation">vertical</property>
