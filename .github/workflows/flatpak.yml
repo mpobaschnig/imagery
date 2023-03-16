@@ -1,0 +1,19 @@
+name: flatpak
+
+on: [pull_request]
+
+jobs:
+  flatpak:
+    name: "Flatpak"
+    runs-on: ubuntu-latest
+    container:
+      image: bilelmoussaoui/flatpak-github-actions:gnome-43
+      options: --privileged
+    steps:
+      - uses: actions/checkout@v3
+      - uses: bilelmoussaoui/flatpak-github-actions/flatpak-builder@v5
+        with:
+          bundle: imagery.flatpak
+          manifest-path: io.github.mpobaschnig.Imagery.json
+          run-tests: true
+          cache-key: flatpak-builder-${{ github.sha }}
