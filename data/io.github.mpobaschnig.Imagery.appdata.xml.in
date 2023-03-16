@@ -4,6 +4,32 @@
 	<metadata_license>CC0-1.0</metadata_license>
 	<project_license>GPL-3.0-or-later</project_license>
 	<description>
-	  <p>No description</p>
+		<p>Imagery lets you generate images using Stable Diffusion based on text or image input.</p>
 	</description>
+	<screenshots>
+		<screenshot>
+			<image>https://raw.githubusercontent.com/mpobaschnig/imagery/main/data/screenshots/start.png</image>
+			<caption>Start Window</caption>
+		</screenshot>
+		<screenshot>
+			<image>https://raw.githubusercontent.com/mpobaschnig/imagery/main/data/screenshots/t2i_progress.png</image>
+			<caption>Text to Image Generation</caption>
+		</screenshot>
+		<screenshot>
+			<image>https://raw.githubusercontent.com/mpobaschnig/imagery/main/data/screenshots/t2i_finished.png</image>
+			<caption>Text To Image Result</caption>
+		</screenshot>
+	</screenshots>
+	<url type="bugtracker">https://github.com/mpobaschnig/imagery/issues</url>
+	<url type="donation">https://github.com/sponsors/mpobaschnig/</url>
+	<content_rating type="oars-1.0"/>
+	<developer_name translatable="no">Martin Pobaschnig</developer_name>
+	<update_contact>mpobaschnig@protonmail.com</update_contact>
+	<translation type="gettext">@gettext-package@</translation>
+	<launchable type="desktop-id">Imagery.desktop</launchable>
+	<requires>
+		<display_length compare="ge">360</display_length>
+	</requires>
+	<releases>
+	</releases>
 </component>
