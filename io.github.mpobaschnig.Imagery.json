@@ -36,8 +36,8 @@
             "buildsystem" : "meson",
             "sources" : [
                 {
-                    "type" : "git",
-                    "url" : "file:///home/mpobaschnig/Projects"
+                    "type" : "dir",
+                    "path" : "."
                 }
             ]
         }
