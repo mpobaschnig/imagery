@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop">
+	<name>Imagery</name>
+	<summary>Create images at will</summary>
 	<id>io.github.mpobaschnig.Imagery.desktop</id>
 	<metadata_license>CC0-1.0</metadata_license>
 	<project_license>GPL-3.0-or-later</project_license>
@@ -20,6 +22,7 @@
 			<caption>Text To Image Result</caption>
 		</screenshot>
 	</screenshots>
+	<url type="homepage">https://github.com/mpobaschnig/imagery</url>
 	<url type="bugtracker">https://github.com/mpobaschnig/imagery/issues</url>
 	<url type="donation">https://github.com/sponsors/mpobaschnig/</url>
 	<content_rating type="oars-1.0"/>
