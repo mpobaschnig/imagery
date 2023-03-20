@@ -387,6 +387,7 @@
       <widget name="_guidance_scale_spin_button"/>
       <widget name="_inference_steps_spin_button"/>
       <widget name="_number_images_spin_button"/>
+      <widget name="_seed_spin_button"/>
     </widgets>
   </object>
 </interface>
