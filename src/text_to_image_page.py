@@ -301,10 +301,6 @@ class TextToImagePage(Gtk.Box):
 
         img_width = img.get_paintable().get_intrinsic_width()
         img_height = img.get_paintable().get_intrinsic_height()
-        maximum_width = 300
-        if img_width > maximum_width:
-            img_height = img_height / (img_width / maximum_width)
-            img_width = maximum_width
 
         overlay.set_size_request(img_width, img_height)
         overlay.set_child(img)
