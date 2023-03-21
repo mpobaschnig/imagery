@@ -234,7 +234,7 @@
                                                         <child>
                                                           <object class="AdwActionRow">
                                                             <property name="activatable_widget">_radio_button_pndm</property>
-                                                            <property name="title">PNDMScheduler</property>
+                                                            <property name="title">PNDM</property>
                                                             <child type="prefix">
                                                               <object class="GtkCheckButton" id="_radio_button_pndm">
                                                                 <property name="valign">center</property>
@@ -246,7 +246,7 @@
                                                         <child>
                                                           <object class="AdwActionRow">
                                                             <property name="activatable_widget">_radio_button_lms</property>
-                                                            <property name="title">LMSDiscreteScheduler</property>
+                                                            <property name="title">LMS</property>
                                                             <child type="prefix">
                                                               <object class="GtkCheckButton" id="_radio_button_lms">
                                                                 <property name="group">_radio_button_pndm</property>
@@ -258,7 +258,7 @@
                                                         <child>
                                                           <object class="AdwActionRow">
                                                             <property name="activatable_widget">_radio_button_ed</property>
-                                                            <property name="title">EulerDiscreteScheduler</property>
+                                                            <property name="title">Euler</property>
                                                             <child type="prefix">
                                                               <object class="GtkCheckButton" id="_radio_button_ed">
                                                                 <property name="group">_radio_button_pndm</property>
@@ -270,7 +270,7 @@
                                                         <child>
                                                           <object class="AdwActionRow">
                                                             <property name="activatable_widget">_radio_button_ead</property>
-                                                            <property name="title">EulerAncestralDiscreteScheduler</property>
+                                                            <property name="title">Euler Ancestral</property>
                                                             <child type="prefix">
                                                               <object class="GtkCheckButton" id="_radio_button_ead">
                                                                 <property name="group">_radio_button_pndm</property>
@@ -282,7 +282,7 @@
                                                         <child>
                                                           <object class="AdwActionRow">
                                                             <property name="activatable_widget">_radio_button_dpmsm</property>
-                                                            <property name="title">DPMSolverMultistepScheduler</property>
+                                                            <property name="title">DPM</property>
                                                             <child type="prefix">
                                                               <object class="GtkCheckButton" id="_radio_button_dpmsm">
                                                                 <property name="group">_radio_button_pndm</property>
@@ -294,7 +294,7 @@
                                                         <child>
                                                           <object class="AdwActionRow">
                                                             <property name="activatable_widget">_radio_button_ddpm</property>
-                                                            <property name="title">DDPMScheduler</property>
+                                                            <property name="title">DDPM</property>
                                                             <child type="prefix">
                                                               <object class="GtkCheckButton" id="_radio_button_ddpm">
                                                                 <property name="group">_radio_button_pndm</property>
@@ -306,7 +306,7 @@
                                                         <child>
                                                           <object class="AdwActionRow">
                                                             <property name="activatable_widget">_radio_button_ddim</property>
-                                                            <property name="title">DDIMScheduler</property>
+                                                            <property name="title">DDIM</property>
                                                             <child type="prefix">
                                                               <object class="GtkCheckButton" id="_radio_button_ddim">
                                                                 <property name="group">_radio_button_pndm</property>
