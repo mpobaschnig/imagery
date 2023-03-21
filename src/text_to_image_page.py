@@ -322,8 +322,8 @@ class TextToImagePage(Gtk.Box):
         neg_prompt = str(
             self._neg_prompt_text_view.get_buffer().get_text(nstart, nend, False)
         )
-        height = int(self._width_spin_button.get_value())
-        width = int(self._height_spin_button.get_value())
+        height = int(self._height_spin_button.get_value())
+        width = int(self._width_spin_button.get_value())
         inf_steps = int(self._inference_steps_spin_button.get_value())
         use_seed = bool(self._seed_switch.get_active())
         seed = int(self._seed_spin_button.get_value())
