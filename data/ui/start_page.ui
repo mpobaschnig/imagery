@@ -18,7 +18,6 @@
                 <property name="hexpand">True</property>
                 <property name="icon-name">io.github.mpobaschnig.Imagery</property>
                 <property name="title" translatable="yes">Welcome to Imagery</property>
-                <property name="description" translatable="yes">We only need to check a few things and set everything up.</property>
               </object>
             </child>
             <child>
