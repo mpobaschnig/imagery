@@ -286,8 +286,7 @@
                 <child>
                   <object class="GtkButton" id="_cancel_run_button">
                     <property name="halign">center</property>
-                    <property name="label" translatable="yes">_Cancel</property>
-                    <property name="use-underline">1</property>
+                    <property name="label" translatable="yes">Cancel</property>
                     <property name="visible">False</property>
                     <signal name="clicked" handler="_on_cancel_run_button_clicked" swapped="no"/>
                     <style>
@@ -319,8 +318,7 @@
                                     <child>
                                       <object class="GtkButton" id="_open_image_button">
                                         <property name="halign">center</property>
-                                        <property name="label" translatable="yes">_Open Image</property>
-                                        <property name="use-underline">1</property>
+                                        <property name="label" translatable="yes">Open Image</property>
                                         <signal name="clicked" handler="_on_open_image_button_clicked_cb" swapped="no"/>
                                         <style>
                                           <class name="suggested-action"/>

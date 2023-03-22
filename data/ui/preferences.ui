@@ -12,10 +12,9 @@
             <child>
               <object class="AdwActionRow">
                 <property name="visible">True</property>
-                <property name="title" translatable="yes">_Allow NSFW</property>
+                <property name="title" translatable="yes">Allow NSFW</property>
                 <property name="subtitle" translatable="yes">Allow generating Not Safe For Work images.</property>
                 <property name="activatable_widget">_allow_nsfw</property>
-                <property name="use_underline">True</property>
                 <child>
                   <object class="GtkSwitch" id="_allow_nsfw">
                     <property name="valign">center</property>
@@ -27,9 +26,8 @@
             <child>
               <object class="AdwActionRow">
                 <property name="visible">True</property>
-                <property name="title" translatable="yes">_Clear Image Cache</property>
+                <property name="title" translatable="yes">Clear Image Cache</property>
                 <property name="subtitle" translatable="yes">Remove the images of recent runs.</property>
-                <property name="use_underline">True</property>
                 <child>
                   <object class="GtkButton" id="_clear_image_cache">
                     <property name="valign">center</property>

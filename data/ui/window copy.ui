@@ -25,8 +25,7 @@
             <child>
               <object class="GtkButton" id="_download_model_button">
                 <property name="halign">center</property>
-                <property name="label" translatable="yes">_Download Model</property>
-                <property name="use-underline">1</property>
+                <property name="label" translatable="yes">Download Model</property>
                 <signal name="clicked" handler="_on_download_model_button_clicked" swapped="no"/>
                 <style>
                   <class name="suggested-action"/>
@@ -37,8 +36,7 @@
             <child>
               <object class="GtkButton" id="_cancel_download_button">
                 <property name="halign">center</property>
-                <property name="label" translatable="yes">_Cancel Download</property>
-                <property name="use-underline">1</property>
+                <property name="label" translatable="yes">Cancel Download</property>
                 <property name="visible">False</property>
                 <signal name="clicked" handler="_on_cancel_download_button_clicked" swapped="no"/>
                 <style>
@@ -50,8 +48,7 @@
             <child>
               <object class="GtkButton" id="_continue_button">
                 <property name="halign">center</property>
-                <property name="label" translatable="yes">_Continue</property>
-                <property name="use-underline">1</property>
+                <property name="label" translatable="yes">Continue</property>
                 <property name="visible">False</property>
                 <signal name="clicked" handler="_on_continue_button_clicked" swapped="no"/>
                 <style>

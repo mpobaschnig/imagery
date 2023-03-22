@@ -63,11 +63,11 @@
   <menu id="primary_menu">
     <section>
       <item>
-        <attribute name="label" translatable="yes">_Preferences</attribute>
+        <attribute name="label" translatable="yes">Preferences</attribute>
         <attribute name="action">app.preferences</attribute>
       </item>
       <item>
-        <attribute name="label" translatable="yes">_About Imagery</attribute>
+        <attribute name="label" translatable="yes">About Imagery</attribute>
         <attribute name="action">app.about</attribute>
       </item>
     </section>
@@ -75,11 +75,11 @@
   <menu id="pages">
     <section>
       <item>
-        <attribute name="label" translatable="yes">_Text to Image</attribute>
+        <attribute name="label" translatable="yes">Text to Image</attribute>
         <attribute name="action">win.text_to_image</attribute>
       </item>
       <item>
-        <attribute name="label" translatable="yes">_Image to Image</attribute>
+        <attribute name="label" translatable="yes">Image to Image</attribute>
         <attribute name="action">win.image_to_image</attribute>
       </item>
     </section>
