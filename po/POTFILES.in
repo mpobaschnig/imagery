@@ -1,0 +1,11 @@
+data/io.github.mpobaschnig.Imagery.appdata.xml.in
+data/io.github.mpobaschnig.Imagery.desktop.in
+data/io.github.mpobaschnig.Imagery.gschema.xml
+data/ui/image_to_image_page.ui
+data/ui/preferences.ui
+data/ui/start_page.ui
+data/ui/text_to_image_page.ui
+data/ui/window copy.ui
+data/ui/window.ui
+src/main.py
+src/window.py
