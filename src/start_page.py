@@ -108,7 +108,7 @@ class StartPage(Gtk.Box):
         if self._current_page > 0:
             self._previous_button.set_visible(True)
 
-        if self._current_page == 1:
+        if self._current_page == self._carousel.get_n_pages() - 1:
             self._next_button.set_visible(False)
 
     @Gtk.Template.Callback()
@@ -122,7 +122,7 @@ class StartPage(Gtk.Box):
         if self._current_page == 0:
             self._previous_button.set_visible(False)
 
-        if self._current_page < 1:
+        if self._current_page < self._carousel.get_n_pages():
             self._next_button.set_visible(True)
 
     def cleanup(self):
