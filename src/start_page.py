@@ -78,7 +78,7 @@ class StartPage(Gtk.Box):
         self._continue_button.set_visible(True)
         self._cancel_download_button.set_visible(False)
 
-        set_model_download_finished()
+        set_model_download_finished(True)
 
     def _check_cuda_support(self):
         if torch.cuda.is_available():

@@ -30,5 +30,5 @@ def is_model_download_finished() -> bool:
     return settings.get_boolean("download-finished")
 
 
-def set_model_download_finished() -> bool:
-    return settings.set_boolean("download-finished", True)
+def set_model_download_finished(value: bool) -> bool:
+    return settings.set_boolean("download-finished", value)
