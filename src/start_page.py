@@ -34,7 +34,6 @@ class StartPage(Gtk.Box):
         "finished": (GObject.SignalFlags.RUN_FIRST, None, ())
     }
 
-    _status_page_acceleration: Adw.StatusPage = Gtk.Template.Child()
     _carousel: Adw.Carousel = Gtk.Template.Child()
     _next_button: Gtk.Button = Gtk.Template.Child()
     _previous_button: Gtk.Button = Gtk.Template.Child()
