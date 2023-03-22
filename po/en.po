@@ -1,0 +1,187 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: imagery\n"
+"POT-Creation-Date: 2023-03-22 10:27+0100\n"
+"PO-Revision-Date: 2023-03-22 10:27+0100\n"
+"Last-Translator: Martin Pobaschnig <mpobaschnig@protonmail.com>\n"
+"Language-Team: \n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.1.1\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-SearchPath-0: data/ui\n"
+"X-Poedit-SearchPath-1: src\n"
+
+#: data/ui/image_to_image_page.ui:28 data/ui/text_to_image_page.ui:29
+msgid "Prompt"
+msgstr "Prompt"
+
+#: data/ui/image_to_image_page.ui:29 data/ui/text_to_image_page.ui:30
+msgid "The text to guide the image generation."
+msgstr "The text to guide the image generation."
+
+#: data/ui/image_to_image_page.ui:55 data/ui/text_to_image_page.ui:56
+msgid "Prompt Ideas"
+msgstr "Prompt Ideas"
+
+#: data/ui/image_to_image_page.ui:86 data/ui/text_to_image_page.ui:87
+msgid "Model Settings"
+msgstr "Model Settings"
+
+#: data/ui/image_to_image_page.ui:99 data/ui/preferences.ui:8
+#: data/ui/preferences.ui:11 data/ui/text_to_image_page.ui:106
+msgid "General"
+msgstr "General"
+
+#: data/ui/image_to_image_page.ui:108
+msgid "Strength"
+msgstr "Strength"
+
+#: data/ui/image_to_image_page.ui:128
+msgid "Guidance Scale"
+msgstr "Guidance Scale"
+
+#: data/ui/image_to_image_page.ui:148 data/ui/text_to_image_page.ui:155
+msgid "Number of Images"
+msgstr "Number of Images"
+
+#: data/ui/image_to_image_page.ui:167 data/ui/text_to_image_page.ui:174
+msgid "Inference Steps"
+msgstr "Inference Steps"
+
+#: data/ui/image_to_image_page.ui:232 data/ui/text_to_image_page.ui:338
+msgid "Generate"
+msgstr "Generate"
+
+#: data/ui/image_to_image_page.ui:261 data/ui/text_to_image_page.ui:367
+msgid "Negative Prompt"
+msgstr "Negative Prompt"
+
+#: data/ui/image_to_image_page.ui:262 data/ui/text_to_image_page.ui:368
+msgid "The text not to guide the image generation."
+msgstr "The text not to guide the image generation."
+
+#: data/ui/image_to_image_page.ui:289 data/ui/text_to_image_page.ui:395
+#| msgid "_Cancel"
+msgid "Cancel"
+msgstr "Cancel"
+
+#: data/ui/image_to_image_page.ui:310 data/ui/image_to_image_page.ui:321
+msgid "Open Image"
+msgstr "Open Image"
+
+#: data/ui/image_to_image_page.ui:311
+msgid "Add image that you want to change."
+msgstr "Add image that you want to change."
+
+#: data/ui/preferences.ui:15
+#| msgid "_Allow NSFW"
+msgid "Allow NSFW"
+msgstr "Allow NSFW"
+
+#: data/ui/preferences.ui:16
+msgid "Allow generating Not Safe For Work images."
+msgstr "Allow generating Not Safe For Work images."
+
+#: data/ui/preferences.ui:29
+#| msgid "_Clear Image Cache"
+msgid "Clear Image Cache"
+msgstr "Clear Image Cache"
+
+#: data/ui/preferences.ui:30
+msgid "Remove the images of recent runs."
+msgstr "Remove the images of recent runs."
+
+#: data/ui/start_page.ui:20
+msgid "Welcome to Imagery"
+msgstr "Welcome to Imagery"
+
+#: data/ui/start_page.ui:21
+msgid "We only need to check a few things and set everything up."
+msgstr "We only need to check a few things and set everything up."
+
+#: data/ui/start_page.ui:32
+msgid ""
+"To check if your graphics card is suitable for machine learning "
+"acceleration, click <a href=\"https://github.com/mpobaschnig/imagery/wiki/"
+"Graphics-Card-Support/\">here</a>."
+msgstr ""
+"To check if your graphics card is suitable for machine learning "
+"acceleration, click <a href=\"https://github.com/mpobaschnig/imagery/wiki/"
+"Graphics-Card-Support/\">here</a>."
+
+#: data/ui/start_page.ui:44
+msgid "Stable Diffusion Model Missing"
+msgstr "Stable Diffusion Model Missing"
+
+#: data/ui/start_page.ui:45
+msgid ""
+"Imagery needs the Stable Diffusion model to generate images. The Stable "
+"Diffusion model takes about 18 GB of disk space."
+msgstr ""
+"Imagery needs the Stable Diffusion model to generate images. The Stable "
+"Diffusion model takes about 18 GB of disk space."
+
+#: data/ui/start_page.ui:54 data/ui/window copy.ui:28
+#| msgid "_Download Model"
+msgid "Download Model"
+msgstr "Download Model"
+
+#: data/ui/start_page.ui:78 data/ui/window copy.ui:39
+#| msgid "_Cancel Download"
+msgid "Cancel Download"
+msgstr "Cancel Download"
+
+#: data/ui/start_page.ui:90 data/ui/window copy.ui:51
+#| msgid "_Continue"
+msgid "Continue"
+msgstr "Continue"
+
+#: data/ui/start_page.ui:101 data/ui/window copy.ui:62
+msgid ""
+"By downloading, you accept the <a href=\"https://github.com/CompVis/stable-"
+"diffusion/blob/21f890f9da3cfbeaba8e2ac3c425ee9e998d5229/LICENSE/"
+"\">CreativeML Open RAIL-M license</a>"
+msgstr ""
+"By downloading, you accept the <a href=\"https://github.com/CompVis/stable-"
+"diffusion/blob/21f890f9da3cfbeaba8e2ac3c425ee9e998d5229/LICENSE/"
+"\">CreativeML Open RAIL-M license</a>"
+
+#: data/ui/text_to_image_page.ui:115
+msgid "Height"
+msgstr "Height"
+
+#: data/ui/text_to_image_page.ui:135
+msgid "Width"
+msgstr "Width"
+
+#: data/ui/window copy.ui:10
+msgid "Create images at will"
+msgstr "Create images at will"
+
+#: data/ui/window.ui:23
+msgid "Settings"
+msgstr "Settings"
+
+#: data/ui/window.ui:66
+#| msgid "_Preferences"
+msgid "Preferences"
+msgstr "Preferences"
+
+#: data/ui/window.ui:70
+#| msgid "_About Imagery"
+msgid "About Imagery"
+msgstr "About Imagery"
+
+#: data/ui/window.ui:78
+#| msgid "_Text to Image"
+msgid "Text to Image"
+msgstr "Text to Image"
+
+#: data/ui/window.ui:82
+#| msgid "_Image to Image"
+msgid "Image to Image"
+msgstr "Image to Image"
