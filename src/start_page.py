@@ -70,7 +70,7 @@ class StartPage(Gtk.Box):
 
     def _finished(self, _download_manager: DownloadManager) -> None:
         self._progress_bar.set_fraction(100)
-        self._progress_bar.set_text(i18n("Download finished."))
+        self._progress_bar.set_text(i18n("Download finished"))
         self._continue_button.set_visible(True)
         self._cancel_download_button.set_visible(False)
 
