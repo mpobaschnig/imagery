@@ -19,7 +19,6 @@
 
 from gettext import gettext as i18n
 
-import torch
 from gi.repository import Adw, GObject, Gtk
 
 from .download_manager import DownloadManager
@@ -36,7 +35,6 @@ class StartPage(Gtk.Box):
     }
 
     _status_page_acceleration: Adw.StatusPage = Gtk.Template.Child()
-    _acceleration_hint: Gtk.Label = Gtk.Template.Child()
     _carousel: Adw.Carousel = Gtk.Template.Child()
     _next_button: Gtk.Button = Gtk.Template.Child()
     _previous_button: Gtk.Button = Gtk.Template.Child()
@@ -54,8 +52,6 @@ class StartPage(Gtk.Box):
         self._download_manager.connect("update", self._update)
         self._download_manager.connect("cancelled", self._cancelled)
         self._download_manager.connect("finished", self._finished)
-
-        self._check_cuda_support()
 
         self._current_page: int = 0
 
@@ -79,22 +75,6 @@ class StartPage(Gtk.Box):
         self._cancel_download_button.set_visible(False)
 
         set_model_download_finished(True)
-
-    def _check_cuda_support(self):
-        if torch.cuda.is_available():
-            self._status_page_acceleration.set_title(
-                i18n("Hardware Acceleration Detected"))
-            self._status_page_acceleration.set_description(i18n(
-                "Your system can accelerate the execution of the machine learning model.")  # noqa: E501, pylint: disable=line-too-long
-            )
-            self._acceleration_hint.set_visible(False)
-        else:
-            self._status_page_acceleration.set_title(
-                i18n("No Hardware Acceleration Detected"))
-            self._status_page_acceleration.set_description(
-                i18n("Your system cannot accelerate the execution of the machine learning model, which results in increased memory consumption and degraded performance.")  # noqa: E501, pylint: disable=line-too-long
-            )
-            self._acceleration_hint.set_visible(True)
 
     @Gtk.Template.Callback()
     def _on_download_model_button_clicked(self, _button):
@@ -128,7 +108,7 @@ class StartPage(Gtk.Box):
         if self._current_page > 0:
             self._previous_button.set_visible(True)
 
-        if self._current_page == 2:
+        if self._current_page == 1:
             self._next_button.set_visible(False)
 
     @Gtk.Template.Callback()
@@ -142,7 +122,7 @@ class StartPage(Gtk.Box):
         if self._current_page == 0:
             self._previous_button.set_visible(False)
 
-        if self._current_page < 2:
+        if self._current_page < 1:
             self._next_button.set_visible(True)
 
     def cleanup(self):
