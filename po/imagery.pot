@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: imagery\n"
-"POT-Creation-Date: 2023-03-22 10:24+0100\n"
+"POT-Creation-Date: 2023-03-23 23:44+0100\n"
 "PO-Revision-Date: 2023-03-22 00:10+0100\n"
 "Last-Translator: Martin Pobaschnig <mpobaschnig@protonmail.com>\n"
 "Language-Team: \n"
@@ -20,8 +20,10 @@ msgstr ""
 msgid "Prompt"
 msgstr ""
 
-#: data/ui/image_to_image_page.ui:29 data/ui/text_to_image_page.ui:30
-msgid "The text to guide the image generation."
+#: data/ui/image_to_image_page.ui:29
+msgid ""
+"The prompt is a series of words or sentences that guide the image "
+"generation."
 msgstr ""
 
 #: data/ui/image_to_image_page.ui:55 data/ui/text_to_image_page.ui:56
@@ -61,20 +63,26 @@ msgstr ""
 msgid "Negative Prompt"
 msgstr ""
 
-#: data/ui/image_to_image_page.ui:262 data/ui/text_to_image_page.ui:368
-msgid "The text not to guide the image generation."
+#: data/ui/image_to_image_page.ui:262
+msgid ""
+"The negative prompt is a series of words or sentences that do not guide "
+"the image generation."
 msgstr ""
 
 #: data/ui/image_to_image_page.ui:289 data/ui/text_to_image_page.ui:395
 msgid "Cancel"
 msgstr ""
 
-#: data/ui/image_to_image_page.ui:310 data/ui/image_to_image_page.ui:321
-msgid "Open Image"
+#: data/ui/image_to_image_page.ui:310
+msgid "Image Missing"
 msgstr ""
 
 #: data/ui/image_to_image_page.ui:311
-msgid "Add image that you want to change."
+msgid "Add an image that you want to change."
+msgstr ""
+
+#: data/ui/image_to_image_page.ui:321
+msgid "Open Image"
 msgstr ""
 
 #: data/ui/preferences.ui:15
@@ -97,44 +105,33 @@ msgstr ""
 msgid "Welcome to Imagery"
 msgstr ""
 
-#: data/ui/start_page.ui:21
-msgid "We only need to check a few things and set everything up."
-msgstr ""
-
-#: data/ui/start_page.ui:32
-msgid ""
-"To check if your graphics card is suitable for machine learning "
-"acceleration, click <a href=\"https://github.com/mpobaschnig/imagery/wiki/"
-"Graphics-Card-Support/\">here</a>."
-msgstr ""
-
-#: data/ui/start_page.ui:44
+#: data/ui/start_page.ui:28
 msgid "Stable Diffusion Model Missing"
 msgstr ""
 
-#: data/ui/start_page.ui:45
+#: data/ui/start_page.ui:29
 msgid ""
-"Imagery needs the Stable Diffusion model to generate images. The Stable "
-"Diffusion model takes about 18 GB of disk space."
+"Imagery needs the Stable Diffusion model to generate images. The model "
+"takes about 18 GB of disk space."
 msgstr ""
 
-#: data/ui/start_page.ui:54 data/ui/window copy.ui:28
+#: data/ui/start_page.ui:38
 msgid "Download Model"
 msgstr ""
 
-#: data/ui/start_page.ui:78 data/ui/window copy.ui:39
+#: data/ui/start_page.ui:62
 msgid "Cancel Download"
 msgstr ""
 
-#: data/ui/start_page.ui:90 data/ui/window copy.ui:51
+#: data/ui/start_page.ui:74
 msgid "Continue"
 msgstr ""
 
-#: data/ui/start_page.ui:101 data/ui/window copy.ui:62
+#: data/ui/start_page.ui:85
 msgid ""
 "By downloading, you accept the <a href=\"https://github.com/CompVis/stable-"
 "diffusion/blob/21f890f9da3cfbeaba8e2ac3c425ee9e998d5229/LICENSE/"
-"\">CreativeML Open RAIL-M license</a>"
+"\">CreativeML Open RAIL-M license</a>."
 msgstr ""
 
 #: data/ui/text_to_image_page.ui:115
@@ -143,10 +140,6 @@ msgstr ""
 
 #: data/ui/text_to_image_page.ui:135
 msgid "Width"
-msgstr ""
-
-#: data/ui/window copy.ui:10
-msgid "Create images at will"
 msgstr ""
 
 #: data/ui/window.ui:23
