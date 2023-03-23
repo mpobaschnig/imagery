@@ -27,7 +27,7 @@
                     <child>
                       <object class="AdwPreferencesGroup">
                         <property name="title" translatable="yes">Prompt</property>
-                        <property name="description" translatable="yes">The text to guide the image generation.</property>
+                        <property name="description">The prompt is a series of words or sentences that guide the image generation.</property>
                         <child>
                           <object class="GtkOverlay">
                             <child>
@@ -365,7 +365,7 @@
                     <child>
                       <object class="AdwPreferencesGroup">
                         <property name="title" translatable="yes">Negative Prompt</property>
-                        <property name="description" translatable="yes">The text not to guide the image generation.</property>
+                        <property name="description">The negative prompt is a series of words or sentences that do not guide the image generation.</property>
                         <child>
                           <object class="GtkTextView" id="_neg_prompt_text_view">
                             <property name="height-request">124</property>
