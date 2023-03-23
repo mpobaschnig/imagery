@@ -404,12 +404,19 @@ class ImageToImagePage(Gtk.Box):
         img.set_content_fit(Gtk.ContentFit.SCALE_DOWN)
         img.set_halign(Gtk.Align.CENTER)
 
+        file_filter: Gtk.FileFilter = Gtk.FileFilter()
+        file_filter.set_name("Images")
+        file_filter.add_pattern("*.jpg")
+        file_filter.add_pattern("*.jpeg")
+        file_filter.add_pattern("*.png")
+
         file_chooser_native = Gtk.FileChooserNative()
         file_chooser_native.set_accept_label(i18n("Open Image"))
         file_chooser_native.set_action(Gtk.FileChooserAction.OPEN)
         file_chooser_native.connect(
             "response", self._open_image_to_change_response_cb, (img, overlay,)
         )
+        file_chooser_native.add_filter(file_filter)
         file_chooser_native.show()
 
         overlay.set_child(img)
