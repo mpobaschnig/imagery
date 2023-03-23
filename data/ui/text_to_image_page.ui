@@ -87,7 +87,7 @@
                                     <property name="tooltip-text" translatable="yes">Model Settings</property>
                                     <property name="popover">
                                       <object class="GtkPopover">
-                                        <property name="width-request">400</property>
+                                        <property name="width-request">480</property>
                                         <property name="height-request">360</property>
                                         <child>
                                           <object class="GtkScrolledWindow">
