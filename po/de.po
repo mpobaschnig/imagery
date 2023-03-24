@@ -1,0 +1,177 @@
+# 
+# Translators:
+# Martin Pobaschnig, 2023
+# 
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: imagery\n"
+"POT-Creation-Date: 2023-03-23 23:44+0100\n"
+"PO-Revision-Date: 2023-03-24 12:01+0000\n"
+"Last-Translator: Martin Pobaschnig, 2023\n"
+"Language-Team: German (https://www.transifex.com/mpobaschnig/teams/165425/de/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: de\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.1.1\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-SearchPath-0: data/ui\n"
+"X-Poedit-SearchPath-1: src\n"
+
+#: data/ui/image_to_image_page.ui:28 data/ui/text_to_image_page.ui:29
+msgid "Prompt"
+msgstr "Eingabe"
+
+#: data/ui/image_to_image_page.ui:29
+msgid ""
+"The prompt is a series of words or sentences that guide the image "
+"generation."
+msgstr ""
+"Die Eingabe ist eine Abfolge von Wörtern oder Sätzen, welche die "
+"Bilderstellung lenken."
+
+#: data/ui/image_to_image_page.ui:55 data/ui/text_to_image_page.ui:56
+msgid "Prompt Ideas"
+msgstr "Eingabeideen"
+
+#: data/ui/image_to_image_page.ui:86 data/ui/text_to_image_page.ui:87
+msgid "Model Settings"
+msgstr "Modelleinstellungen"
+
+#: data/ui/image_to_image_page.ui:99 data/ui/preferences.ui:8
+#: data/ui/preferences.ui:11 data/ui/text_to_image_page.ui:106
+msgid "General"
+msgstr "Allgemein"
+
+#: data/ui/image_to_image_page.ui:108
+msgid "Strength"
+msgstr "Stärke"
+
+#: data/ui/image_to_image_page.ui:128
+msgid "Guidance Scale"
+msgstr "Ausmaß der Lenkung"
+
+#: data/ui/image_to_image_page.ui:148 data/ui/text_to_image_page.ui:155
+msgid "Number of Images"
+msgstr "Anzahl der Bilder"
+
+#: data/ui/image_to_image_page.ui:167 data/ui/text_to_image_page.ui:174
+msgid "Inference Steps"
+msgstr "Schlussfolgerungsschritte"
+
+#: data/ui/image_to_image_page.ui:232 data/ui/text_to_image_page.ui:338
+msgid "Generate"
+msgstr "Erstellen"
+
+#: data/ui/image_to_image_page.ui:261 data/ui/text_to_image_page.ui:367
+msgid "Negative Prompt"
+msgstr "Negative Eingabe"
+
+#: data/ui/image_to_image_page.ui:262
+msgid ""
+"The negative prompt is a series of words or sentences that do not guide the "
+"image generation."
+msgstr ""
+"Die negative Eingabe ist eine Abfolge von Wörtern oder Sätzen, welche die "
+"Bilderstellung nicht lenken soll."
+
+#: data/ui/image_to_image_page.ui:289 data/ui/text_to_image_page.ui:395
+msgid "Cancel"
+msgstr "Abbrechen"
+
+#: data/ui/image_to_image_page.ui:310
+msgid "Image Missing"
+msgstr "Bild Fehlt"
+
+#: data/ui/image_to_image_page.ui:311
+msgid "Add an image that you want to change."
+msgstr "Füge ein Bild hinzu, das du ändern möchtest."
+
+#: data/ui/image_to_image_page.ui:321
+msgid "Open Image"
+msgstr "Bild Öffnen"
+
+#: data/ui/preferences.ui:15
+msgid "Allow NSFW"
+msgstr "NSFW erlauben"
+
+#: data/ui/preferences.ui:16
+msgid "Allow generating Not Safe For Work images."
+msgstr "Unpassende Inhalte erlauben."
+
+#: data/ui/preferences.ui:29
+msgid "Clear Image Cache"
+msgstr "Bildercache löschen"
+
+#: data/ui/preferences.ui:30
+msgid "Remove the images of recent runs."
+msgstr "Entferne die Bilder von vorherigen Durchgängen."
+
+#: data/ui/start_page.ui:20
+msgid "Welcome to Imagery"
+msgstr "Willkommen zu Imagery"
+
+#: data/ui/start_page.ui:28
+msgid "Stable Diffusion Model Missing"
+msgstr "Stable Diffusion Model Fehlt"
+
+#: data/ui/start_page.ui:29
+msgid ""
+"Imagery needs the Stable Diffusion model to generate images. The model takes"
+" about 18 GB of disk space."
+msgstr ""
+"Imagery benötigt das Stable Diffusion Modell um bilder zu erstellen. Das "
+"Modell benötigt ungefähr 18 GB Speicherplatz."
+
+#: data/ui/start_page.ui:38
+msgid "Download Model"
+msgstr "Model Herunterladen"
+
+#: data/ui/start_page.ui:62
+msgid "Cancel Download"
+msgstr "Download Abbrechen"
+
+#: data/ui/start_page.ui:74
+msgid "Continue"
+msgstr "Fortfahren"
+
+#: data/ui/start_page.ui:85
+msgid ""
+"By downloading, you accept the <a href=\"https://github.com/CompVis/stable-"
+"diffusion/blob/21f890f9da3cfbeaba8e2ac3c425ee9e998d5229/LICENSE/\">CreativeML"
+" Open RAIL-M license</a>."
+msgstr ""
+"Durch das Herunterladen akzetierst du die <a "
+"href=\"https://github.com/CompVis/stable-"
+"diffusion/blob/21f890f9da3cfbeaba8e2ac3c425ee9e998d5229/LICENSE/\">CreativeML"
+" Open RAIL-M Lizenz</a>."
+
+#: data/ui/text_to_image_page.ui:115
+msgid "Height"
+msgstr "Höhe"
+
+#: data/ui/text_to_image_page.ui:135
+msgid "Width"
+msgstr "Breite"
+
+#: data/ui/window.ui:23
+msgid "Settings"
+msgstr "Einstellungen"
+
+#: data/ui/window.ui:66
+msgid "Preferences"
+msgstr "Einstellungen"
+
+#: data/ui/window.ui:70
+msgid "About Imagery"
+msgstr "Über Imagery"
+
+#: data/ui/window.ui:78
+msgid "Text to Image"
+msgstr "Text zu Bild"
+
+#: data/ui/window.ui:82
+msgid "Image to Image"
+msgstr "Bild zu Bild"
