@@ -19,4 +19,5 @@ Open GNOME Builder (or Visual Studio Code with the Flatpak extension), clone the
 
 # Translations
 
-Imagery will be translated using [Transifex](https://www.transifex.com/mpobaschnig/imagery/), which will be added with the first release.
+Imagery is translated mainly using [Transifex](https://www.transifex.com/mpobaschnig/imagery/).
+Translations over Github pull requests are also accepted, if you prefer to do so.
