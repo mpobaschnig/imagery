@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: imagery\n"
-"POT-Creation-Date: 2023-03-23 23:44+0100\n"
+"POT-Creation-Date: 2023-03-27 20:56+0200\n"
 "PO-Revision-Date: 2023-03-24 12:01+0000\n"
 "Last-Translator: Martin Pobaschnig, 2023\n"
 "Language-Team: German (https://www.transifex.com/mpobaschnig/teams/165425/de/)\n"
@@ -120,10 +120,10 @@ msgstr "Stable Diffusion Model Fehlt"
 #: data/ui/start_page.ui:29
 msgid ""
 "Imagery needs the Stable Diffusion model to generate images. The model takes"
-" about 18 GB of disk space."
+" about 10 GB of disk space."
 msgstr ""
-"Imagery benötigt das Stable Diffusion Modell um bilder zu erstellen. Das "
-"Modell benötigt ungefähr 18 GB Speicherplatz."
+"Imagery benötigt das Stable Diffusion Modell um Bilder zu erstellen. Das "
+"Modell benötigt ungefähr 10 GB Speicherplatz."
 
 #: data/ui/start_page.ui:38
 msgid "Download Model"
