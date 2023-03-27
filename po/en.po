@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: imagery\n"
-"POT-Creation-Date: 2023-03-24 11:47+0100\n"
-"PO-Revision-Date: 2023-03-24 11:47+0100\n"
+"POT-Creation-Date: 2023-03-27 20:57+0200\n"
+"PO-Revision-Date: 2023-03-27 20:57+0200\n"
 "Last-Translator: Martin Pobaschnig <mpobaschnig@protonmail.com>\n"
 "Language-Team: \n"
 "Language: en\n"
@@ -111,12 +111,15 @@ msgid "Stable Diffusion Model Missing"
 msgstr "Stable Diffusion Model Missing"
 
 #: data/ui/start_page.ui:29
+#| msgid ""
+#| "Imagery needs the Stable Diffusion model to generate images. The model "
+#| "takes about 18 GB of disk space."
 msgid ""
 "Imagery needs the Stable Diffusion model to generate images. The model takes "
-"about 18 GB of disk space."
+"about 10 GB of disk space."
 msgstr ""
 "Imagery needs the Stable Diffusion model to generate images. The model takes "
-"about 18 GB of disk space."
+"about 10 GB of disk space."
 
 #: data/ui/start_page.ui:38
 msgid "Download Model"

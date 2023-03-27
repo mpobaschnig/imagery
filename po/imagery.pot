@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: imagery\n"
-"POT-Creation-Date: 2023-03-23 23:44+0100\n"
+"POT-Creation-Date: 2023-03-27 20:56+0200\n"
 "PO-Revision-Date: 2023-03-22 00:10+0100\n"
 "Last-Translator: Martin Pobaschnig <mpobaschnig@protonmail.com>\n"
 "Language-Team: \n"
@@ -112,7 +112,7 @@ msgstr ""
 #: data/ui/start_page.ui:29
 msgid ""
 "Imagery needs the Stable Diffusion model to generate images. The model "
-"takes about 18 GB of disk space."
+"takes about 10 GB of disk space."
 msgstr ""
 
 #: data/ui/start_page.ui:38
