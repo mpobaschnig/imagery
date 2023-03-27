@@ -26,7 +26,7 @@
                 <property name="hexpand">True</property>
                 <property name="icon-name">item-missing-symbolic</property>
                 <property name="title" translatable="yes">Stable Diffusion Model Missing</property>
-                <property name="description" translatable="yes">Imagery needs the Stable Diffusion model to generate images. The model takes about 18 GB of disk space.</property>
+                <property name="description" translatable="yes">Imagery needs the Stable Diffusion model to generate images. The model takes about 10 GB of disk space.</property>
                 <child>
                   <object class="GtkBox">
                     <property name="orientation">vertical</property>

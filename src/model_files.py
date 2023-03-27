@@ -70,9 +70,6 @@ sd15_files = [
     File("https://huggingface.co/runwayml/stable-diffusion-v1-5/raw/889b629140e71758e1e0006e355c331a5744b4bf/model_index.json",
          sd15_folder + "model_index.json",
          "72435d612b1363ac5f0727052e7fc74bcdc08f625603e147bb4850e0aa404fea"),
-    File("https://huggingface.co/runwayml/stable-diffusion-v1-5/resolve/889b629140e71758e1e0006e355c331a5744b4bf/v1-5-pruned.ckpt",
-         sd15_folder + "v1-5-pruned.ckpt",
-         "e1441589a6f3c5a53f5f54d0975a18a7feb7cdf0b0dee276dfc3331ae376a053"),
     File("https://huggingface.co/runwayml/stable-diffusion-v1-5/resolve/889b629140e71758e1e0006e355c331a5744b4bf/v1-5-pruned-emaonly.ckpt",
          sd15_folder + "v1-5-pruned-emaonly.ckpt",
          "cc6cb27103417325ff94f52b7a5d2dde45a7515b25c255d8e396c90014281516"),
@@ -81,4 +78,4 @@ sd15_files = [
          "20b7f0acae54d1f88384a6ca15b5d62c0ee4fbbca07ff72f3761fe936083210d")
 ]
 
-sd_files_size = 17452213253
+sd_files_size = 9748455424
