@@ -72,10 +72,7 @@ sd15_files = [
          "72435d612b1363ac5f0727052e7fc74bcdc08f625603e147bb4850e0aa404fea"),
     File("https://huggingface.co/runwayml/stable-diffusion-v1-5/resolve/889b629140e71758e1e0006e355c331a5744b4bf/v1-5-pruned-emaonly.ckpt",
          sd15_folder + "v1-5-pruned-emaonly.ckpt",
-         "cc6cb27103417325ff94f52b7a5d2dde45a7515b25c255d8e396c90014281516"),
-    File("https://huggingface.co/runwayml/stable-diffusion-v1-5/raw/889b629140e71758e1e0006e355c331a5744b4bf/v1-inference.yaml",
-         sd15_folder + "v1-inference.yaml",
-         "20b7f0acae54d1f88384a6ca15b5d62c0ee4fbbca07ff72f3761fe936083210d")
+         "cc6cb27103417325ff94f52b7a5d2dde45a7515b25c255d8e396c90014281516")
 ]
 
 sd_files_size = 9748455424
