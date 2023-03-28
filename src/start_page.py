@@ -18,8 +18,9 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 from gettext import gettext as i18n
+from typing import Tuple
 
-from gi.repository import Adw, GObject, Gtk
+from gi.repository import Adw, GLib, GObject, Gtk
 
 from .download_manager import DownloadManager
 from .model_files import sd15_files
@@ -58,8 +59,15 @@ class StartPage(Gtk.Box):
                 _download_manager: DownloadManager,
                 current_downloaded: int,
                 total_download: int) -> None:
-        self._progress_bar.set_text(f"{current_downloaded} MiB / {total_download} MiB")
-        self._progress_bar.set_fraction(current_downloaded / total_download)
+        def update(data: Tuple[int, int]) -> None:
+            current_downloaded: int = data[0]
+            total_download: int = data[1]
+            self._progress_bar.set_text(
+                f"{current_downloaded} MiB / {total_download} MiB"
+            )
+            self._progress_bar.set_fraction(current_downloaded / total_download)
+
+        GLib.idle_add(update, (current_downloaded, total_download))
 
     def _cancelled(self, _download_manager: DownloadManager) -> None:
         self._progress_bar.set_visible(False)
