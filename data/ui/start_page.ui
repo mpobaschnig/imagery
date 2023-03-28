@@ -82,7 +82,7 @@
                     </child>
                     <child>
                       <object class="GtkLabel" id="_model_license_hint_label">
-                        <property name="label" translatable="yes">By downloading, you accept the &lt;a href="https://github.com/CompVis/stable-diffusion/blob/21f890f9da3cfbeaba8e2ac3c425ee9e998d5229/LICENSE/">CreativeML Open RAIL-M license&lt;/a&gt;.</property>
+                        <property name="label" translatable="yes">By downloading, you accept the &lt;a href="https://github.com/CompVis/stable-diffusion/blob/21f890f9da3cfbeaba8e2ac3c425ee9e998d5229/LICENSE/"&gt;CreativeML Open RAIL-M license&lt;/a&gt;.</property>
                         <property name="use-markup">True</property>
                         <property name="wrap">True</property>
                         <style>
