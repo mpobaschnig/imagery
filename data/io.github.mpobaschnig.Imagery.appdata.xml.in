@@ -34,5 +34,8 @@
 		<display_length compare="ge">360</display_length>
 	</requires>
 	<releases>
+		<release date="2023-03-28" version="0.1.0">
+			<p>Initial release! Features include text to image and image to image generation.</p>
+		</release>
 	</releases>
 </component>
