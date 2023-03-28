@@ -29,7 +29,7 @@
 	<developer_name translatable="no">Martin Pobaschnig</developer_name>
 	<update_contact>mpobaschnig@protonmail.com</update_contact>
 	<translation type="gettext">@gettext-package@</translation>
-	<launchable type="desktop-id">Imagery.desktop</launchable>
+	<launchable type="desktop-id">io.github.mpobaschnig.Imagery.desktop</launchable>
 	<requires>
 		<display_length compare="ge">360</display_length>
 	</requires>
