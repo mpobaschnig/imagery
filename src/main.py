@@ -68,7 +68,7 @@ class ImageryApplication(Adw.Application):
                                 application_name='Imagery',
                                 application_icon='io.github.mpobaschnig.Imagery',
                                 developer_name='Martin Pobaschnig',
-                                version='0.1.0',
+                                version='0.2.0',
                                 developers=['Martin Pobaschnig'],
                                 copyright='© 2023 Martin Pobaschnig')
         about.present()
