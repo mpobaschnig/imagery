@@ -22,7 +22,7 @@ import logging
 import os
 import time
 from gettext import gettext as i18n
-from typing import List, Optional
+from typing import List, Optional, Tuple
 
 from gi.repository import Adw, Gio, GLib, Gtk, GObject
 
@@ -106,8 +106,15 @@ class ImageToImagePage(Gtk.Box):
         else:
             text = i18n(f"~{minutes} min {seconds} s left...")
 
-        self._generating_progress_bar.set_text(text)
-        self._generating_progress_bar.set_fraction(step / number_steps)
+        def update(data: Tuple[str, int, int]) -> None:
+            text: str = data[0]
+            step: int = data[1]
+            number_steps: int = data[2]
+
+            self._generating_progress_bar.set_text(text)
+            self._generating_progress_bar.set_fraction(step / number_steps)
+
+        GLib.idle_add(update, (text, step, number_steps))
 
     def _finished(self, _):
         n_images = int(self._number_images_spin_button.get_value())
