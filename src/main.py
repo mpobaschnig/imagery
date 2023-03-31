@@ -64,13 +64,16 @@ class ImageryApplication(Adw.Application):
 
     def on_about_action(self, _widget, _):
         """Callback for the app.about action."""
-        about = Adw.AboutWindow(transient_for=self.props.active_window,
-                                application_name='Imagery',
-                                application_icon='io.github.mpobaschnig.Imagery',
-                                developer_name='Martin Pobaschnig',
-                                version='0.2.0',
-                                developers=['Martin Pobaschnig'],
-                                copyright='© 2023 Martin Pobaschnig')
+        about = Adw.AboutWindow(transient_for=self.props.active_window)
+
+        about.set_application_name("Imagery")
+        about.set_application_icon("io.github.mpobaschnig.Imagery")
+        about.set_developer_name("Martin Pobaschnig")
+        about.set_artists(["Martin Pobaschnig"])
+        about.set_version("0.2.0")
+        about.set_developers(["Martin Pobaschnig"])
+        about.set_copyright("© 2023 Martin Pobaschnig")
+
         about.present()
 
     def on_preferences_action(self, _widget, _):
