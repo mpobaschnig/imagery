@@ -73,6 +73,10 @@ class ImageryApplication(Adw.Application):
         about.set_version("0.2.0")
         about.set_developers(["Martin Pobaschnig"])
         about.set_copyright("© 2023 Martin Pobaschnig")
+        about.set_license_type(Gtk.License.GPL_3_0)
+        about.set_website("https://github.com/mpobaschnig/imagery")
+        about.set_support_url("https://github.com/mpobaschnig/imagery/discussions")
+        about.set_issue_url("https://github.com/mpobaschnig/imagery/issues")
 
         about.present()
 
